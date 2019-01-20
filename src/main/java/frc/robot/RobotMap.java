@@ -15,7 +15,7 @@ public class RobotMap {
     public static final double RAMP_RATE = 0.5;
     public static final double DEADZONE = 0.07;
     // drive public static finals
-    public static final double OUTPUT_MAX = 0.2;
+    public static final double OUTPUT_MAX = 1.0;
     public static final double ROT_MAX = 0.5;
     public static final double SPEED_MAX = 1.0;
 
@@ -25,5 +25,17 @@ public class RobotMap {
     public static final int GTA_ROT_AXIS = 0;
     public static final int LEFT_TRIGGER = 2;
     public static final int RIGHT_TRIGGER = 3;
+    // pathfinder constants
+    public static final double DT = 0.05;
+    public static final double MAX_VELOCITY = 1;
+    public static final double MAX_ACCEL = 0.5;
+    public static final double MAX_JERK = 40.0;
+    public static final double WHEEL_DIAMETER = 3.940;
+    public static final int ENCODER_TICK_PER_REV = 6;
+
+    // Encoder PID
+    public static final double kP = 1.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
 
 }
