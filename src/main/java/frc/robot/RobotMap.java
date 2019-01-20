@@ -22,4 +22,8 @@ public class RobotMap {
     // controller public static finals
     public static final int SPEED_AXIS = 1;
     public static final int ROT_AXIS = 4;
+    public static final int GTA_ROT_AXIS = 0;
+    public static final int LEFT_TRIGGER = 2;
+    public static final int RIGHT_TRIGGER = 3;
+
 }
