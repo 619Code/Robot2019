@@ -16,6 +16,6 @@ public class HelperFunctions{
             case HATCH:
             break;
         }
-
+        System.out.println("fxSfasdfXD");
     }
 }
