@@ -16,6 +16,5 @@ public class HelperFunctions{
             case HATCH:
             break;
         }
-
     }
 }
