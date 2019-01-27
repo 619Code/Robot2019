@@ -2,10 +2,6 @@ package frc.robot;
 
 public class RobotMap {
 
-    enum Subsystem {
-        LIFT, ARM, INTAKE, HATCH;
-    }
-
     // CAN IDs
     public static final int LEFT_FRONT = 10;
     public static final int LEFT_MIDDLE = 11;
@@ -18,13 +14,20 @@ public class RobotMap {
     public static final int LEFT_INTAKE = 20;
     public static final int RIGHT_INTAKE = 21;
 
+    // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
+    public static final int PCM_CAN_ID = 10000000; 
+    public static final int INTAKE_WRIST_CHANNEL = 0;
+
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.5;
     public static final double DEADZONE = 0.07;
-    // drive public static finals
-    public static final double OUTPUT_MAX = 0.6;
-    public static final double ROT_MAX = 0.5;
-    public static final double SPEED_MAX = 1.0;
+
+    // motor outputs
+    public static final double DRIVE_OUTPUT_MAX = 0.6;
+    public static final double DRIVE_ROT_MAX = 0.5;
+    public static final double DRIVE_SPEED_MAX = 1.0;
+
+    public static final double INTAKE_SPEED = 0.5;
 
     // controller public static finals
     public static final int SPEED_AXIS = 1;
@@ -32,6 +35,7 @@ public class RobotMap {
     public static final int GTA_ROT_AXIS = 0;
     public static final int LEFT_TRIGGER = 2;
     public static final int RIGHT_TRIGGER = 3;
+
     // pathfinder constants
     public static final double DT = 0.05;
     public static final double MAX_VELOCITY = 1;

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
-    public AHRS navX; 
+    public AHRS navX;
     Joystick driver;
 
     enum Mode {
@@ -24,7 +24,8 @@ public class WestCoastDrive {
         initNavX();
         initDrive();
     }
-    public void initNavX(){
+
+    public void initNavX() {
         navX = new AHRS(Port.kMXP);
         navX.reset();
     }
@@ -35,7 +36,7 @@ public class WestCoastDrive {
         // leftRear = new CANSparkMax(RobotMap.LEFT_REAR, MotorType.kBrushless);
         rightMaster = new CANSparkMax(RobotMap.RIGHT_MIDDLE, MotorType.kBrushless);
         // rightFront = new CANSparkMax(RobotMap.RIGHT_FRONT, MotorType.kBrushless);
-        //rightRear = new CANSparkMax(RobotMap.RIGHT_REAR, MotorType.kBrushless);
+        // rightRear = new CANSparkMax(RobotMap.RIGHT_REAR, MotorType.kBrushless);
         leftMaster.setIdleMode(IdleMode.kCoast);
         rightMaster.setIdleMode(IdleMode.kCoast);
         // leftRear.setIdleMode(IdleMode.kCoast);
@@ -50,7 +51,7 @@ public class WestCoastDrive {
         // rightRear.follow(rightMaster);
 
         drive = new DifferentialDrive(leftMaster, rightMaster);
-        drive.setMaxOutput(RobotMap.OUTPUT_MAX);
+        drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
     }
 
     public void drive(Mode mode) {
@@ -67,22 +68,24 @@ public class WestCoastDrive {
             curveDrive(speed, rotation);
         }
     }
-    public void setLeftMotors(double speed){
+
+    public void setLeftMotors(double speed) {
         leftMaster.set(speed);
     }
-    public void setRightMotors(double speed){
+
+    public void setRightMotors(double speed) {
         rightMaster.set(speed);
     }
     // public int getLeftEncoderValue() {
-    //     return (int)leftMaster.getEncoder().getPosition();
+    // return (int)leftMaster.getEncoder().getPosition();
 
     // }
 
     // public int getRightEncoderValue() {
-    //     return (int)rightMaster.getEncoder().getPosition();
+    // return (int)rightMaster.getEncoder().getPosition();
 
     // }
-    public double getHeading(){
+    public double getHeading() {
         return navX.getYaw();
     }
 
@@ -114,20 +117,19 @@ public class WestCoastDrive {
         }
     }
 
-
     public double deadzone(double input) {
         return Math.abs(input) < RobotMap.DEADZONE ? 0 : input;
     }
 
     public void curveDrive(double speed, double rotation) {
-        drive.curvatureDrive(speed * RobotMap.SPEED_MAX, -rotation * RobotMap.ROT_MAX, true);
+        drive.curvatureDrive(speed * RobotMap.DRIVE_SPEED_MAX, -rotation * RobotMap.DRIVE_ROT_MAX, true);
     }
 
     public void arcadeDrive(double speed, double rotation) {
-        drive.arcadeDrive(speed * RobotMap.SPEED_MAX, -rotation * RobotMap.ROT_MAX, true);
+        drive.arcadeDrive(speed * RobotMap.DRIVE_SPEED_MAX, -rotation * RobotMap.DRIVE_ROT_MAX, true);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        drive.tankDrive(leftSpeed * RobotMap.SPEED_MAX, -rightSpeed * RobotMap.ROT_MAX, true);
+        drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
     }
 }

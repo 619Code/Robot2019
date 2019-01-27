@@ -1,19 +1,26 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class HelperFunctions{
-    public void configureTalon(WPI_TalonSRX talon, RobotMap.Subsystem type)
-    {
+public class HelperFunctions {
+
+    enum Subsystem {
+        LIFT, ARM, INTAKE, HATCH;
+    }
+
+    public static void configureTalon(WPI_TalonSRX talon, Subsystem type) {
         talon.configFactoryDefault();
-        switch(type){
-            case LIFT:
+        switch (type) {
+        case LIFT:
             break;
-            case ARM:
+        case ARM:
             break;
-            case INTAKE:
+        case INTAKE:
+            talon.configFactoryDefault();
+            talon.setNeutralMode(NeutralMode.Brake);
             break;
-            case HATCH:
+        case HATCH:
             break;
         }
     }
