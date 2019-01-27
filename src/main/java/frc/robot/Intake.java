@@ -14,8 +14,8 @@ public class Intake {
     public Intake() {
         leftSpinny = new WPI_TalonSRX(RobotMap.LEFT_INTAKE);
         rightSpinny = new WPI_TalonSRX(RobotMap.RIGHT_INTAKE);
-        HelperFunctions.configureTalon(leftSpinny, HelperFunctions.Subsystem.INTAKE);
-        HelperFunctions.configureTalon(rightSpinny, HelperFunctions.Subsystem.INTAKE);
+        HelperFunctions.configureTalon(leftSpinny, RobotMap.Subsystem.INTAKE);
+        HelperFunctions.configureTalon(rightSpinny, RobotMap.Subsystem.INTAKE);
         motorSetup();
         wrist = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.INTAKE_WRIST_CHANNEL);
     }
