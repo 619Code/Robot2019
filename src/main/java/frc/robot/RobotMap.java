@@ -1,5 +1,4 @@
 package frc.robot;
-
 public class RobotMap {
 
     // CAN IDs
@@ -13,6 +12,9 @@ public class RobotMap {
 
     public static final int LEFT_INTAKE = 20;
     public static final int RIGHT_INTAKE = 21;
+
+    public static final int INTAKE1 = 30;
+    public static final int INTAKE2 = 31;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
@@ -48,5 +50,19 @@ public class RobotMap {
     public static final double kP = 1.0;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
+
+    //Lift PID
+    public static final double liftkP = 0;
+	public static final double liftkI = 0;
+	public static final double liftkD = 0;
+	public static final double liftkF = 0;
+	public static final int liftkIzone = 0;
+    public static final double liftkPeakOutput = 0;
+    
+    //Motion Magic Constants
+    public static final int kSlotIdx = 0;
+    public static final int kPIDLoopIdx = 0;
+    public static final int kTimeoutMs = 30;
+    
 
 }
