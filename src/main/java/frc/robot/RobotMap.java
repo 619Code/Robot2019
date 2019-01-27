@@ -1,6 +1,10 @@
 package frc.robot;
 public class RobotMap {
 
+    enum Subsystem {
+        LIFT, ARM, INTAKE, HATCH;
+    }
+
     // CAN IDs
     public static final int LEFT_FRONT = 10;
     public static final int LEFT_MIDDLE = 11;
@@ -18,7 +22,9 @@ public class RobotMap {
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
-    public static final int INTAKE_WRIST_CHANNEL = 0;
+    public static final int INTAKE_WRIST_CHANNEL = 10;
+    public static final int[] HATCH_GRABBER_CHANNEL = {0, 1};
+    public static final int[] HATCH_EXTEND_CHANNEL = {2, 3};
 
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.5;
