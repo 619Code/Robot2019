@@ -1,6 +1,11 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    id "osgi"
+    id "maven"
+    id "signing"
+    id "idea"
+    id "eclipse"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -40,6 +45,7 @@ def includeDesktopSupport = true
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -50,6 +56,12 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
+    //compile 'com.github.lessthanoptimal:jrplidar:master'
+    compile files("libs/RXTXcomm.jar")
+
+    compile group: 'org.georegression', name: 'georegression', version: '0.7'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

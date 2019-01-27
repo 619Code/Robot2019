@@ -40,7 +40,7 @@ public class Intake {
         rightSpinny.set(RobotMap.INTAKE_SPEED);
     }
 
-    public void output() {
+    public void outake() {
         rightSpinny.set(-RobotMap.INTAKE_SPEED);
     }
 

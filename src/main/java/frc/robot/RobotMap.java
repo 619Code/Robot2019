@@ -58,17 +58,17 @@ public class RobotMap {
     public static final double kD = 0.0;
 
     //Lift PID
-    public static final double liftkP = 0;
-	public static final double liftkI = 0;
-	public static final double liftkD = 0;
-	public static final double liftkF = 0;
-	public static final int liftkIzone = 0;
-    public static final double liftkPeakOutput = 0;
+    public static final double LIFT_kP = 0;
+	public static final double LIFT_kI = 0;
+	public static final double LIFT_kD = 0;
+	public static final double LIFT_kF = 0;
+	public static final int LIFT_kIZONE = 0;
+    public static final double LIFE_PEAK_OUTPUT = 0;
     
     //Motion Magic Constants
-    public static final int kSlotIdx = 0;
-    public static final int kPIDLoopIdx = 0;
-    public static final int kTimeoutMs = 30;
+    public static final int kSLOTIDX = 0;
+    public static final int kPIDLOOPIDX = 0;
+    public static final int kTIMEOUT_MS = 30;
     
 
 }
