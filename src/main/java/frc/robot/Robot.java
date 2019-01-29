@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    sunKist.drive(Mode.CURVATURE);
+    sunKist.drive(Mode.CURVATURE);  
 
   }
 

@@ -11,7 +11,8 @@ public class HelperFunctions {
         switch (type) {
         case LIFT:
             talon.configFactoryDefault();
-            talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.kPIDLOOPIDX, RobotMap.kTIMEOUT_MS);
+            talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.kPIDLOOPIDX,
+                    RobotMap.kTIMEOUT_MS);
             talon.setSensorPhase(true);
 
             talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, RobotMap.kTIMEOUT_MS);

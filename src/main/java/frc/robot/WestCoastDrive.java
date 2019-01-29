@@ -32,23 +32,23 @@ public class WestCoastDrive {
 
     public void initDrive() {
         leftMaster = new CANSparkMax(RobotMap.LEFT_MIDDLE, MotorType.kBrushless);
-        // leftFront = new CANSparkMax(RobotMap.LEFT_FRONT, MotorType.kBrushless);
-        // leftRear = new CANSparkMax(RobotMap.LEFT_REAR, MotorType.kBrushless);
+        leftFront = new CANSparkMax(RobotMap.LEFT_FRONT, MotorType.kBrushless);
+        leftRear = new CANSparkMax(RobotMap.LEFT_REAR, MotorType.kBrushless);
         rightMaster = new CANSparkMax(RobotMap.RIGHT_MIDDLE, MotorType.kBrushless);
-        // rightFront = new CANSparkMax(RobotMap.RIGHT_FRONT, MotorType.kBrushless);
-        // rightRear = new CANSparkMax(RobotMap.RIGHT_REAR, MotorType.kBrushless);
+        rightFront = new CANSparkMax(RobotMap.RIGHT_FRONT, MotorType.kBrushless);
+        rightRear = new CANSparkMax(RobotMap.RIGHT_REAR, MotorType.kBrushless);
         leftMaster.setIdleMode(IdleMode.kCoast);
         rightMaster.setIdleMode(IdleMode.kCoast);
-        // leftRear.setIdleMode(IdleMode.kCoast);
-        // leftFront.setIdleMode(IdleMode.kCoast);
-        // rightRear.setIdleMode(IdleMode.kCoast);
-        // rightFront.setIdleMode(IdleMode.kCoast);
+        leftRear.setIdleMode(IdleMode.kCoast);
+        leftFront.setIdleMode(IdleMode.kCoast);
+        rightRear.setIdleMode(IdleMode.kCoast);
+        rightFront.setIdleMode(IdleMode.kCoast);
         leftMaster.setRampRate(RobotMap.RAMP_RATE);
         rightMaster.setRampRate(RobotMap.RAMP_RATE);
-        // leftFront.follow(leftMaster);
-        // leftRear.follow(leftMaster);
-        // rightFront.follow(rightMaster);
-        // rightRear.follow(rightMaster);
+        leftFront.follow(leftMaster);
+        leftRear.follow(leftMaster);
+        rightFront.follow(rightMaster);
+        rightRear.follow(rightMaster);
 
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);

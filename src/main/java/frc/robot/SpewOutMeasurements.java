@@ -32,27 +32,24 @@ public class SpewOutMeasurements implements RpLidarListener {
     }
     
 	public static void main(String[] args) throws Exception {
-		System.loadLibrary("rxtxSerial");
-		System.loadLibrary("rxtxParallel");
+		//System.loadLibrary("rxtxSerial");
+		//System.loadLibrary("rxtxParallel");
 		System.out.println("ez clap");
 		RpLidarLowLevelDriver driver = new RpLidarLowLevelDriver("COM5", new SpewOutMeasurements());
-		System.out.println("done");
 		driver.setVerbose(false);
 		driver.sendReset();
-		driver.pause(100);
+		//driver.pause(100);
 
-		driver.sendGetInfo(1000);
-		driver.sendGetHealth(1000);
-		
+		//driver.sendGetInfo(1000);
+		//driver.sendGetHealth(1000);
 		//for v2 only - I guess this command is ignored by v1
-		driver.sendStartMotor(660);
-
-		driver.sendScan(500);
-		driver.pause(10000);
-		driver.sendReset();
-		driver.pause(100);
-		driver.shutdown();
-		driver.pause(100);
+		//driver.sendStartMotor(660);
+		//driver.sendScan(500);
+		//driver.pause(10000);
+		//driver.sendReset();
+		//driver.pause(100);
+		//driver.shutdown();
+		//driver.pause(100);
 		System.exit(0);
 	}
 }
