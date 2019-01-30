@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Test",
+      "request": "launch",
+      "mainClass": "frc.robot.trajectories.Test",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - WaypointGenerator",
+      "request": "launch",
+      "mainClass": "frc.robot.trajectories.WaypointGenerator",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - SpewOutMeasurements",
       "request": "launch",
       "mainClass": "frc.robot.SpewOutMeasurements",

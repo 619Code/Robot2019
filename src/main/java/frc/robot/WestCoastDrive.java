@@ -60,12 +60,16 @@ public class WestCoastDrive {
         switch (mode) {
         case CURVATURE:
             curveDrive(speed, rotation);
+            break;
         case ARCADE:
             arcadeDrive(speed, rotation);
+            break;
         case TANK:
             tankDrive(speed, rotation);
+            break;
         case GTA:
             curveDrive(speed, rotation);
+            break;
         }
     }
 

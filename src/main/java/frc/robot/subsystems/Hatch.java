@@ -1,6 +1,7 @@
-package frc.robot;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.RobotMap;
 
 public class Hatch{
     private DoubleSolenoid grabber, extendo;

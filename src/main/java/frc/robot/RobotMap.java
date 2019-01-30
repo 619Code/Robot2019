@@ -1,8 +1,12 @@
 package frc.robot;
 public class RobotMap {
 
-    enum Subsystem {
+    public enum Subsystem {
         LIFT, ARM, INTAKE, HATCH;
+    }
+
+    public enum AutoType {
+        LINE;
     }
 
     // CAN IDs
