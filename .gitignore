@@ -144,6 +144,9 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
+# Avoid ignoring Pathfinder jar files
+!Pathfinder-*.jar
+
 # Cache of project
 .gradletasknamecache
 
