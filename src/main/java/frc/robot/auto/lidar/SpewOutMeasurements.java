@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.auto.lidar;
 
 import roboticinception.rplidar.*;
 

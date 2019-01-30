@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import frc.robot.RobotMap;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.Pathfinder;
 
 public class WaypointGenerator{
 
@@ -44,7 +46,7 @@ public class WaypointGenerator{
         try (BufferedReader br = new BufferedReader(new FileReader(csvPath))){
             while(((line = br.readLine()) != null)){
                 double[] data = Arrays.stream(line.split(", ")).mapToDouble(Double::parseDouble).toArray();
-                Waypoint waypoint = new Waypoint(data[0], data[1], data[2]);
+                Waypoint waypoint = new Waypoint(data[0], data[1], Pathfinder.d2r(data[2]));
                 waypoints.add(waypoint);
             }
         } catch(IOException e) {
@@ -58,7 +60,7 @@ public class WaypointGenerator{
         for(int i = 0; i < leftWaypoints.size(); i++){
             Waypoint left = leftWaypoints.get(i);
             Waypoint right = rightWaypoints.get(i);
-            Waypoint mid = new Waypoint((left.getX()+right.getX())/2, (left.getY()+right.getY())/2, left.getHeading());
+            Waypoint mid = new Waypoint((left.x+right.x)/2, (left.y+right.y)/2, left.angle);
             waypoints.add(mid);
         }
         return waypoints;

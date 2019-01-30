@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.drive;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.RobotMap;
 
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
@@ -15,7 +16,7 @@ public class WestCoastDrive {
     public AHRS navX;
     Joystick driver;
 
-    enum Mode {
+    public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
 
@@ -80,15 +81,15 @@ public class WestCoastDrive {
     public void setRightMotors(double speed) {
         rightMaster.set(speed);
     }
-    // public int getLeftEncoderValue() {
-    // return (int)leftMaster.getEncoder().getPosition();
 
-    // }
+    public int getLeftEncoderValue() {
+        return (int)leftMaster.getEncoder().getPosition();
+    }
 
-    // public int getRightEncoderValue() {
-    // return (int)rightMaster.getEncoder().getPosition();
-
-    // }
+    public int getRightEncoderValue() {
+        return (int)rightMaster.getEncoder().getPosition();
+    }
+    
     public double getHeading() {
         return navX.getYaw();
     }
