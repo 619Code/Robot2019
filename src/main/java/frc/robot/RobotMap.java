@@ -1,4 +1,7 @@
 package frc.robot;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 public class RobotMap {
 
     public enum Subsystem {
@@ -18,11 +21,12 @@ public class RobotMap {
     public static final int RIGHT_MIDDLE = 14;
     public static final int RIGHT_REAR = 15;
 
-    public static final int LEFT_INTAKE = 20;
-    public static final int RIGHT_INTAKE = 21;
+    public static final int LEFT_LIFT = 41;
+    public static final int RIGHT_LIFT = 40;
 
-    public static final int INTAKE1 = 30;
-    public static final int INTAKE2 = 31;
+    public static final int INTAKE = 30;
+
+
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
@@ -42,11 +46,10 @@ public class RobotMap {
     public static final double INTAKE_SPEED = 0.5;
 
     // controller public static finals
-    public static final int SPEED_AXIS = 1;
-    public static final int ROT_AXIS = 4;
-    public static final int GTA_ROT_AXIS = 0;
-    public static final int LEFT_TRIGGER = 2;
-    public static final int RIGHT_TRIGGER = 3;
+    public static final Hand SPEED_HAND = Hand.kLeft;
+    public static final Hand ROT_HAND = Hand.kRight;
+    public static final Hand RIGHT_HAND = Hand.kRight;
+    public static final Hand LEFT_HAND = Hand.kLeft;
 
     // pathfinder constants
     public static final double DT = 0.05;

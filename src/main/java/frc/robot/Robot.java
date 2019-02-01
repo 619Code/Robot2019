@@ -3,21 +3,47 @@ package frc.robot;
 
 import java.io.File;
 
-import edu.wpi.first.wpilibj.Joystick;
+import com.kauailabs.navx.frc.AHRS;
+
+import frc.robot.hardware.Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.drive.WestCoastDrive;
+import frc.robot.subsystems.*;
 import frc.robot.auto.Auto;
 
 public class Robot extends TimedRobot {
-  Joystick driver;
+  Controller driver;
   WestCoastDrive sunKist;
   Auto auto;
+  
+  Arm arm;
+  Hatch hatch;
+  Intake intake;
+  Lift lift;
+
+  public AHRS navX;
 
   @Override
   public void robotInit() {
-    driver = new Joystick(0);
-    sunKist = new WestCoastDrive(driver);
-    auto = new Auto(sunKist);
+    driver = new Controller(0);
+    initNavX();
+    initManipulators();
+    //auto = new Auto(sunKist, navX);
+  }
+
+  public void initManipulators() {
+    sunKist = new WestCoastDrive();
+    
+    lift = new Lift();
+    // intake = new Intake();
+    // hatch = new Hatch();
+    // arm = new Arm();
+  }
+
+  public void initNavX() {
+    navX = new AHRS(Port.kMXP);
+    navX.reset();
   }
 
   @Override
@@ -35,14 +61,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    sunKist.drive(WestCoastDrive.Mode.CURVATURE);  
+    //sunKist.drive(WestCoastDrive.Mode.CURVATURE); 
   }
 
   @Override
   public void testInit() {
+    //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
+    lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
   }
 }

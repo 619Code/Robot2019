@@ -6,29 +6,22 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
+import frc.robot.hardware.Controller;
 
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
-    public AHRS navX;
-    Joystick driver;
 
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
 
-    public WestCoastDrive(Joystick joy) {
-        driver = joy;
-        initNavX();
+    public WestCoastDrive() {
         initDrive();
-    }
-
-    public void initNavX() {
-        navX = new AHRS(Port.kMXP);
-        navX.reset();
     }
 
     public void initDrive() {
@@ -55,9 +48,9 @@ public class WestCoastDrive {
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
     }
 
-    public void drive(Mode mode) {
-        double speed = getSpeed(mode);
-        double rotation = getRotation(mode);
+    public void drive(Mode mode, Controller driver) {
+        double speed = getSpeed(mode, driver);
+        double rotation = getRotation(mode, driver);
         switch (mode) {
         case CURVATURE:
             curveDrive(speed, rotation);
@@ -89,36 +82,31 @@ public class WestCoastDrive {
     public int getRightEncoderValue() {
         return (int)rightMaster.getEncoder().getPosition();
     }
-    
-    public double getHeading() {
-        return navX.getYaw();
-    }
 
-    public double getSpeed(Mode mode) {
+    public double getSpeed(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return deadzone(driver.getRawAxis(RobotMap.SPEED_AXIS));
+            return deadzone(driver.getY(RobotMap.SPEED_HAND));
         case GTA:
-            return deadzone(driver.getRawAxis(RobotMap.RIGHT_TRIGGER) - driver.getRawAxis(RobotMap.LEFT_TRIGGER));
+            return deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND));
         default:
             // curvature drive default
-            return deadzone(driver.getRawAxis(RobotMap.SPEED_AXIS));
+            return deadzone(driver.getY(RobotMap.SPEED_HAND));
         }
     }
 
-    public double getRotation(Mode mode) {
+    public double getRotation(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return deadzone(driver.getRawAxis(RobotMap.ROT_AXIS));
         case GTA:
-            return deadzone(driver.getRawAxis(RobotMap.GTA_ROT_AXIS));
+            return deadzone(driver.getX(RobotMap.ROT_HAND));
         default:
             // curvature drive default
-            return deadzone(driver.getRawAxis(RobotMap.ROT_AXIS));
+            return deadzone(driver.getX(RobotMap.ROT_HAND));
         }
     }
 

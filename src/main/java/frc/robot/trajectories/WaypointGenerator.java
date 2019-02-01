@@ -13,7 +13,7 @@ import jaci.pathfinder.Pathfinder;
 
 public class WaypointGenerator{
 
-    final String TRAJECTORY_PATH = "src/main/java/frc/robot/trajectories/";
+    final String TRAJECTORY_PATH = "C:/Users/alexa/Desktop/VSProjects/Robot2019/src/main/java/frc/robot/trajectories/";
 
     ArrayList<Waypoint> leftWaypoints;
     ArrayList<Waypoint> rightWaypoints;

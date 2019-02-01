@@ -12,6 +12,8 @@ import jaci.pathfinder.followers.EncoderFollower;
 
 import java.util.ArrayList;
 
+import com.kauailabs.navx.frc.AHRS;
+
 public class Auto{
     Waypoint[] points;
     public Trajectory trajectory;
@@ -20,9 +22,11 @@ public class Auto{
     EncoderFollower right;
     WestCoastDrive _sunKist;
     WaypointGenerator wpGenerator;
+    AHRS _navX;
 
-    public Auto(WestCoastDrive sunKist){
+    public Auto(WestCoastDrive sunKist, AHRS navX){
         _sunKist = sunKist;
+        _navX = navX;
         wpGenerator = new WaypointGenerator();
         ArrayList<Waypoint> waypointList = wpGenerator.generateWaypoints(AutoType.LINE);
         points = waypointList.toArray(new Waypoint[waypointList.size()]);
@@ -47,7 +51,7 @@ public class Auto{
         double l = left.calculate(_sunKist.getLeftEncoderValue());
         double r = left.calculate(_sunKist.getRightEncoderValue());
 
-        double gyro_heading = _sunKist.navX.getFusedHeading();
+        double gyro_heading = _navX.getFusedHeading();
         double desired_heading = Pathfinder.r2d(left.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading -gyro_heading);

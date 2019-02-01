@@ -5,24 +5,16 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake {
-    private WPI_TalonSRX leftSpinny, rightSpinny;
+    private WPI_TalonSRX spinny;
     private Solenoid wrist;
 
     // TODO: figure out which way is up and which way is down
     private final boolean up = true;
 
     public Intake() {
-        leftSpinny = new WPI_TalonSRX(RobotMap.LEFT_INTAKE);
-        rightSpinny = new WPI_TalonSRX(RobotMap.RIGHT_INTAKE);
-        HelperFunctions.configureTalon(leftSpinny, RobotMap.Subsystem.INTAKE);
-        HelperFunctions.configureTalon(rightSpinny, RobotMap.Subsystem.INTAKE);
-        motorSetup();
+        spinny = new WPI_TalonSRX(RobotMap.INTAKE);
+        HelperFunctions.configureTalon(spinny, RobotMap.Subsystem.INTAKE);
         wrist = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.INTAKE_WRIST_CHANNEL);
-    }
-
-    private void motorSetup() {
-        leftSpinny.setInverted(true);
-        leftSpinny.follow(rightSpinny);
     }
 
     public void gather() {
@@ -37,15 +29,15 @@ public class Intake {
     }
 
     private void intake() {
-        rightSpinny.set(RobotMap.INTAKE_SPEED);
+        spinny.set(RobotMap.INTAKE_SPEED);
     }
 
     public void outake() {
-        rightSpinny.set(-RobotMap.INTAKE_SPEED);
+        spinny.set(-RobotMap.INTAKE_SPEED);
     }
 
     private void stop() {
-        rightSpinny.set(0);
+        spinny.set(0);
     }
 
     private void raise() {
