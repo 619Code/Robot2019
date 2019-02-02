@@ -46,6 +46,11 @@ public class RobotMap {
     public static final int LEFT_GRABBER = 60;
     public static final int RIGHT_GRABBER = 61;
 
+    public static final int LEFT_MIDDLE_CLIMB_SWITCH = 0;
+    public static final int LEFT_END_CLIMB_SWITCH = 1;
+    public static final int RIGHT_MIDDLE_CLIMB_SWITCH = 2;
+    public static final int RIGHT_END_CLIMB_SWITCH = 3;
+
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
     public static final int INTAKE_WRIST_CHANNEL = 10;
