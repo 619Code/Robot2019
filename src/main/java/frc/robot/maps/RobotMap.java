@@ -11,7 +11,19 @@ public class RobotMap {
     public enum AutoType {
         LINE;
     }
+    public enum LIFT_TARGETS{
+        LOWER(0),MIDDLE(1),HIGH(2);
+        private final int rotations;
+        LIFT_TARGETS(int rotations){this.rotations = rotations;}
+        public int getValue() {return rotations;}
 
+    }
+    public enum ARM_TARGETS{
+        BACK(0),LOWER(1),MIDDLE(2),HIGH(3);
+        private final int rotations;
+        ARM_TARGETS(int rotations){this.rotations = rotations;}
+        public int getValue() {return rotations;}
+    }
     // CAN IDs
     public static final int LEFT_FRONT = 10;
     public static final int LEFT_MIDDLE = 11;

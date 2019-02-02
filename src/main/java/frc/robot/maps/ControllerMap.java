@@ -1,6 +1,8 @@
 package frc.robot.maps;
 
 import frc.robot.hardware.Controller;
+import frc.robot.maps.RobotMap.ARM_TARGETS;
+import frc.robot.maps.RobotMap.LIFT_TARGETS;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
@@ -25,36 +27,38 @@ public class ControllerMap{
         return _secondary;
     }
 
-    //returns 0 for lowest position, 1 for second-lowest and so on (3 positions only called when left bumper is NOT down)
-    public static int getLiftPosition(){
+    //returns 0 for lowest position, 1 for second-lowest and so on (3 positions
+    // only called when left bumper is NOT down)
+    public static LIFT_TARGETS getLiftPosition(){
         if(!_secondary.getBumper(RobotMap.LEFT_HAND)){
             switch(_secondary.getButtonPressed()){
                 case ABUTTON:
-                    return 0;
+                    return RobotMap.LIFT_TARGETS.LOWER;
                 case BBUTTON:
-                    return 1;
+                    return RobotMap.LIFT_TARGETS.MIDDLE;
                 case YBUTTON:
-                    return 2;
+                    return RobotMap.LIFT_TARGETS.HIGH;
             }
         }
-        return -1;
+        return RobotMap.LIFT_TARGETS.NULL;
     }
 
-    //returns 0 for lowest position, 1 for second-lowest and so on (4 positions and is only called when left bumper is down)
-    public static int getArmPosition(){
+    //returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
+    // is only called when left bumper is down)
+    public static ARM_TARGETS getArmPosition(){
         if(_secondary.getBumper(RobotMap.LEFT_HAND)){
             switch(_secondary.getButtonPressed()){
                 case ABUTTON:
-                    return 0;
+                    return RobotMap.ARM_TARGETS.BACK;
                 case BBUTTON:
-                    return 1;
+                    return RobotMap.ARM_TARGETS.LOWER;
                 case YBUTTON:
-                    return 2;
+                    return RobotMap.ARM_TARGETS.MIDDLE;
                 case XBUTTON:
-                    return 3;
+                    return RobotMap.ARM_TARGETS.HIGH;
             }
         }
-        return -1;
+        return RobotMap.ARM_TARGETS.NULL;
     }
 
     //grab left axis from secondary joystick
