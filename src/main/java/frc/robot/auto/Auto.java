@@ -1,20 +1,20 @@
 package frc.robot.auto;
 
-import frc.robot.RobotMap;
-import frc.robot.RobotMap.AutoType;
-import frc.robot.drive.WestCoastDrive;
-import frc.robot.trajectories.WaypointGenerator;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.modifiers.TankModifier;
-import jaci.pathfinder.followers.EncoderFollower;
-
 import java.util.ArrayList;
 
 import com.kauailabs.navx.frc.AHRS;
 
-public class Auto{
+import frc.robot.drive.WestCoastDrive;
+import frc.robot.maps.RobotMap;
+import frc.robot.maps.RobotMap.AutoType;
+import frc.robot.trajectories.WaypointGenerator;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.followers.EncoderFollower;
+import jaci.pathfinder.modifiers.TankModifier;
+
+public class Auto {
     Waypoint[] points;
     public Trajectory trajectory;
     Trajectory.Config config;

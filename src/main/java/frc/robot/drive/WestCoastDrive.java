@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.hardware.Controller;
 import frc.robot.maps.RobotMap;
+import frc.robot.subsystems.HelperFunctions;
 
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
@@ -84,12 +85,12 @@ public class WestCoastDrive {
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return deadzone(driver.getY(RobotMap.SPEED_HAND));
+            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND));
         case GTA:
-            return deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND));
+            return HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND));
         default:
             // curvature drive default
-            return deadzone(driver.getY(RobotMap.SPEED_HAND));
+            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND));
         }
     }
 
@@ -98,17 +99,13 @@ public class WestCoastDrive {
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return deadzone(driver.getY(RobotMap.ROT_HAND));
+            return HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND));
         case GTA:
-            return deadzone(driver.getX(RobotMap.ROT_HAND));
+            return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
         default:
             // curvature drive default
-            return deadzone(driver.getX(RobotMap.ROT_HAND));
+            return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
         }
-    }
-
-    public double deadzone(double input) {
-        return Math.abs(input) < RobotMap.DEADZONE ? 0 : input;
     }
 
     public void curveDrive(double speed, double rotation) {

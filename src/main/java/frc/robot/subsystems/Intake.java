@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import frc.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.Solenoid;
+import frc.robot.maps.RobotMap;
 
 public class Intake {
     private WPI_TalonSRX spinny;
@@ -36,8 +37,20 @@ public class Intake {
         spinny.set(-RobotMap.INTAKE_SPEED);
     }
 
+    public void moveIntake(double speed)
+    {
+        spinny.set(speed);
+    }
+
     private void stop() {
         spinny.set(0);
+    }
+
+    public void raiseOrLower(int dir){
+        if(dir == 1)
+            raise();
+        else if(dir == 0)
+            lower();
     }
 
     private void raise() {

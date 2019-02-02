@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.maps.RobotMap;
 
 public class Hatch{
     private DoubleSolenoid grabber, extendo;
@@ -14,13 +16,20 @@ public class Hatch{
                                         RobotMap.HATCH_EXTEND_CHANNEL[1]);
     }
 
-    public void extendo(DoubleSolenoid.Value val)
+    public void extendo(Value val)
     {
         extendo.set(val);
     }
 
-    public void grab(DoubleSolenoid.Value val)
+    public void close(Value val)
     { 
         grabber.set(val);
+    }
+    
+    public void extendOrClose(double speed){
+        if(speed > 0.5)
+            extendo(Value.kForward);
+        else if(speed < -0.5)
+            close(Value.kReverse);
     }
 }

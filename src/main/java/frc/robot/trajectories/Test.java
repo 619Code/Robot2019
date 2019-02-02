@@ -1,7 +1,8 @@
 package frc.robot.trajectories;
 
-import frc.robot.RobotMap;
 import java.util.ArrayList;
+
+import frc.robot.maps.RobotMap;
 import jaci.pathfinder.Waypoint;
 
 public class Test{

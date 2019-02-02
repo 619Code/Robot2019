@@ -2,16 +2,15 @@ package frc.robot.trajectories;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import frc.robot.RobotMap;
-import jaci.pathfinder.Waypoint;
+import frc.robot.maps.RobotMap;
 import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
 
-public class WaypointGenerator{
+public class WaypointGenerator {
 
     final String TRAJECTORY_PATH = "C:/Users/alexa/Desktop/VSProjects/Robot2019/src/main/java/frc/robot/trajectories/";
 

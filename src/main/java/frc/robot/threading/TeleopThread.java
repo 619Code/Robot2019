@@ -1,9 +1,11 @@
 package frc.robot.threading;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.drive.WestCoastDrive.Mode;
 import frc.robot.hardware.Controller;
 import frc.robot.subsystems.*;
+import frc.robot.maps.ControllerMap;
 
 public class TeleopThread extends RobotThread {
 
@@ -38,7 +40,12 @@ public class TeleopThread extends RobotThread {
 
     @Override
     protected void cycle() {
-        
-        sunKist.drive(driveMode, primary);
+        // _arm.moveArmToTarget(ControllerMap.getArmPosition());
+        // _lift.moveLiftToTarget(ControllerMap.getLiftPosition());
+        // _intake.moveIntake(ControllerMap.spinInake());
+        // _intake.raiseOrLower(ControllerMap.moveIntake());
+        // _hatch.extendOrClose(ControllerMap.moveHatch());
+
+        //sunKist.drive(driveMode, primary);
     }
-}
+} 

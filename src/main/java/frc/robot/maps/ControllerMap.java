@@ -1,9 +1,10 @@
 package frc.robot.maps;
 
 import frc.robot.hardware.Controller;
+import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
-    Controller _primary, _secondary;
+    static Controller _primary, _secondary;
 
     public ControllerMap(){
         _primary = new Controller(0);
@@ -25,7 +26,7 @@ public class ControllerMap{
     }
 
     //returns 0 for lowest position, 1 for second-lowest and so on (3 positions only called when left bumper is NOT down)
-    public int getLiftPosition(){
+    public static int getLiftPosition(){
         if(!_secondary.getBumper(RobotMap.LEFT_HAND)){
             switch(_secondary.getButtonPressed()){
                 case ABUTTON:
@@ -40,7 +41,7 @@ public class ControllerMap{
     }
 
     //returns 0 for lowest position, 1 for second-lowest and so on (4 positions and is only called when left bumper is down)
-    public int getArmPosition(){
+    public static int getArmPosition(){
         if(_secondary.getBumper(RobotMap.LEFT_HAND)){
             switch(_secondary.getButtonPressed()){
                 case ABUTTON:
@@ -57,18 +58,27 @@ public class ControllerMap{
     }
 
     //grab left axis from secondary joystick
-    public double spinInake(){
-        return _secondary.getY(RobotMap.LEFT_HAND);
+    public static double spinInake(){
+        return HelperFunctions.deadzone(_secondary.getY(RobotMap.LEFT_HAND));
     }
 
     //grab right axis from secondary joystick
-    public double moveIntake(){
-        return _secondary.getY(RobotMap.RIGHT_HAND);
-
+    public static int moveIntake(){
+        if (HelperFunctions.deadzone(_secondary.getTriggerAxis(RobotMap.RIGHT_HAND))>0){
+            return 1;
+        }
+        else if (HelperFunctions.deadzone(_secondary.getTriggerAxis(RobotMap.LEFT_HAND))>0){
+            return 0;
+        }
+        return -1;
     }
 
     //when right bumper is grabbed start climb proccess by returning true
-    public boolean climb(){
+    public static boolean climb(){
         return _secondary.getBumper(RobotMap.RIGHT_HAND);
+    }
+
+    public static double moveHatch(){
+        return HelperFunctions.deadzone(_secondary.getY(RobotMap.RIGHT_HAND));
     }
 }

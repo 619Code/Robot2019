@@ -1,24 +1,28 @@
 
 package frc.robot;
 
-import java.io.File;
-
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.hardware.Controller;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
-import frc.robot.subsystems.*;
+import frc.robot.hardware.Controller;
+import frc.robot.maps.RobotMap;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lift;
 import frc.robot.threading.TeleopThread;
 import frc.robot.threading.ThreadManager;
-import frc.robot.auto.Auto;
 
 public class Robot extends TimedRobot {
   Controller driver;
   WestCoastDrive sunKist;
   Auto auto;
-  
+
   Arm arm;
   Hatch hatch;
   Intake intake;
@@ -35,6 +39,7 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     threadManager = new ThreadManager();
+    threadManager.killAllThreads();
     //auto = new Auto(sunKist, navX);
   }
 
@@ -44,7 +49,7 @@ public class Robot extends TimedRobot {
     lift = new Lift();
     // intake = new Intake();
     // hatch = new Hatch();
-    // arm = new Arm();
+    arm = new Arm();
   }
 
   public void initNavX() {
@@ -58,6 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    threadManager.killAllThreads();
   }
 
   @Override
@@ -78,11 +84,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    threadManager.killAllThreads();
     //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
-    lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
+    //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
+    arm.moveArm(0.3*driver.getY(RobotMap.LEFT_HAND));
+  }
+
+  @Override
+  public void disabledInit(){
+    threadManager.killAllThreads();
   }
 }

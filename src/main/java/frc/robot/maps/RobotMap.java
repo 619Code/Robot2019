@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class RobotMap {
 
     public enum Subsystem {
-        LIFT, ARM, INTAKE, HATCH;
+        LIFT, ARM, INTAKE, HATCH, GRABBER, CLIMB;
     }
 
     public enum AutoType {
@@ -26,7 +26,13 @@ public class RobotMap {
 
     public static final int INTAKE = 30;
 
+    public static final int ARM = 35;
 
+    public static final int LEFT_CLIMB = 50;
+    public static final int RIGHT_CLIMB = 51;
+
+    public static final int LEFT_GRABBER = 60;
+    public static final int RIGHT_GRABBER = 61;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
@@ -72,10 +78,24 @@ public class RobotMap {
 	public static final int LIFT_kIZONE = 0;
     public static final double LIFE_PEAK_OUTPUT = 0;
     
+    //Arm PID
+    public static final double ARM_kP = 0;
+	public static final double ARM_kI = 0;
+	public static final double ARM_kD = 0;
+    public static final int ARM_kIZONE = 0;
+    public static final double ARM_KFF = 0;
+    public static final double ARM_MAXOUTPUT = 0;
+    public static final double ARM_MINOUTPUT = 0;
+
     //Motion Magic Constants
     public static final int kSLOTIDX = 0;
     public static final int kPIDLOOPIDX = 0;
     public static final int kTIMEOUT_MS = 30;
-    
 
+    //gear ratios
+    public static final int RATIO_LIFT = 70;
+    public static final int RATIO_ARM = 81;
+
+    //encoder ticks per rotation
+    public static final int TICKSPERROT_VERSAPLANETARY_ENC = 1024;
 }
