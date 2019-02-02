@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.maps;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 

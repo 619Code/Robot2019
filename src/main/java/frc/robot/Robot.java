@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.subsystems.*;
+import frc.robot.threading.TeleopThread;
+import frc.robot.threading.ThreadManager;
 import frc.robot.auto.Auto;
 
 public class Robot extends TimedRobot {
@@ -22,6 +24,9 @@ public class Robot extends TimedRobot {
   Intake intake;
   Lift lift;
 
+  ThreadManager threadManager;
+  TeleopThread teleopThread;
+
   public AHRS navX;
 
   @Override
@@ -29,6 +34,7 @@ public class Robot extends TimedRobot {
     driver = new Controller(0);
     initNavX();
     initManipulators();
+    threadManager = new ThreadManager();
     //auto = new Auto(sunKist, navX);
   }
 
@@ -57,6 +63,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     auto.run();
+  }
+
+  @Override
+  public void teleopInit(){
+    threadManager.killAllThreads();
+    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift);
   }
 
   @Override

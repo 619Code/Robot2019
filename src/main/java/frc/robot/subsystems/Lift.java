@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import frc.robot.maps.RobotMap;
 
 public class Lift{
     private WPI_TalonSRX upboiLeft, upboiRight;
@@ -10,9 +11,8 @@ public class Lift{
         upboiLeft = new WPI_TalonSRX(RobotMap.LEFT_LIFT);
         upboiRight = new WPI_TalonSRX(RobotMap.RIGHT_LIFT);
         HelperFunctions.configureTalon(upboiLeft, RobotMap.Subsystem.LIFT);
-        HelperFunctions.configureTalon(upboiRight, RobotMap.Subsystem.LIFT);
+        //HelperFunctions.configureTalon(upboiRight, RobotMap.Subsystem.LIFT);
         upboiRight.follow(upboiLeft);
-        
     }
 
     //target is in rotations (e.g. target=1 is one rotation)
@@ -23,6 +23,7 @@ public class Lift{
     
     public void moveLift(double speed){
         upboiLeft.set(ControlMode.PercentOutput, speed);
+        upboiRight.set(ControlMode.PercentOutput, speed);
     }
 
 }

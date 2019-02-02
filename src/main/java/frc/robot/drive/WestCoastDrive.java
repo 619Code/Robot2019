@@ -1,16 +1,12 @@
 package frc.robot.drive;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.RobotMap;
 import frc.robot.hardware.Controller;
+import frc.robot.maps.RobotMap;
 
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
@@ -102,6 +98,7 @@ public class WestCoastDrive {
         case CURVATURE:
         case ARCADE:
         case TANK:
+            return deadzone(driver.getY(RobotMap.ROT_HAND));
         case GTA:
             return deadzone(driver.getX(RobotMap.ROT_HAND));
         default:
