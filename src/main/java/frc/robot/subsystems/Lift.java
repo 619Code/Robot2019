@@ -16,8 +16,8 @@ public class Lift{
     }
 
     //target is in rotations (e.g. target=1 is one rotation)
-    public void moveLiftToTarget(double rotations){
-			double targetPos =  (RobotMap.TICKSPERROT_VERSAPLANETARY_ENC*RobotMap.RATIO_LIFT) * rotations;
+    public void moveLiftToTarget(RobotMap.LIFT_TARGETS target){
+			double targetPos =  (RobotMap.TICKSPERROT_VERSAPLANETARY_ENC*RobotMap.RATIO_LIFT) * target.getValue();
             upboiLeft.set(ControlMode.MotionMagic, targetPos);
     }
     

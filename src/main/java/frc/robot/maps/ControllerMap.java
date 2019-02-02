@@ -40,7 +40,7 @@ public class ControllerMap{
                     return RobotMap.LIFT_TARGETS.HIGH;
             }
         }
-        return RobotMap.LIFT_TARGETS.NULL;
+        return RobotMap.LIFT_TARGETS.NULL_POSITION;
     }
 
     //returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
@@ -58,7 +58,7 @@ public class ControllerMap{
                     return RobotMap.ARM_TARGETS.HIGH;
             }
         }
-        return RobotMap.ARM_TARGETS.NULL;
+        return RobotMap.ARM_TARGETS.NULL_POSITION;
     }
 
     //grab left axis from secondary joystick

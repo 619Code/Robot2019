@@ -12,14 +12,14 @@ public class RobotMap {
         LINE;
     }
     public enum LIFT_TARGETS{
-        LOWER(0),MIDDLE(1),HIGH(2);
+        LOWER(0),MIDDLE(1),HIGH(2),NULL_POSITION(-1);
         private final int rotations;
         LIFT_TARGETS(int rotations){this.rotations = rotations;}
         public int getValue() {return rotations;}
 
     }
     public enum ARM_TARGETS{
-        BACK(0),LOWER(1),MIDDLE(2),HIGH(3);
+        BACK(0),LOWER(1),MIDDLE(2),HIGH(3),NULL_POSITION(-1);
         private final int rotations;
         ARM_TARGETS(int rotations){this.rotations = rotations;}
         public int getValue() {return rotations;}
@@ -110,4 +110,5 @@ public class RobotMap {
 
     //encoder ticks per rotation
     public static final int TICKSPERROT_VERSAPLANETARY_ENC = 1024;
+    public static final int TICKSPERROT_NEO_ENC = 42;
 }
