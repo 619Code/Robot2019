@@ -27,7 +27,7 @@ public class Arm{
     public void moveArmToTarget(RobotMap.ARM_TARGETS target){
         if (target.equals(RobotMap.ARM_TARGETS.NULL_POSITION)) return;
         double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_ARM) * target.getValue();
-        flexController.setReference(targetPos*RobotMap.RATIO_ARM, ControlType.kPosition);    
+        flexController.setReference(targetPos, ControlType.kPosition);    
     }
 
     public void moveArm(double speed){

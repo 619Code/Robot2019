@@ -47,6 +47,9 @@ public class Climb extends CommandGroup{
         //once the wheels move forwar a certain amount of rotions, zoop the climber in the inital position
         addSequential(new unZoop());
     }
+    public void startClimb(boolean ready){
+        if(ready) autoClimb();
+    }
 
     public class up extends Command{
         public void execute() {

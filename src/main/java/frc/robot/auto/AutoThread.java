@@ -7,6 +7,7 @@ import com.kauailabs.navx.frc.AHRS;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.maps.RobotMap;
 import frc.robot.maps.RobotMap.AutoType;
+import frc.robot.threading.*;
 import frc.robot.trajectories.WaypointGenerator;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -14,7 +15,7 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-public class Auto {
+public class AutoThread extends RobotThread{
     Waypoint[] points;
     public Trajectory trajectory;
     Trajectory.Config config;
@@ -24,7 +25,8 @@ public class Auto {
     WaypointGenerator wpGenerator;
     AHRS _navX;
 
-    public Auto(WestCoastDrive sunKist, AHRS navX){
+    public AutoThread(ThreadManager threadManager, WestCoastDrive sunKist, AHRS navX){
+        super(threadManager);
         _sunKist = sunKist;
         _navX = navX;
         wpGenerator = new WaypointGenerator();
@@ -45,9 +47,12 @@ public class Auto {
 
         left.configurePIDVA(RobotMap.kP, RobotMap.kI, RobotMap.kD, 1/RobotMap.MAX_VELOCITY, 0);
         right.configurePIDVA(RobotMap.kP, RobotMap.kI, RobotMap.kD, 1/RobotMap.MAX_VELOCITY, 0);
+        
+        start();
     }
 
-    public void run(){
+    @Override
+    public void cycle(){
         double l = left.calculate(_sunKist.getLeftEncoderValue());
         double r = left.calculate(_sunKist.getRightEncoderValue());
 

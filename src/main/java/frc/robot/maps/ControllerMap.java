@@ -85,4 +85,11 @@ public class ControllerMap{
     public static double moveHatch(){
         return HelperFunctions.deadzone(_secondary.getY(RobotMap.RIGHT_HAND));
     }
+
+    public static boolean isClimbReady(){
+        if (_primary.getStickButton(RobotMap.RIGHT_HAND) && _secondary.getStickButton(RobotMap.RIGHT_HAND))
+            return true; 
+        else 
+            return false;
+    }
 }
