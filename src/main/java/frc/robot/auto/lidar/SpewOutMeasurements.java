@@ -38,18 +38,18 @@ public class SpewOutMeasurements implements RpLidarListener {
 		RpLidarLowLevelDriver driver = new RpLidarLowLevelDriver("COM5", new SpewOutMeasurements());
 		driver.setVerbose(false);
 		driver.sendReset();
-		//driver.pause(100);
+		driver.pause(100);
 
-		//driver.sendGetInfo(1000);
-		//driver.sendGetHealth(1000);
+		driver.sendGetInfo(100);
+		driver.sendGetHealth(100);
 		//for v2 only - I guess this command is ignored by v1
-		//driver.sendStartMotor(660);
-		//driver.sendScan(500);
-		//driver.pause(10000);
-		//driver.sendReset();
-		//driver.pause(100);
-		//driver.shutdown();
-		//driver.pause(100);
+		driver.sendStartMotor(660);
+		driver.sendScan(50);
+		driver.pause(100);
+		driver.sendReset();
+		driver.pause(100);
+		driver.shutdown();
+		driver.pause(100);
 		System.exit(0);
 	}
 }

@@ -128,8 +128,8 @@ public class WestCoastDrive {
     public void tankDrive(double leftSpeed, double rightSpeed) {
         drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
     }
-    public void moveDriveToTarget(double target){
-        double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_ARM*target);
-        drivePID.setReference(targetPos*RobotMap.RATIO_ARM, ControlType.kPosition);    
+    public void moveDriveToTarget(double rotaitons){
+        double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_DRIVE*rotaitons);
+        drivePID.setReference(targetPos, ControlType.kPosition);    
     }
 }

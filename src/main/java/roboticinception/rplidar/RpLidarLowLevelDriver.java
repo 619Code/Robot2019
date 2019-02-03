@@ -160,6 +160,7 @@ public class RpLidarLowLevelDriver {
 	 * Low level blocking packet send routine
 	 */
 	protected boolean sendBlocking(byte command, byte expected, long timeout) {
+		//System.out.println("got here");
 		if (timeout <= 0) {
 			sendNoPayLoad(command);
 			return true;
@@ -178,6 +179,7 @@ public class RpLidarLowLevelDriver {
 	 * Sends a command with no data payload
 	 */
 	protected void sendNoPayLoad(byte command) {
+		System.out.println("got here");
 		if (verbose) {
 			System.out.printf("Sending command 0x%02x\n", command & 0xFF);
 		}
@@ -185,9 +187,11 @@ public class RpLidarLowLevelDriver {
 		dataOut[0] = SYNC_BYTE0;
 		dataOut[1] = command;
 
+		System.out.println("shiet");
+
 		try {
 			out.write(dataOut, 0, 2);
-			out.flush();
+			//out.flush(); this broke it
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -388,6 +392,7 @@ public class RpLidarLowLevelDriver {
 		measurement.angle = ((b1 & 0xFF)  | ((data[offset + 2] & 0xFF) << 8)) >> 1;
 		measurement.distance = ((data[offset + 3] & 0xFF) | ((data[offset + 4] & 0xFF) << 8));
 
+		System.out.println("sending");
 		listener.handleMeasurement(measurement);
 		return true;
 	}
@@ -412,10 +417,11 @@ public class RpLidarLowLevelDriver {
 		@Override
 		public void run() {
 			while (run) {
+				System.out.println("weeeeeeeeeeeeeeeeeeeeeeee");
 				try {
+					System.out.println(in.available());
 					if (in.available() > 0) {
 						int totalRead = in.read(data, size, data.length - size);
-
 						size += totalRead;
 
 						int used = parseData(data, size);

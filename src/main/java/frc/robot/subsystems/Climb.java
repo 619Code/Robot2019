@@ -47,6 +47,7 @@ public class Climb extends CommandGroup{
         //once the wheels move forwar a certain amount of rotions, zoop the climber in the inital position
         addSequential(new unZoop());
     }
+
     public class up extends Command{
         public void execute() {
             while (!_frontEnd.get() || !_backEnd.get()){
@@ -58,6 +59,7 @@ public class Climb extends CommandGroup{
 			return false;
 		} 
     }
+
     public class zoop extends Command{
         public void execute() {
             _zoop.set(zoopDir);
@@ -66,6 +68,7 @@ public class Climb extends CommandGroup{
 			return false;
 		} 
     }
+
     public class upFront extends Command{
         public void execute() {
             while(!_frontMiddle.get()){
@@ -76,6 +79,7 @@ public class Climb extends CommandGroup{
 			return false;
 		} 
     }
+
     public class upBack extends Command{
         public void execute() {
             while(!_backMiddle.get()){
@@ -86,14 +90,16 @@ public class Climb extends CommandGroup{
 			return false;
 		} 
     }
+
     public class driveFoward extends Command{
         public void execute() {
-            _sunKist.moveDriveToTarget(1);
+            _sunKist.moveDriveToTarget((RobotMap.ROBOT_LENGTH/2)/(2*Math.PI*(RobotMap.WHEEL_DIAMETER/2)));
         } 
 		protected boolean isFinished() {
 			return false;
 		} 
     }
+
     public class unZoop extends Command{
         public void execute() {
             _zoop.set(!zoopDir);
@@ -102,9 +108,5 @@ public class Climb extends CommandGroup{
 			return false;
 		} 
     }
-    protected boolean isFinished() {
-        return false;
-    }
-
 }
 
