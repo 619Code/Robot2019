@@ -1,29 +1,17 @@
-package frc.robot.maps;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class RobotMap {
 
-    public enum Manipulators {
-        LIFT, ARM, INTAKE, HATCH, GRABBER, CLIMB;
+    public enum Subsystem {
+        LIFT, ARM, INTAKE, HATCH;
     }
 
     public enum AutoType {
         LINE;
     }
-    public enum LIFT_TARGETS{
-        LOWER(0),MIDDLE(1),HIGH(2),NULL_POSITION(-1);
-        private final int rotations;
-        LIFT_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
 
-    }
-    public enum ARM_TARGETS{
-        BACK(0),LOWER(1),MIDDLE(2),HIGH(3),NULL_POSITION(-1);
-        private final int rotations;
-        ARM_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
-    }
     // CAN IDs
     public static final int LEFT_FRONT = 10;
     public static final int LEFT_MIDDLE = 11;
@@ -38,25 +26,13 @@ public class RobotMap {
 
     public static final int INTAKE = 30;
 
-    public static final int ARM = 35;
-
-    public static final int LEFT_CLIMB = 50;
-    public static final int RIGHT_CLIMB = 51;
-
-    public static final int LEFT_GRABBER = 60;
-    public static final int RIGHT_GRABBER = 61;
-
-    public static final int FRONT_MIDDLE_CLIMB_SWITCH = 0;
-    public static final int FRONT_END_CLIMB_SWITCH = 1;
-    public static final int BACK_MIDDLE_CLIMB_SWITCH = 2;
-    public static final int BACK_END_CLIMB_SWITCH = 3;
+    public static final int ARM = 40;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
     public static final int PCM_CAN_ID = 10000000; 
     public static final int INTAKE_WRIST_CHANNEL = 10;
     public static final int[] HATCH_GRABBER_CHANNEL = {0, 1};
     public static final int[] HATCH_EXTEND_CHANNEL = {2, 3};
-    public static final int ZOOP_CHANNEL = 20;
 
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.5;
@@ -83,15 +59,6 @@ public class RobotMap {
     public static final double WHEEL_DIAMETER = 3.940;
     public static final int ENCODER_TICK_PER_REV = 6;
 
-    //Drive PID
-    public static final double DRIVE_kP = 0;
-	public static final double DRIVE_kI = 0;
-	public static final double DRIVE_kD = 0;
-    public static final int DRIVE_kIZONE = 0;
-    public static final double DRIVE_KFF = 0;
-    public static final double DRIVE_MAXOUTPUT = 0;
-    public static final double DRIVE_MINOUTPUT = 0;
-
     // Encoder PID
     public static final double kP = 1.0;
     public static final double kI = 0.0;
@@ -104,27 +71,20 @@ public class RobotMap {
 	public static final double LIFT_kF = 0;
 	public static final int LIFT_kIZONE = 0;
     public static final double LIFE_PEAK_OUTPUT = 0;
-    
+
     //Arm PID
     public static final double ARM_kP = 0;
-	public static final double ARM_kI = 0;
-	public static final double ARM_kD = 0;
-    public static final int ARM_kIZONE = 0;
+	public static final double ARM_Ki = 0;
+    public static final double ARM_Kd = 0;
+    public static final double ARM_kIZONE = 0;
     public static final double ARM_KFF = 0;
     public static final double ARM_MAXOUTPUT = 0;
     public static final double ARM_MINOUTPUT = 0;
 
-    //Motion Magic Constants
+    //Motion Magic Constants    
     public static final int kSLOTIDX = 0;
     public static final int kPIDLOOPIDX = 0;
     public static final int kTIMEOUT_MS = 30;
+    
 
-    //gear ratios
-    public static final int RATIO_LIFT = 70;
-    public static final int RATIO_ARM = 81;
-    public static final int RATIO_DRIVE = 0;
-
-    //encoder ticks per rotation
-    public static final int TICKSPERROT_VERSAPLANETARY_ENC = 1024;
-    public static final int TICKSPERROT_NEO_ENC = 42;
 }

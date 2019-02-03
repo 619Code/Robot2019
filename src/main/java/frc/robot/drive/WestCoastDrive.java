@@ -1,6 +1,8 @@
 package frc.robot.drive;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -12,7 +14,7 @@ import frc.robot.subsystems.HelperFunctions;
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
-
+    CANPIDController drivePID;
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
@@ -41,6 +43,13 @@ public class WestCoastDrive {
         rightFront.follow(rightMaster);
         rightRear.follow(rightMaster);
 
+        drivePID.setP(RobotMap.DRIVE_kP);
+        drivePID.setI(RobotMap.DRIVE_kI);
+        drivePID.setD(RobotMap.DRIVE_kD);
+        drivePID.setIZone(RobotMap.DRIVE_kIZONE);
+        drivePID.setFF(RobotMap.DRIVE_KFF);
+        drivePID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
+        
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
     }
@@ -118,5 +127,9 @@ public class WestCoastDrive {
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
         drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
+    }
+    public void moveDriveToTarget(double target){
+        double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_ARM*target);
+        drivePID.setReference(targetPos*RobotMap.RATIO_ARM, ControlType.kPosition);    
     }
 }
