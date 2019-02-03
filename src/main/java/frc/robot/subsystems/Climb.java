@@ -16,14 +16,16 @@ public class Climb extends CommandGroup{
     //ratio is 1:16
     WPI_TalonSRX _front, _back;
     LimitSwitch _frontMiddle,_frontEnd, _backEnd, _backMiddle;
-    Solenoid _zoop;
+    Solenoid _zoop, _boost;
     WestCoastDrive _sunKist;
-    private final boolean zoopDir = true;
+    private final boolean ZOOP_DIR = true;
+    private final boolean BOOST_DIR = true;
     public Climb(WestCoastDrive sunkist){
         _sunKist = sunkist;
         _front = new WPI_TalonSRX(RobotMap.LEFT_CLIMB);
         _back = new WPI_TalonSRX(RobotMap.RIGHT_CLIMB);
-        _zoop = new Solenoid(RobotMap.ZOOP_CHANNEL);
+        _zoop = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ZOOP_CHANNEL);
+        _boost = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.BOOST_CHANNEL);
         _frontMiddle = new LimitSwitch(RobotMap.FRONT_MIDDLE_CLIMB_SWITCH);
         _frontEnd = new LimitSwitch(RobotMap.FRONT_END_CLIMB_SWITCH);
         _backMiddle = new LimitSwitch(RobotMap.BACK_MIDDLE_CLIMB_SWITCH);
@@ -53,10 +55,12 @@ public class Climb extends CommandGroup{
 
     public class up extends Command{
         public void execute() {
+            _boost.set(BOOST_DIR);
             while (!_frontEnd.get() || !_backEnd.get()){
                 _front.set(1);
                 _back.set(1);
             }
+            _boost.set(!BOOST_DIR);
         } 
 		protected boolean isFinished() {
 			return false;
@@ -65,7 +69,7 @@ public class Climb extends CommandGroup{
 
     public class zoop extends Command{
         public void execute() {
-            _zoop.set(zoopDir);
+            _zoop.set(ZOOP_DIR);
         } 
 		protected boolean isFinished() {
 			return false;
@@ -105,7 +109,7 @@ public class Climb extends CommandGroup{
 
     public class unZoop extends Command{
         public void execute() {
-            _zoop.set(!zoopDir);
+            _zoop.set(!ZOOP_DIR);
         } 
 		protected boolean isFinished() {
 			return false;

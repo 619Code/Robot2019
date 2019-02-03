@@ -63,6 +63,7 @@ public class RobotMap {
     public static final int[] HATCH_GRABBER_CHANNEL = {0, 1};
     public static final int[] HATCH_EXTEND_CHANNEL = {2, 3};
     public static final int ZOOP_CHANNEL = 20;
+    public static final int BOOST_CHANNEL = 21;
 
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.5;
