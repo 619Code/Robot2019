@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class RobotMap {
 
-    public enum Subsystem {
+    public enum Manipulators {
         LIFT, ARM, INTAKE, HATCH, GRABBER, CLIMB;
     }
 

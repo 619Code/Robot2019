@@ -10,7 +10,7 @@ public class Lift{
     public Lift(){
         upboiLeft = new WPI_TalonSRX(RobotMap.LEFT_LIFT);
         upboiRight = new WPI_TalonSRX(RobotMap.RIGHT_LIFT);
-        HelperFunctions.configureTalon(upboiLeft, RobotMap.Subsystem.LIFT);
+        HelperFunctions.configureTalon(upboiLeft, RobotMap.Manipulators.LIFT);
         //HelperFunctions.configureTalon(upboiRight, RobotMap.Subsystem.LIFT);
         upboiRight.follow(upboiLeft);
     }

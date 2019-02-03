@@ -21,7 +21,7 @@ public class Arm{
         flexController = flexin.getPIDController();
         flexEncoder = flexin.getEncoder();
 
-        HelperFunctions.configurePIDController(flexController, RobotMap.Subsystem.ARM);
+        HelperFunctions.configurePIDController(flexController, RobotMap.Manipulators.ARM);
     }
 
     public void moveArmToTarget(RobotMap.ARM_TARGETS target){

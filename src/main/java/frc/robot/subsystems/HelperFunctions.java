@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMax;
 import frc.robot.maps.RobotMap;
 
 public class HelperFunctions {
-    public static void configureTalon(WPI_TalonSRX talon, RobotMap.Subsystem type) {
+    public static void configureTalon(WPI_TalonSRX talon, RobotMap.Manipulators type) {
         talon.configFactoryDefault();
         switch (type) {
         case LIFT:
@@ -47,7 +47,7 @@ public class HelperFunctions {
         }
     }
 
-    public static void configureSpark(CANPIDController pidController, RobotMap.Subsystem type) {
+    public static void configureSpark(CANPIDController pidController, RobotMap.Manipulators type) {
         switch (type) {
         case LIFT:
             break;
@@ -58,7 +58,7 @@ public class HelperFunctions {
         }
     }
 
-    public static void configurePIDController(CANPIDController controller, RobotMap.Subsystem type){
+    public static void configurePIDController(CANPIDController controller, RobotMap.Manipulators type){
         switch(type){
             case LIFT:
                 break;
