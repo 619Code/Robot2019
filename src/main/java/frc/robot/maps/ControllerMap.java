@@ -6,12 +6,8 @@ import frc.robot.maps.RobotMap.LIFT_TARGETS;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
-    static Controller _primary, _secondary;
-
-    public ControllerMap(){
-        _primary = new Controller(0);
-        _secondary = new Controller(1);
-    }
+    static Controller _primary = new Controller(0);
+    static Controller _secondary = new Controller(1);
 
     /**
      * @return the _primary
@@ -82,8 +78,12 @@ public class ControllerMap{
         return _secondary.getBumper(RobotMap.RIGHT_HAND);
     }
 
-    public static double moveHatch(){
-        return HelperFunctions.deadzone(_secondary.getY(RobotMap.RIGHT_HAND));
+    public static double moveHatchGrab(){
+        return HelperFunctions.deadzone(-_secondary.getY(RobotMap.RIGHT_HAND));
+    }
+
+    public static double moveHatchExtend(){
+        return HelperFunctions.deadzone(-_secondary.getY(RobotMap.LEFT_HAND));
     }
 
     public static boolean isClimbReady(){

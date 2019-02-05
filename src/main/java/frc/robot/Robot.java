@@ -7,9 +7,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.auto.AutoThread;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
+import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
@@ -39,7 +41,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    driver = new Controller(0);
     initNavX();
     initManipulators();
     threadManager = new ThreadManager();
@@ -47,13 +48,13 @@ public class Robot extends TimedRobot {
   }
 
   public void initManipulators() {
-    sunKist = new WestCoastDrive();
+    //sunKist = new WestCoastDrive();
     
     lift = new Lift();
     // intake = new Intake();
-    // hatch = new Hatch();
+    hatch = new Hatch();
     arm = new Arm();
-    climb = new Climb(sunKist);
+    //climb = new Climb(sunKist);
   }
 
   public void initNavX() {
@@ -86,16 +87,19 @@ public class Robot extends TimedRobot {
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE); 
   }
 
+  Controller _secondary;
   @Override
   public void testInit() {
+    _secondary = new Controller(1);
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
+    System.out.println(_secondary.getY(RobotMap.LEFT_HAND));
     //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
-    arm.moveArm(0.3*driver.getY(RobotMap.LEFT_HAND));
+    //arm.moveArm(0.3*driver.getY(RobotMap.LEFT_HAND));
   }
 
   @Override

@@ -39,15 +39,15 @@ public class RobotMap {
     public static final int RIGHT_MIDDLE = 14;
     public static final int RIGHT_REAR = 15;
 
-    public static final int LEFT_LIFT = 41;
-    public static final int RIGHT_LIFT = 40;
+    public static final int LEFT_LIFT = 20;
+    public static final int RIGHT_LIFT = 21;
 
     public static final int INTAKE = 30;
 
-    public static final int ARM = 35;
+    public static final int ARM = 40;
 
-    public static final int LEFT_CLIMB = 50;
-    public static final int RIGHT_CLIMB = 51;
+    public static final int FRONT_CLIMB = 50;
+    public static final int BACK_CLIMB = 51;
 
     public static final int LEFT_GRABBER = 60;
     public static final int RIGHT_GRABBER = 61;
@@ -58,10 +58,10 @@ public class RobotMap {
     public static final int BACK_END_CLIMB_SWITCH = 3;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
-    public static final int PCM_CAN_ID = 10000000; 
+    public static final int PCM_CAN_ID = 61; 
     public static final int INTAKE_WRIST_CHANNEL = 10;
-    public static final int[] HATCH_GRABBER_CHANNEL = {0, 1};
-    public static final int[] HATCH_EXTEND_CHANNEL = {2, 3};
+    public static final int HATCH_GRABBER_CHANNEL = 4;
+    public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
     public static final int ZOOP_CHANNEL = 20;
     public static final int BOOST_CHANNEL = 21;
 

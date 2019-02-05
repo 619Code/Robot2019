@@ -22,8 +22,8 @@ public class Climb extends CommandGroup{
     private final boolean BOOST_DIR = true;
     public Climb(WestCoastDrive sunkist){
         _sunKist = sunkist;
-        _front = new WPI_TalonSRX(RobotMap.LEFT_CLIMB);
-        _back = new WPI_TalonSRX(RobotMap.RIGHT_CLIMB);
+        _front = new WPI_TalonSRX(RobotMap.FRONT_CLIMB);
+        _back = new WPI_TalonSRX(RobotMap.BACK_CLIMB);
         _zoop = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ZOOP_CHANNEL);
         _boost = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.BOOST_CHANNEL);
         _frontMiddle = new LimitSwitch(RobotMap.FRONT_MIDDLE_CLIMB_SWITCH);
@@ -56,7 +56,7 @@ public class Climb extends CommandGroup{
     public class up extends Command{
         public void execute() {
             _boost.set(BOOST_DIR);
-            while (!_frontEnd.get() || !_backEnd.get()){
+            while (!_frontEnd.get() || !_backEnd.get()){ 
                 _front.set(1);
                 _back.set(1);
             }

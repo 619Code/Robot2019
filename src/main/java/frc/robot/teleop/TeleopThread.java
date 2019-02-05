@@ -31,7 +31,7 @@ public class TeleopThread extends RobotThread {
         _climb = climb;
 
         // init drivetrain (default mode is curvature)
-        sunKist = new WestCoastDrive();
+        //sunKist = new WestCoastDrive();
         driveMode = Mode.CURVATURE;
 
         // init controllers
@@ -43,12 +43,13 @@ public class TeleopThread extends RobotThread {
 
     @Override
     protected void cycle() {
-        _arm.moveArmToTarget(ControllerMap.getArmPosition());
-        _lift.moveLiftToTarget(ControllerMap.getLiftPosition());
-        _intake.moveIntake(ControllerMap.spinInake());
-        _intake.raiseOrLower(ControllerMap.moveIntake());
-        _hatch.extendOrClose(ControllerMap.moveHatch());
-        _climb.startClimb(ControllerMap.isClimbReady());
-        sunKist.drive(driveMode, primary);
+        // _arm.moveArmToTarget(ControllerMap.getArmPosition());
+        // _lift.moveLiftToTarget(ControllerMap.getLiftPosition());
+        // _intake.moveIntake(ControllerMap.spinInake());
+        // _intake.raiseOrLower(ControllerMap.moveIntake());
+        _hatch.grabState(ControllerMap.moveHatchGrab());
+        _hatch.extendState(ControllerMap.moveHatchExtend());
+        // _climb.startClimb(ControllerMap.isClimbReady());
+        // sunKist.drive(driveMode, primary);
     }
 } 
