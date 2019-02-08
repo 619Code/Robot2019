@@ -11,7 +11,7 @@ public class LimitSwitch {
 	}
 	
 	public boolean get() {
-        return limitSwitch.get();
+        return !limitSwitch.get();
     }
 	
 }

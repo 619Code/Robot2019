@@ -6,16 +6,20 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.auto.AutoThread;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
+import frc.robot.hardware.LimitSwitch;
 import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.HelperFunctions;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
@@ -23,7 +27,6 @@ import frc.robot.auto.AutoThread;
 import frc.robot.threading.ThreadManager;
 
 public class Robot extends TimedRobot {
-  Controller driver;
   WestCoastDrive sunKist;
   AutoThread auto;
 
@@ -31,11 +34,13 @@ public class Robot extends TimedRobot {
   Hatch hatch;
   Intake intake;
   Lift lift;
+  Grabber grabber;
   Climb climb;
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
   AutoThread autoThread;
+  Compressor c;
 
   public AHRS navX;
 
@@ -48,13 +53,16 @@ public class Robot extends TimedRobot {
   }
 
   public void initManipulators() {
-    //sunKist = new WestCoastDrive();
+    sunKist = new WestCoastDrive();
     
     lift = new Lift();
     // intake = new Intake();
     hatch = new Hatch();
     arm = new Arm();
+    grabber = new Grabber();
     //climb = new Climb(sunKist);
+    c = new Compressor(RobotMap.PCM_CAN_ID);
+    c.setClosedLoopControl(true);
   }
 
   public void initNavX() {
@@ -79,7 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
-    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, climb);
+    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, grabber, climb);
   }
 
   @Override
@@ -87,19 +95,23 @@ public class Robot extends TimedRobot {
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE); 
   }
 
-  Controller _secondary;
+  Controller driver;
+  Controller secondary;
+  LimitSwitch limitSwitch;
   @Override
   public void testInit() {
-    _secondary = new Controller(1);
+   // limitSwitch = new LimitSwitch(6);
+    driver = new Controller(0);
+    secondary = new Controller(1);
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
-    System.out.println(_secondary.getY(RobotMap.LEFT_HAND));
+    //System.out.println(limitSwitch.get());
     //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
-    //arm.moveArm(0.3*driver.getY(RobotMap.LEFT_HAND));
+    arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
   }
 
   @Override

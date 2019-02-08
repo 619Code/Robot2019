@@ -10,16 +10,16 @@ import frc.robot.maps.RobotMap;
 
 public class Hatch{
     private Solenoid grabber;
-    private DoubleSolenoid extendo;
+    private Solenoid extendo;
 
     public Hatch(){
-        extendo = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_EXTEND_CHANNEL[0], RobotMap.HATCH_EXTEND_CHANNEL[1]);
+        extendo = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_EXTEND_CHANNEL);
         grabber = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_GRABBER_CHANNEL);
     }
 
-    public void extend(Value val)
+    public void extend(boolean dir)
     {
-        extendo.set(val);
+        extendo.set(dir);
     }
 
     public void grab(boolean dir)
@@ -36,10 +36,8 @@ public class Hatch{
 
     public void extendState(double speed){
         if(speed > 0.5)
-            extend(Value.kForward);
+            extend(true);
         else if(speed < -0.5)
-            extend(Value.kReverse);
-        else
-            extend(Value.kOff);
+            extend(false);
     }
 }

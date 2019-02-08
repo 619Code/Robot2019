@@ -14,7 +14,7 @@ import frc.robot.subsystems.HelperFunctions;
 public class WestCoastDrive {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
-    CANPIDController drivePID;
+    CANPIDController leftPID, rightPID;
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
@@ -43,19 +43,30 @@ public class WestCoastDrive {
         rightFront.follow(rightMaster);
         rightRear.follow(rightMaster);
 
-        drivePID.setP(RobotMap.DRIVE_kP);
-        drivePID.setI(RobotMap.DRIVE_kI);
-        drivePID.setD(RobotMap.DRIVE_kD);
-        drivePID.setIZone(RobotMap.DRIVE_kIZONE);
-        drivePID.setFF(RobotMap.DRIVE_KFF);
-        drivePID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
+        leftPID = leftMaster.getPIDController();
+
+        leftPID.setP(RobotMap.DRIVE_kP);
+        leftPID.setI(RobotMap.DRIVE_kI);
+        leftPID.setD(RobotMap.DRIVE_kD);
+        leftPID.setIZone(RobotMap.DRIVE_kIZONE);
+        leftPID.setFF(RobotMap.DRIVE_KFF);
+        leftPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
+
+        rightPID = leftMaster.getPIDController();
+
+        rightPID.setP(RobotMap.DRIVE_kP);
+        rightPID.setI(RobotMap.DRIVE_kI);
+        rightPID.setD(RobotMap.DRIVE_kD);
+        rightPID.setIZone(RobotMap.DRIVE_kIZONE);
+        rightPID.setFF(RobotMap.DRIVE_KFF);
+        rightPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
         
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
     }
 
     public void drive(Mode mode, Controller driver) {
-        double speed = getSpeed(mode, driver);
+        double speed = -getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
         switch (mode) {
         case CURVATURE:
@@ -81,8 +92,8 @@ public class WestCoastDrive {
         rightMaster.set(speed);
     }
 
-    public int getLeftEncoderValue() {
-        return (int)leftMaster.getEncoder().getPosition();
+    public int  getLeftEncoderValue() {
+        return (int)leftRear.getEncoder().getPosition();
     }
 
     public int getRightEncoderValue() {
@@ -106,6 +117,7 @@ public class WestCoastDrive {
     public double getRotation(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
+        return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
         case ARCADE:
         case TANK:
             return HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND));
@@ -130,6 +142,7 @@ public class WestCoastDrive {
     }
     public void moveDriveToTarget(double rotaitons){
         double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_DRIVE*rotaitons);
-        drivePID.setReference(targetPos, ControlType.kPosition);    
+        leftPID.setReference(targetPos, ControlType.kPosition);
+        rightPID.setReference(targetPos, ControlType.kPosition);    
     }
 }

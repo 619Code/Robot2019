@@ -61,7 +61,7 @@ public class RobotMap {
     public static final int PCM_CAN_ID = 61; 
     public static final int INTAKE_WRIST_CHANNEL = 10;
     public static final int HATCH_GRABBER_CHANNEL = 4;
-    public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
+    public static final int HATCH_EXTEND_CHANNEL = 3;
     public static final int ZOOP_CHANNEL = 20;
     public static final int BOOST_CHANNEL = 21;
 

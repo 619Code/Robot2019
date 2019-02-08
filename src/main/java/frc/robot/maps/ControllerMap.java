@@ -62,6 +62,14 @@ public class ControllerMap{
         return HelperFunctions.deadzone(_secondary.getY(RobotMap.LEFT_HAND));
     }
 
+    public static double intakeGrabber(){
+        return HelperFunctions.deadzone(-_secondary.getTriggerAxis(RobotMap.LEFT_HAND));
+    }
+
+    public static double outakeGrabber(){
+        return HelperFunctions.deadzone(_secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
+    }
+
     //grab right axis from secondary joystick
     public static int moveIntake(){
         if (HelperFunctions.deadzone(_secondary.getTriggerAxis(RobotMap.RIGHT_HAND))>0){
