@@ -16,7 +16,6 @@ public class TeleopThread extends RobotThread {
     Lift _lift;
     Climb _climb;
     Grabber _grabber;
-    WestCoastDrive sunKist;
     Mode driveMode;
     Controller primary, secondary;
 
@@ -33,7 +32,6 @@ public class TeleopThread extends RobotThread {
         _climb = climb;
 
         // init drivetrain (default mode is curvature)
-        sunKist = new WestCoastDrive();
         driveMode = Mode.CURVATURE;
 
         // init controllers
@@ -53,6 +51,9 @@ public class TeleopThread extends RobotThread {
         _hatch.extendState(ControllerMap.moveHatchExtend());
         //_grabber.grab(ControllerMap.intakeGrabber() == 0 ? ControllerMap.outakeGrabber() : ControllerMap.intakeGrabber());
         // _climb.startClimb(ControllerMap.isClimbReady());
-        sunKist.drive(driveMode, primary);
+    }
+
+    public Mode getDriveMode(){
+        return driveMode;
     }
 } 

@@ -29,6 +29,7 @@ public class RobotMap {
     public static final double ROBOT_LENGTH = 35.0;
     public static final double ROBOT_WIDTH = 25.0;
     public static final double WHEEL_DIAMETER = 3.940;
+    public static final double WHEEL_WIDTH = 0.0508;
 
     // CAN IDs
     public static final int LEFT_FRONT = 10;
@@ -84,9 +85,9 @@ public class RobotMap {
 
     // pathfinder constants
     public static final double DT = 0.05;
-    public static final double MAX_VELOCITY = 1;
-    public static final double MAX_ACCEL = 0.5;
-    public static final double MAX_JERK = 40.0;
+    public static final double MAX_VELOCITY = 1.7;
+    public static final double MAX_ACCEL = 2.0;
+    public static final double MAX_JERK = 60.0;
     public static final int ENCODER_TICK_PER_REV = 6;
 
     //Drive PID

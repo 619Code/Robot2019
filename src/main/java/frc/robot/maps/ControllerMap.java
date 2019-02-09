@@ -6,22 +6,8 @@ import frc.robot.maps.RobotMap.LIFT_TARGETS;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
-    static Controller _primary = new Controller(0);
-    static Controller _secondary = new Controller(1);
-
-    /**
-     * @return the _primary
-     */
-    public Controller get_primary() {
-        return _primary;
-    }
-
-    /**
-     * @return the _secondary
-     */
-    public Controller get_secondary() {
-        return _secondary;
-    }
+    public static Controller _primary = new Controller(0);
+    public static Controller _secondary = new Controller(1);
 
     //returns 0 for lowest position, 1 for second-lowest and so on (3 positions
     // only called when left bumper is NOT down)

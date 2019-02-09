@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.auto.AutoThread;
+import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
 import frc.robot.hardware.LimitSwitch;
@@ -23,12 +23,10 @@ import frc.robot.subsystems.HelperFunctions;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
-import frc.robot.auto.AutoThread;
 import frc.robot.threading.ThreadManager;
 
 public class Robot extends TimedRobot {
   WestCoastDrive sunKist;
-  AutoThread auto;
 
   Arm arm;
   Hatch hatch;
@@ -39,7 +37,7 @@ public class Robot extends TimedRobot {
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
-  AutoThread autoThread;
+  Auto auto;
   Compressor c;
 
   public AHRS navX;
@@ -77,11 +75,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    autoThread = new AutoThread(threadManager, sunKist, navX);
+    auto = new Auto(sunKist, navX);
   }
 
   @Override
   public void autonomousPeriodic() {
+    auto.cycle();
   }
 
   @Override
@@ -92,7 +91,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //sunKist.drive(WestCoastDrive.Mode.CURVATURE); 
+    sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
   }
 
   Controller driver;
@@ -109,6 +108,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
     //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
     arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));

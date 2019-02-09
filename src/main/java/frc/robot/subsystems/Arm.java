@@ -31,7 +31,7 @@ public class Arm{
     }
 
     public void moveArm(double speed){
-        System.out.println(speed);
+       // System.out.println(speed);
         flexin.set(speed);
     }
     
