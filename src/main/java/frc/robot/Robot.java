@@ -5,7 +5,13 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -24,6 +30,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
 import frc.robot.threading.ThreadManager;
+import frc.robot.vision.GRIPVision;
 
 public class Robot extends TimedRobot {
   WestCoastDrive sunKist;
@@ -39,7 +46,8 @@ public class Robot extends TimedRobot {
   TeleopThread teleopThread;
   Auto auto;
   Compressor c;
-
+  VisionThread visionThread;
+  
   public AHRS navX;
 
   @Override
@@ -48,6 +56,21 @@ public class Robot extends TimedRobot {
     initManipulators();
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
+  }
+
+  public void initVision(){
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(RobotMap.IMG_WIDTH, RobotMap.IMG_HEIGHT);
+    Object imgLock = new Object();
+    visionThread = new VisionThread(camera, new GRIPVision(), pipeline -> {
+        if (!pipeline.cvCannyOutput().empty()) {
+            Rect r = Imgproc.boundingRect(pipeline.cvCannyOutput());
+            synchronized (imgLock) {
+                double centerX = r.x + (r.width / 2);
+            }
+        }
+    });
+    visionThread.start();
   }
 
   public void initManipulators() {
