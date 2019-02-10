@@ -145,7 +145,7 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 # Avoid ignoring Pathfinder jar files
-!src/libs/
+!libs/
 
 # Cache of project
 .gradletasknamecache
