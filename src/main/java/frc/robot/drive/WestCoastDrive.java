@@ -1,20 +1,25 @@
 package frc.robot.drive;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.hardware.Controller;
 import frc.robot.maps.RobotMap;
 import frc.robot.subsystems.HelperFunctions;
 
-public class WestCoastDrive {
+public class WestCoastDrive extends Subsystem{
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
     CANPIDController leftPID, rightPID;
+
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
@@ -92,12 +97,25 @@ public class WestCoastDrive {
         rightMaster.set(speed);
     }
 
-    public int  getLeftEncoderValue() {
+    public void setLeftandRight(double left, double right){
+        leftMaster.set(left);
+        rightMaster.set(right);
+    }
+
+    public double  getLeftEncoderValue() {
         return (int)leftRear.getEncoder().getPosition();
     }
 
-    public int getRightEncoderValue() {
+    public double getRightEncoderValue() {
         return (int)rightMaster.getEncoder().getPosition();
+    }
+    
+    public double getLeftEncoderInches(){
+        return RobotMap.WHEEL_DIAMETER*Math.PI*(getLeftEncoderValue()/RobotMap.ENCODER_TICK_PER_REV);
+    }
+
+    public double getRightEncoderInches(){
+        return RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV);
     }
 
     public double getSpeed(Mode mode, Controller driver) {
@@ -145,4 +163,7 @@ public class WestCoastDrive {
         leftPID.setReference(targetPos, ControlType.kPosition);
         rightPID.setReference(targetPos, ControlType.kPosition);    
     }
+
+    @Override
+    protected void initDefaultCommand() {}
 }

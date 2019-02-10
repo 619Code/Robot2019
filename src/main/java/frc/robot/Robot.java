@@ -5,7 +5,11 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import easypath.EasyPath;
+import easypath.EasyPathConfig;
+import easypath.PathUtil;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -39,13 +43,15 @@ public class Robot extends TimedRobot {
   TeleopThread teleopThread;
   Auto auto;
   Compressor c;
+  AHRS navX;
 
-  public AHRS navX;
+  EasyPathConfig config;
 
   @Override
   public void robotInit() {
     initNavX();
     initManipulators();
+    initAuto();
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
@@ -68,6 +74,18 @@ public class Robot extends TimedRobot {
     navX.reset();
   }
 
+  public void initAuto(){
+    config = new EasyPathConfig(
+      sunKist, 
+      sunKist::setLeftandRight, 
+      () -> PathUtil.defaultLengthDrivenEstimator(sunKist::getLeftEncoderInches, sunKist::getRightEncoderInches),  
+      navX::getAngle,
+      sunKist::initDrive, 
+      0.07);
+
+    EasyPath.configure(config);
+  }
+
   @Override
   public void robotPeriodic() {
   }
@@ -75,13 +93,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    auto = new Auto(sunKist, navX);
+    auto = new Auto();
   }
 
   @Override
-  public void autonomousPeriodic() {
-    auto.cycle();
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit(){
