@@ -1,85 +1,172 @@
 
 package frc.robot;
 
-import java.io.File;
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotBase;
+
+import easypath.EasyPath;
+import easypath.EasyPathConfig;
+import easypath.PathUtil;
+import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.vision.VisionThread;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.WestCoastDrive.Mode;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.followers.EncoderFollower;
-import jaci.pathfinder.modifiers.TankModifier;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.auto.Auto;
+import frc.robot.drive.WestCoastDrive;
+import frc.robot.hardware.Controller;
+import frc.robot.hardware.LimitSwitch;
+import frc.robot.maps.ControllerMap;
+import frc.robot.maps.RobotMap;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.HelperFunctions;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lift;
+import frc.robot.teleop.TeleopThread;
+import frc.robot.threading.ThreadManager;
+import frc.robot.vision.GRIPVision;
 
 public class Robot extends TimedRobot {
-  Joystick driver;
-  WestCoastDrive sunKist;
-  Waypoint[] points = new Waypoint[] { new Waypoint(-4, -1, Pathfinder.d2r(-45)), new Waypoint(-2, -2, 0),
-      new Waypoint(0, 0, 0) };
-  double f = 0.0;
-  Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
-      RobotMap.DT, RobotMap.MAX_VELOCITY, RobotMap.MAX_ACCEL, RobotMap.MAX_JERK);
-  public Trajectory trajectory = Pathfinder.generate(points, config);
-  TankModifier modifier = new TankModifier(trajectory).modify(0.5);
-  // EncoderFollower left;
-  // EncoderFollower right;
+  public WestCoastDrive sunKist;
+
+  public static Arm arm;
+  public static Hatch hatch;
+  public static Intake intake;
+  public static Lift lift;
+  public static Grabber grabber;
+  public static Climb climb;
+
+  ThreadManager threadManager;
+  TeleopThread teleopThread;
+  CommandGroup auto;
+  Compressor c;
+
+  AHRS navX;
+
+  EasyPathConfig config;
+
+  VisionThread visionThread;
 
   @Override
   public void robotInit() {
-    driver = new Joystick(0);
-    sunKist = new WestCoastDrive(driver);
-    // left = new EncoderFollower(modifier.getLeftTrajectory());
-    // right = new EncoderFollower(modifier.getRightTrajectory());
-    // left.configureEncoder(sunKist.getLeftEncoderValue(),
-    // RobotMap.ENCODER_TICK_PER_REV, RobotMap.WHEEL_DIAMETER);
-    // right.configureEncoder(sunKist.getRightEncoderValue(),
-    // RobotMap.ENCODER_TICK_PER_REV, RobotMap.WHEEL_DIAMETER);
-    // left.configurePIDVA(RobotMap.kP, RobotMap.kI, RobotMap.kD,
-    // 1/RobotMap.MAX_VELOCITY, 0);
-    // right.configurePIDVA(RobotMap.kP, RobotMap.kI, RobotMap.kD,
-    // 1/RobotMap.MAX_VELOCITY, 0);
+    initNavX();
+    initManipulators();
+    initAuto();
+    threadManager = new ThreadManager();
+    threadManager.killAllThreads();
+  }
+
+  public void initVision(){
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(RobotMap.IMG_WIDTH, RobotMap.IMG_HEIGHT);
+    Object imgLock = new Object();
+    visionThread = new VisionThread(camera, new GRIPVision(), pipeline -> {
+        if (!pipeline.cvCannyOutput().empty()) {
+            Rect r = Imgproc.boundingRect(pipeline.cvCannyOutput());
+            synchronized (imgLock) {
+                double centerX = r.x + (r.width / 2);
+            }
+        }
+    });
+    visionThread.start();
+  }
+
+  public void initManipulators() {
+    sunKist = new WestCoastDrive(navX);
+    
+    lift = new Lift();
+    // intake = new Intake();
+    hatch = new Hatch();
+    arm = new Arm();
+    grabber = new Grabber();
+    //climb = new Climb(sunKist);
+    c = new Compressor(RobotMap.PCM_CAN_ID);
+    c.setClosedLoopControl(true);
+  }
+
+  public void initNavX() {
+    navX = new AHRS(Port.kMXP);
+    navX.reset();
+  }
+
+  public void initAuto(){
+    config = new EasyPathConfig(
+      sunKist, 
+      sunKist::setLeftandRight, 
+      () -> PathUtil.defaultLengthDrivenEstimator(sunKist::getLeftEncoderInches, sunKist::getRightEncoderInches),  
+      sunKist::getNavXAngle,
+      sunKist::initDrive, 
+      RobotMap.AUTO_kP);
+
+    config.setSwapDrivingDirection(true);
+    config.setSwapTurningDirection(true);
+
+    EasyPath.configure(config);
   }
 
   @Override
   public void robotPeriodic() {
-
+    Scheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
+    threadManager.killAllThreads();
+    sunKist.initAutoDrive();
+    auto = new Auto();
+    auto.start();
   }
 
   @Override
-  public void autonomousPeriodic() {
-    // double l = left.calculate(sunKist.getLeftEncoderValue());
-    // double r = left.calculate(sunKist.getRightEncoderValue());
+  public void autonomousPeriodic() {}
 
-    // double gyro_heading = sunKist.navX.getFusedHeading();
-    // double desired_heading = Pathfinder.r2d(left.getHeading());
-
-    // double angleDifference = Pathfinder.boundHalfDegrees(desired_heading -
-    // gyro_heading);
-    // double turn = 0.8 * (-1.0/80.0) * angleDifference;
-
-    // sunKist.setLeftMotors(l + turn);
-    // sunKist.setRightMotors(r - turn);
+  @Override
+  public void teleopInit(){
+    threadManager.killAllThreads();
+    sunKist.initTeleopDrive();
+    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, grabber, climb);
   }
 
   @Override
   public void teleopPeriodic() {
-    sunKist.drive(Mode.CURVATURE);
-
+    sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
+    //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
   }
 
+  Controller driver;
+  Controller secondary;
+  LimitSwitch limitSwitch;
   @Override
   public void testInit() {
-    File myFile = new File("trajectory.csv");
-    Pathfinder.writeToCSV(myFile, trajectory);
+   // limitSwitch = new LimitSwitch(6);
+    driver = new Controller(0);
+    secondary = new Controller(1);
+    threadManager.killAllThreads();
+    //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
+    //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
+    //System.out.println(limitSwitch.get());
+    //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
+    //arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+  }
+
+  @Override
+  public void disabledInit(){
+    threadManager.killAllThreads();
   }
 }

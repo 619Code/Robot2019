@@ -4,18 +4,45 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - SpewOutMeasurements",
+      "request": "launch",
+      "mainClass": "frc.robot.auto.lidar.SpewOutMeasurements",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Test",
+      "request": "launch",
+      "mainClass": "frc.robot.trajectories.Test",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - WaypointGenerator",
+      "request": "launch",
+      "mainClass": "frc.robot.trajectories.WaypointGenerator",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - SpewOutMeasurements",
+      "request": "launch",
+      "mainClass": "frc.robot.SpewOutMeasurements",
+      "projectName": "Robot2019"
+    },
     {
       "type": "wpilib",
       "name": "WPILib Desktop Debug",
       "request": "launch",
-      "desktop": true,
+      "desktop": true
     },
     {
       "type": "wpilib",
       "name": "WPILib roboRIO Debug",
       "request": "launch",
-      "desktop": false,
+      "desktop": false
     }
   ]
 }
