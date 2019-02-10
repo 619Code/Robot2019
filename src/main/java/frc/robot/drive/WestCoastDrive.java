@@ -1,5 +1,6 @@
 package frc.robot.drive;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -16,12 +17,14 @@ public class WestCoastDrive extends Subsystem{
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
     CANPIDController leftPID, rightPID;
+    AHRS _navX;
 
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
 
-    public WestCoastDrive() {
+    public WestCoastDrive(AHRS navX) {
+        _navX = navX;
         initDrive();
     }
 
@@ -32,14 +35,6 @@ public class WestCoastDrive extends Subsystem{
         rightMaster = new CANSparkMax(RobotMap.RIGHT_MIDDLE, MotorType.kBrushless);
         rightFront = new CANSparkMax(RobotMap.RIGHT_FRONT, MotorType.kBrushless);
         rightRear = new CANSparkMax(RobotMap.RIGHT_REAR, MotorType.kBrushless);
-        leftMaster.setIdleMode(IdleMode.kCoast);
-        rightMaster.setIdleMode(IdleMode.kCoast);
-        leftRear.setIdleMode(IdleMode.kCoast);
-        leftFront.setIdleMode(IdleMode.kCoast);
-        rightRear.setIdleMode(IdleMode.kCoast);
-        rightFront.setIdleMode(IdleMode.kCoast);
-        leftMaster.setRampRate(RobotMap.RAMP_RATE);
-        rightMaster.setRampRate(RobotMap.RAMP_RATE);
         leftFront.follow(leftMaster);
         leftRear.follow(leftMaster);
         rightFront.follow(rightMaster);
@@ -65,6 +60,36 @@ public class WestCoastDrive extends Subsystem{
         
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
+    
+        resetNavX();
+    }
+
+    public void initAutoDrive(){
+        leftMaster.setIdleMode(IdleMode.kBrake);
+        rightMaster.setIdleMode(IdleMode.kBrake);
+        leftRear.setIdleMode(IdleMode.kBrake);
+        leftFront.setIdleMode(IdleMode.kBrake);
+        rightRear.setIdleMode(IdleMode.kBrake);
+        rightFront.setIdleMode(IdleMode.kBrake);
+    }
+
+    public void initTeleopDrive(){
+        leftMaster.setIdleMode(IdleMode.kCoast);
+        rightMaster.setIdleMode(IdleMode.kCoast);
+        leftRear.setIdleMode(IdleMode.kCoast);
+        leftFront.setIdleMode(IdleMode.kCoast);
+        rightRear.setIdleMode(IdleMode.kCoast);
+        rightFront.setIdleMode(IdleMode.kCoast);
+        leftMaster.setRampRate(RobotMap.RAMP_RATE);
+        rightMaster.setRampRate(RobotMap.RAMP_RATE);
+    }
+
+    public void resetNavX(){
+        _navX.reset();
+    }
+
+    public double getNavXAngle(){
+        return _navX.getAngle();
     }
 
     public void drive(Mode mode, Controller driver) {
@@ -96,15 +121,15 @@ public class WestCoastDrive extends Subsystem{
 
     public void setLeftandRight(double left, double right){
         leftMaster.set(left);
-        rightMaster.set(right);
+        rightMaster.set(-right);
     }
 
-    public double  getLeftEncoderValue() {
-        return (int)leftRear.getEncoder().getPosition();
+    public double getLeftEncoderValue() {
+        return leftRear.getEncoder().getPosition();
     }
 
     public double getRightEncoderValue() {
-        return (int)rightMaster.getEncoder().getPosition();
+        return rightMaster.getEncoder().getPosition();
     }
     
     public double getLeftEncoderInches(){
@@ -112,7 +137,7 @@ public class WestCoastDrive extends Subsystem{
     }
 
     public double getRightEncoderInches(){
-        return RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV);
+        return -(RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
     }
 
     public double getSpeed(Mode mode, Controller driver) {

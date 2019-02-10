@@ -26,9 +26,9 @@ public class RobotMap {
     }
 
     // Robot Dimesnions
-    public static final double ROBOT_LENGTH = 35.0;
+    public static final double ROBOT_LENGTH = 35.125;
     public static final double ROBOT_WIDTH = 25.0;
-    public static final double WHEEL_DIAMETER = 3.940;
+    public static final double WHEEL_DIAMETER = 3.940-0.2;
     public static final double WHEEL_WIDTH = 0.0508;
 
     // CAN IDs
@@ -99,10 +99,8 @@ public class RobotMap {
     public static final double DRIVE_MAXOUTPUT = 0;
     public static final double DRIVE_MINOUTPUT = 0;
 
-    // Encoder PID
-    public static final double kP = 1.0;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
+    // Auto Encoder P Value
+    public static final double AUTO_kP = 0.07;
 
     //Lift PID
     public static final double LIFT_kP = 0;

@@ -10,6 +10,8 @@ import easypath.EasyPath;
 import easypath.EasyPathConfig;
 import easypath.PathUtil;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
@@ -48,7 +50,7 @@ public class Robot extends TimedRobot {
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
-  Auto auto;
+  CommandGroup auto;
   Compressor c;
 
   AHRS navX;
@@ -82,7 +84,7 @@ public class Robot extends TimedRobot {
   }
 
   public void initManipulators() {
-    sunKist = new WestCoastDrive();
+    sunKist = new WestCoastDrive(navX);
     
     lift = new Lift();
     // intake = new Intake();
@@ -104,21 +106,27 @@ public class Robot extends TimedRobot {
       sunKist, 
       sunKist::setLeftandRight, 
       () -> PathUtil.defaultLengthDrivenEstimator(sunKist::getLeftEncoderInches, sunKist::getRightEncoderInches),  
-      navX::getAngle,
+      sunKist::getNavXAngle,
       sunKist::initDrive, 
-      0.07);
+      RobotMap.AUTO_kP);
+
+    config.setSwapDrivingDirection(true);
+    config.setSwapTurningDirection(true);
 
     EasyPath.configure(config);
   }
 
   @Override
   public void robotPeriodic() {
+    Scheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
+    sunKist.initAutoDrive();
     auto = new Auto();
+    auto.start();
   }
 
   @Override
@@ -127,12 +135,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
+    sunKist.initTeleopDrive();
     teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, grabber, climb);
   }
 
   @Override
   public void teleopPeriodic() {
     sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
+    //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
   }
 
   Controller driver;
@@ -152,7 +162,7 @@ public class Robot extends TimedRobot {
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
     //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
-    arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+    //arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
   }
 
   @Override

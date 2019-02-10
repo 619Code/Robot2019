@@ -1,25 +1,14 @@
 package frc.robot.auto;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import easypath.FollowPath;
-import easypath.PathUtil;
-import frc.robot.drive.WestCoastDrive;
-import frc.robot.trajectories.WaypointGenerator;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.auto.paths.Paths;
+import frc.robot.auto.paths.Speeds;
 
-
-public class Auto{
-    WestCoastDrive _sunKist;
-    WaypointGenerator wpGenerator;
-    AHRS _navX;
-
+public class Auto extends CommandGroup{
     FollowPath m_autoCommand;
 
     public Auto(){
-        m_autoCommand = new FollowPath(
-            PathUtil.createStraightPath(36.0), x -> {
-              if (x < 0.5) return 0.25;
-              else return 0.5;
-            });
+        addSequential(new FollowPath(Paths.TESTCURVEYPATH, Speeds.DEFAULT));
     }
 }
