@@ -134,4 +134,7 @@ public class RobotMap {
     //encoder ticks per rotation
     public static final int TICKSPERROT_VERSAPLANETARY_ENC = 1024;
     public static final int TICKSPERROT_NEO_ENC = 42;
+
+    public static final int IMG_WIDTH = 320;
+	public static final int IMG_HEIGHT = 240;
 }
