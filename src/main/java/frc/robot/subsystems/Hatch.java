@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner6;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.maps.RobotMap;
 
-public class Hatch{
+public class Hatch extends Subsystem{
     private Solenoid grabber;
     private Solenoid extendo;
 
@@ -40,4 +36,7 @@ public class Hatch{
         else if(speed < -0.5)
             extend(false);
     }
+
+    @Override
+    protected void initDefaultCommand() {}
 }

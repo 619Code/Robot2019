@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HatchGrab extends Command {
+public class HatchExtend extends Command {
   boolean _dir;
 
-  public HatchGrab(boolean dir) {
+  public HatchExtend(boolean dir) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     _dir = dir;
@@ -24,7 +24,7 @@ public class HatchGrab extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hatch.grab(_dir);
+    Robot.hatch.extend(_dir);
   }
 
   // Called repeatedly when this Command is scheduled to run

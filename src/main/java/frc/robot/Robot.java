@@ -39,14 +39,14 @@ import frc.robot.threading.ThreadManager;
 import frc.robot.vision.GRIPVision;
 
 public class Robot extends TimedRobot {
-  WestCoastDrive sunKist;
+  public WestCoastDrive sunKist;
 
-  Arm arm;
-  Hatch hatch;
-  Intake intake;
-  Lift lift;
-  Grabber grabber;
-  Climb climb;
+  public static Arm arm;
+  public static Hatch hatch;
+  public static Intake intake;
+  public static Lift lift;
+  public static Grabber grabber;
+  public static Climb climb;
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
