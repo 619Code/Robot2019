@@ -5,39 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto.commands.hatch;
+package frc.robot.auto.commands.drive;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.drive.WestCoastDrive;
 
-public class HatchGrab extends Command {
-  boolean _dir;
+public class TurnToAngle extends Command {
 
-  public HatchGrab(boolean dir) {
+  private double _targetAngle;
+  private double _currentAngle;
+  private double speed;
+  private WestCoastDrive _sunKist;
+  private double _kP;
+
+  public TurnToAngle(double targetAngle, double kP) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    _dir = dir;
-    requires(Robot.hatch);
+    _sunKist = Robot.sunKist;
+    requires(_sunKist);
+    _targetAngle = targetAngle;
+    _kP = kP;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hatch.grab(_dir);
-    Timer.delay(0.5);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    _currentAngle = _sunKist.getNavXAngle();
+    speed = (_currentAngle-_targetAngle)*_kP;
+    _sunKist.setLeftMotors(speed);
+    _sunKist.setRightMotors(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-
-    return true;
+    if(Math.round(_currentAngle) == Math.round(_targetAngle)) return true;
+    return false;
   }
 
   // Called once after isFinished returns true

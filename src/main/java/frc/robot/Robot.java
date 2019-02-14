@@ -21,6 +21,7 @@ import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
@@ -39,7 +40,7 @@ import frc.robot.threading.ThreadManager;
 import frc.robot.vision.GRIPVision;
 
 public class Robot extends TimedRobot {
-  public WestCoastDrive sunKist;
+  public static WestCoastDrive sunKist;
 
   public static Arm arm;
   public static Hatch hatch;
@@ -92,8 +93,8 @@ public class Robot extends TimedRobot {
     arm = new Arm();
     grabber = new Grabber();
     //climb = new Climb(sunKist);
-    c = new Compressor(RobotMap.PCM_CAN_ID);
-    c.setClosedLoopControl(true);
+    // c = new Compressor(RobotMap.PCM_CAN_ID);
+    // c.setClosedLoopControl(true);
   }
 
   public void initNavX() {
@@ -145,6 +146,8 @@ public class Robot extends TimedRobot {
     //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
   }
 
+  // --------------------------------------
+
   Controller driver;
   Controller secondary;
   LimitSwitch limitSwitch;
@@ -159,6 +162,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    sunKist.setLeftMotors(driver.getY(Hand.kLeft));
+    sunKist.setRightMotors(driver.getY(Hand.kLeft));
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
     //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));

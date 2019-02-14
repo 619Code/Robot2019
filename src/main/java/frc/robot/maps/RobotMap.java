@@ -67,7 +67,7 @@ public class RobotMap {
     public static final int BOOST_CHANNEL = 21;
 
     // ramp constant (only works if in coast)
-    public static final double RAMP_RATE = 0.5;
+    public static final double RAMP_RATE = 0.3;
     public static final double DEADZONE = 0.07;
 
     // motor outputs
@@ -100,7 +100,7 @@ public class RobotMap {
     public static final double DRIVE_MINOUTPUT = 0;
 
     // Auto Encoder P Value
-    public static final double AUTO_kP = 0.07;
+    public static final double AUTO_kP = 0.05;
 
     //Lift PID
     public static final double LIFT_kP = 0;
