@@ -23,7 +23,11 @@ public class Lift{
     
     public void moveLift(double speed){
         upboiLeft.set(ControlMode.PercentOutput, speed);
-        upboiRight.set(ControlMode.PercentOutput, speed);
+        //upboiRight.set(ControlMode.PercentOutput, speed);
+    }
+
+    public WPI_TalonSRX getLeftLift(){
+        return upboiLeft;
     }
 
 }

@@ -103,7 +103,7 @@ public class RobotMap {
     public static final double AUTO_kP = 0.05;
 
     //Lift PID
-    public static final double LIFT_kP = 0;
+    public static final double LIFT_kP = 0.03;
 	public static final double LIFT_kI = 0;
 	public static final double LIFT_kD = 0;
 	public static final double LIFT_kF = 0;

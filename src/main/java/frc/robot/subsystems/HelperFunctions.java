@@ -18,6 +18,7 @@ public class HelperFunctions {
             talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, RobotMap.kPIDLOOPIDX,
                     RobotMap.kTIMEOUT_MS);
             talon.setSensorPhase(true);
+            //talon.setInverted(true);
 
             talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, RobotMap.kTIMEOUT_MS);
             talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, RobotMap.kTIMEOUT_MS);
