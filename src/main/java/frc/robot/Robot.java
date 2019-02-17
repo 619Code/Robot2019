@@ -87,8 +87,8 @@ public class Robot extends TimedRobot {
     arm = new Arm();
     grabber = new Grabber();
     //climb = new Climb(sunKist);
-    // c = new Compressor(RobotMap.PCM_CAN_ID);
-    // c.setClosedLoopControl(true);
+    c = new Compressor(RobotMap.PCM_CAN_ID);
+    c.setClosedLoopControl(false);
   }
 
   public void initNavX() {
@@ -115,9 +115,9 @@ public class Robot extends TimedRobot {
     visionProcess = new VisionProcess();
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution(320, 240);
+      camera.setResolution(160, 120);
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 320, 240);
+      CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
 
       Mat source = new Mat();
       Mat output = new Mat();

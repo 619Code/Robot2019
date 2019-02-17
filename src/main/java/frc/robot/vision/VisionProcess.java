@@ -1,52 +1,104 @@
 package frc.robot.vision;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import frc.robot.vision.GRIPVision.BlurType;
+import frc.robot.maps.VisionMap;
 
 public class VisionProcess{
-    private Mat resizeImageOutput = new Mat();
-	private Mat blurOutput = new Mat();
-	private Mat hsvThresholdOutput = new Mat();
-	private Mat cvCannyOutput = new Mat();
+    private Mat brightImage = new Mat();
+	private Mat blurImage = new Mat();
+	private Mat hsvImage = new Mat();
+	private Mat cannyImage = new Mat();
+	Mat hierarchy;
+
+	List<MatOfPoint> contours;
+
+	private Random rng = new Random(12345);
+
     public VisionProcess(){
     
     }
     public Mat process(Mat source0) {
+		brightImage = new Mat(source0.rows(), source0.cols(), source0.type());
+		source0.convertTo(brightImage, -1, 1, -100);
 
-		// Step Resize_Image0:
-		Mat resizeImageInput = source0;
-		double resizeImageWidth = 640;
-		double resizeImageHeight = 480;
-		int resizeImageInterpolation = Imgproc.INTER_NEAREST;
-        Imgproc.resize(resizeImageInput, resizeImageOutput, new Size(resizeImageWidth, resizeImageHeight), 0.0, 0.0, resizeImageInterpolation);
-		// Step Blur0:
-		Mat blurInput = resizeImageOutput;
-        double blurRadius = 7.0;
-        int radius = (int)(blurRadius + 0.5);
-        int kernelSize = 6 * radius + 1;
-		Imgproc.GaussianBlur(resizeImageOutput,blurOutput, new Size(kernelSize, kernelSize), radius);
+		//Blur
+		Imgproc.blur(brightImage, blurImage, new Size(VisionMap.KERNEL_SIZE, VisionMap.KERNEL_SIZE));
+		//Imgproc.GaussianBlur(brightImage, blurImage, new Size(VisionMap.KERNEL_SIZE, VisionMap.KERNEL_SIZE), VisionMap.RADUS);
 
 
-		// Step HSV_Threshold0:
-		Mat hsvThresholdInput = blurOutput;
-		double[] hsvThresholdHue = {70.0, 150.0};
-		double[] hsvThresholdSaturation = {70.0, 255.0};
-		double[] hsvThresholdValue = {160.0, 255.0};
-        Imgproc.cvtColor(hsvThresholdInput, hsvThresholdOutput, Imgproc.COLOR_BGR2HSV);
-		Core.inRange(hsvThresholdOutput, new Scalar(hsvThresholdHue[0], hsvThresholdSaturation[0], hsvThresholdValue[0]),
-			new Scalar(hsvThresholdSaturation[1], hsvThresholdSaturation[1], hsvThresholdValue[1]), hsvThresholdOutput);
-		// Step CV_Canny0:
-		Mat cvCannyImage = hsvThresholdOutput;
-		double cvCannyThreshold1 = 0.0;
-		double cvCannyThreshold2 = 1.0;
-		double cvCannyAperturesize = 3.0;
-		boolean cvCannyL2gradient = false;
-        Imgproc.Canny(cvCannyImage, cvCannyOutput, cvCannyThreshold1, cvCannyThreshold2, (int)cvCannyAperturesize, cvCannyL2gradient);
-        return cvCannyOutput;
-    }
+		//HSV
+        Imgproc.cvtColor(blurImage, hsvImage, Imgproc.COLOR_BGR2HSV);
+		Core.inRange(hsvImage, new Scalar(VisionMap.HSV_THRESHOLD_HUE[0], VisionMap.HSV_THRESHOLD_SATURATION[0], VisionMap.HSV_THRESHOLD_VALUE[0]),
+			new Scalar(VisionMap.HSV_THRESHOLD_HUE[1], VisionMap.HSV_THRESHOLD_SATURATION[1], VisionMap.HSV_THRESHOLD_VALUE[1]), 
+			hsvImage);
+
+		//Canny
+        Imgproc.Canny(hsvImage, cannyImage, VisionMap.CV_CANNY_THRESHOLD_1, VisionMap.CV_CANNY_THRESHOLD_2, VisionMap.CV_CANNY_APERTURE_SIZE, VisionMap.CV_CANNY_L2_GRADIENT);
+
+		contours = new ArrayList<>();
+		hierarchy = new Mat();
+		Imgproc.findContours(cannyImage, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
+		contours = filterContours(contours);
+
+		//System.out.println(contours.size());
+		for(int i = 0; i < contours.size(); i++){
+			 Rect contourRect = Imgproc.boundingRect(contours.get(i));
+			 if(i == 1)  Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(0, 255, 0), 2);
+			 else if(i == 2)  Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(255, 0, 0), 2); 
+			 else Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(0, 0, 255), 2);
+		}
+
+		return source0;
+	}
+	
+	//remove overlapping contours
+	//remove small contours with height less than 20
+	public List<MatOfPoint> filterContours(List<MatOfPoint> contours){
+		List<MatOfPoint> filteredContours = new ArrayList<>();
+		for(int i= 0; i < contours.size(); i++){
+			if(contours.get(i).height() > 20){
+				Rect currentRect = Imgproc.boundingRect(contours.get(i));
+				if(!isOverlap(currentRect, i) && !isDuplicate(currentRect, filteredContours)){
+					filteredContours.add(contours.get(i));
+				}
+			}
+		}
+		return filteredContours;
+	}
+
+	public boolean isOverlap(Rect currentRect, int rectIdx){
+		for(int j = 0; j < contours.size(); j++){
+			Rect compareRect = Imgproc.boundingRect(contours.get(j));
+			//System.out.println("i x: " + i + " " + currentRect.tl().x + "j x:" + j + " " + compareRect.tl().x);
+			if(rectIdx != j && currentRect.tl().x > compareRect.tl().x && currentRect.tl().y > compareRect.tl().y &&
+			currentRect.br().x < compareRect.br().x && currentRect.br().y < compareRect.br().y){
+				return true;
+			}
+		}
+		return false; 
+	}
+
+	public boolean isDuplicate(Rect currentRect, List<MatOfPoint> filteredContours){
+		for(int i = 0; i < filteredContours.size(); i++){
+			Rect contourRect = Imgproc.boundingRect(filteredContours.get(i));
+			if(currentRect.tl().equals(contourRect.tl()) && currentRect.br().equals(contourRect.br())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

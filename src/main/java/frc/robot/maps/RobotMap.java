@@ -72,8 +72,8 @@ public class RobotMap {
 
     // motor outputs
     public static final double DRIVE_OUTPUT_MAX = 0.6;
-    public static final double DRIVE_ROT_MAX = 0.5;
-    public static final double DRIVE_SPEED_MAX = 1.0;
+    public static final double DRIVE_ROT_MAX = 0.3;
+    public static final double DRIVE_SPEED_MAX = 0.4;
 
     public static final double INTAKE_SPEED = 0.5;
 
