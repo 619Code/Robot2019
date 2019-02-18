@@ -42,7 +42,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
 import frc.robot.threading.ThreadManager;
-import frc.robot.vision.GRIPVision;
 import frc.robot.vision.VisionProcess;
 
 public class Robot extends TimedRobot {
@@ -73,7 +72,7 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     initAuto();
-    initVision();
+    //initVision();
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
@@ -88,7 +87,7 @@ public class Robot extends TimedRobot {
     grabber = new Grabber();
     //climb = new Climb(sunKist);
     c = new Compressor(RobotMap.PCM_CAN_ID);
-    c.setClosedLoopControl(false);
+    c.setClosedLoopControl(true);
   }
 
   public void initNavX() {
@@ -106,7 +105,7 @@ public class Robot extends TimedRobot {
       RobotMap.AUTO_kP);
 
     config.setSwapDrivingDirection(true);
-    config.setSwapTurningDirection(true);
+    config.setSwapTurningDirection(false);
 
     EasyPath.configure(config);
   }
@@ -145,7 +144,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    //System.out.println("left inches: " + sunKist.getLeftEncoderValue() + " right inches: " + sunKist.getRightEncoderValue());
+  }
 
   @Override
   public void teleopInit(){
@@ -157,7 +158,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
+    //sunKist.resetEncodersAndGyro();
     //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
+   //System.out.println("gyro: " + sunKist.getNavXAngle());
   }
 
   // --------------------------------------
@@ -173,6 +176,7 @@ public class Robot extends TimedRobot {
     threadManager.killAllThreads();
     lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
+    sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override

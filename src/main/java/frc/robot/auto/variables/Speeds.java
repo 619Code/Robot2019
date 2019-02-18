@@ -1,4 +1,4 @@
-package frc.robot.auto.paths;
+package frc.robot.auto.variables;
 
 import java.util.function.Function;
 
