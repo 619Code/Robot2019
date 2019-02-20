@@ -9,12 +9,12 @@ public class HatchGrab extends Command {
 
   public HatchGrab(boolean dir) {
     _dir = dir;
-    requires(Robot.hatch);
+    requires(Robot.Hatch);
   }
 
   @Override
   protected void initialize() {
-    Robot.hatch.grab(_dir);
+    Robot.Hatch.grab(_dir);
   }
 
   @Override

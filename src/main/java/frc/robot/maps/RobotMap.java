@@ -59,10 +59,10 @@ public class RobotMap {
     public static final int BACK_END_CLIMB_SWITCH = 3;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
-    public static final int PCM_CAN_ID = 61; 
-    public static final int INTAKE_WRIST_CHANNEL = 10;
-    public static final int HATCH_GRABBER_CHANNEL = 4;
-    public static final int HATCH_EXTEND_CHANNEL = 3;
+    public static final int PCM_CAN_ID = 1; 
+    public static final int[] INTAKE_WRIST_CHANNEL = {4, 5};
+    public static final int HATCH_GRABBER_CHANNEL = 1;
+    public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
     public static final int ZOOP_CHANNEL = 20;
     public static final int BOOST_CHANNEL = 21;
 
@@ -75,7 +75,9 @@ public class RobotMap {
     public static final double DRIVE_ROT_MAX = 0.3;
     public static final double DRIVE_SPEED_MAX = 0.2;
 
-    public static final double INTAKE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = 0.50;
+    public static final double GRABBER_SPEED = 0.90;
+    public static final double LIFT_SPEED = 1.00;
 
     // controller public static finals
     public static final Hand SPEED_HAND = Hand.kLeft;

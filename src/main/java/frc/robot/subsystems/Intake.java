@@ -1,63 +1,54 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 
 public class Intake {
-    private WPI_TalonSRX spinny;
-    private Solenoid wrist;
-
-    // TODO: figure out which way is up and which way is down
-    private final boolean up = true;
+    private TalonSRX spinny;
+    private DoubleSolenoid wrist;
 
     public Intake() {
-        spinny = new WPI_TalonSRX(RobotMap.INTAKE);
+        spinny = new TalonSRX(RobotMap.INTAKE);
         HelperFunctions.configureTalon(spinny, RobotMap.Manipulators.INTAKE);
-        wrist = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.INTAKE_WRIST_CHANNEL);
+        wrist = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.INTAKE_WRIST_CHANNEL[0], RobotMap.INTAKE_WRIST_CHANNEL[1]);
     }
 
-    public void gather() {
-        intake();
-        lower();
-        // maybe figure out a way to make the robot move slower when gathering?
-    }
-
-    public void stow() {
-        stop();
-        raise();
-    }
-
-    private void intake() {
-        spinny.set(RobotMap.INTAKE_SPEED);
-    }
-
-    public void outake() {
-        spinny.set(-RobotMap.INTAKE_SPEED);
-    }
-
-    public void moveIntake(double speed)
+    public void spin()
     {
-        spinny.set(speed);
+        spinny.set(ControlMode.PercentOutput, ControllerMap.Intake.spin());
     }
 
-    private void stop() {
-        spinny.set(0);
+    public void spin(double speed)
+    {
+        spinny.set(ControlMode.PercentOutput, speed);
     }
 
-    public void raiseOrLower(int dir){
-        if(dir == 1)
+    public void raiseOrLower(){
+        double dir = ControllerMap.Intake.raiseOrLower(); 
+        if(dir > 0.5)
             raise();
-        else if(dir == 0)
+        else if(dir < -0.5)
             lower();
+        else if(dir == 0)
+            stop();
     }
 
     private void raise() {
-        wrist.set(up);
+        wrist.set(Value.kForward);
     }
 
     private void lower() {
-        wrist.set(!up);
+        wrist.set(Value.kReverse);
+    }
+
+    private void stop() {
+        wrist.set(Value.kOff);
     }
 }

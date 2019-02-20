@@ -47,12 +47,12 @@ import frc.robot.vision.VisionProcess;
 public class Robot extends TimedRobot {
   public static WestCoastDrive sunKist;
 
-  public static Arm arm;
-  public static Hatch hatch;
-  public static Intake intake;
-  public static Lift lift;
-  public static Grabber grabber;
-  public static Climb climb;
+  public static Arm Arm;
+  public static Hatch Hatch;
+  public static Intake Intake;
+  public static Lift Lift;
+  public static Grabber Grabber;
+  public static Climb Climb;
 
   VisionProcess visionProcess;
 
@@ -76,15 +76,20 @@ public class Robot extends TimedRobot {
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
+  
+  @Override
+  public void robotPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
     
-    lift = new Lift();
-    // intake = new Intake();
-    hatch = new Hatch();
-    arm = new Arm();
-    grabber = new Grabber();
+    Lift = new Lift();
+    Intake = new Intake();
+    Hatch = new Hatch();
+    Arm = new Arm();
+    Grabber = new Grabber();
     //climb = new Climb(sunKist);
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true);
@@ -105,7 +110,7 @@ public class Robot extends TimedRobot {
       RobotMap.AUTO_kP);
 
     config.setSwapDrivingDirection(true);
-    config.setSwapTurningDirection(false);
+    config.setSwapTurningDirection(true);
 
     EasyPath.configure(config);
   }
@@ -131,11 +136,6 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
     sunKist.initAutoDrive();
@@ -144,23 +144,19 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    //System.out.println("left inches: " + sunKist.getLeftEncoderValue() + " right inches: " + sunKist.getRightEncoderValue());
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
     sunKist.initTeleopDrive();
-    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, grabber, climb);
+    teleopThread = new TeleopThread(threadManager);
   }
 
   @Override
   public void teleopPeriodic() {
-    sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
-    //sunKist.resetEncodersAndGyro();
+    sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
     //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
-   //System.out.println("gyro: " + sunKist.getNavXAngle());
   }
 
   // --------------------------------------
@@ -174,21 +170,23 @@ public class Robot extends TimedRobot {
     driver = new Controller(0);
     secondary = new Controller(1);
     threadManager.killAllThreads();
-    lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
+    //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
-    sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override
   public void testPeriodic() {
-    System.out.println(lift.getLeftLift().getSelectedSensorPosition());
-    //lift.moveLift(HelperFunctions.deadzone(driver.getY(Hand.kLeft)));
+    //System.out.println(lift.getLeftLift().getSelectedSensorPosition());
+    //Lift.move(HelperFunctions.deadzone(driver.getY(Hand.kLeft)));
     //sunKist.setLeftMotors(driver.getY(Hand.kLeft));
     //sunKist.setRightMotors(driver.getY(Hand.kLeft));
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
-    //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
-    //arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+    //Lift.move(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    //intake.moveIntake(HelperFunctions.deadzone(0.75*driver.getY(RobotMap.LEFT_HAND)));
+    //grabber.grab(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+    //arm.moveArm(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
   }
 
   @Override

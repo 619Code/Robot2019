@@ -1,23 +1,38 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
+import frc.robot.maps.RobotMap.Manipulators;
 
-public class Grabber{
+public class Grabber extends Subsystem{
     //ratio is 1:20
-    WPI_TalonSRX _left, _right;
+    TalonSRX _left, _right;
 
     public Grabber(){
-        _left = new WPI_TalonSRX(RobotMap.LEFT_GRABBER);
-        _right = new WPI_TalonSRX(RobotMap.RIGHT_GRABBER);
+        _left = new TalonSRX(RobotMap.LEFT_GRABBER);
+        _right = new TalonSRX(RobotMap.RIGHT_GRABBER);
+        HelperFunctions.configureTalon(_left, Manipulators.GRABBER);
+        HelperFunctions.configureTalon(_right, Manipulators.GRABBER);
+
         _right.setInverted(true);
-        _right.follow(_left);
+        _left.follow(_right);
+    }
+
+    public void grab(){
+        _right.set(ControlMode.PercentOutput, ControllerMap.Grabber.grab());
     }
 
     public void grab(double speed){
-        _left.set(ControlMode.PercentOutput, speed);
+        _right.set(ControlMode.PercentOutput, speed);
     }
+
+    @Override
+    protected void initDefaultCommand() {}
 }
 
