@@ -59,23 +59,25 @@ public class RobotMap {
     public static final int BACK_END_CLIMB_SWITCH = 3;
 
     // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
-    public static final int PCM_CAN_ID = 61; 
-    public static final int INTAKE_WRIST_CHANNEL = 10;
-    public static final int HATCH_GRABBER_CHANNEL = 4;
-    public static final int HATCH_EXTEND_CHANNEL = 3;
+    public static final int PCM_CAN_ID = 1; 
+    public static final int[] INTAKE_WRIST_CHANNEL = {4, 5};
+    public static final int HATCH_GRABBER_CHANNEL = 1;
+    public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
     public static final int ZOOP_CHANNEL = 20;
     public static final int BOOST_CHANNEL = 21;
 
     // ramp constant (only works if in coast)
-    public static final double RAMP_RATE = 0.5;
+    public static final double RAMP_RATE = 0.3;
     public static final double DEADZONE = 0.07;
 
     // motor outputs
-    public static final double DRIVE_OUTPUT_MAX = 0.6;
-    public static final double DRIVE_ROT_MAX = 0.5;
-    public static final double DRIVE_SPEED_MAX = 1.0;
+    public static final double DRIVE_OUTPUT_MAX = 1.0;
+    public static final double DRIVE_ROT_MAX = 0.3;
+    public static final double DRIVE_SPEED_MAX = 0.4;
 
-    public static final double INTAKE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = 0.65;
+    public static final double GRABBER_SPEED = 0.90;
+    public static final double LIFT_SPEED = 1.00;
 
     // controller public static finals
     public static final Hand SPEED_HAND = Hand.kLeft;
@@ -100,10 +102,10 @@ public class RobotMap {
     public static final double DRIVE_MINOUTPUT = 0;
 
     // Auto Encoder P Value
-    public static final double AUTO_kP = 0.07;
+    public static final double AUTO_kP = 0.045;
 
     //Lift PID
-    public static final double LIFT_kP = 0;
+    public static final double LIFT_kP = 0.03;
 	public static final double LIFT_kI = 0;
 	public static final double LIFT_kD = 0;
 	public static final double LIFT_kF = 0;

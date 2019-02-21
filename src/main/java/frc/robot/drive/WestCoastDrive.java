@@ -93,7 +93,7 @@ public class WestCoastDrive extends Subsystem{
     }
 
     public void drive(Mode mode, Controller driver) {
-        double speed = -getSpeed(mode, driver);
+        double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
         switch (mode) {
         case CURVATURE:
@@ -120,8 +120,8 @@ public class WestCoastDrive extends Subsystem{
     }
 
     public void setLeftandRight(double left, double right){
-        leftMaster.set(left);
-        rightMaster.set(-right);
+        leftMaster.set(-left);
+        rightMaster.set(right);
     }
 
     public double getLeftEncoderValue() {
@@ -133,11 +133,11 @@ public class WestCoastDrive extends Subsystem{
     }
     
     public double getLeftEncoderInches(){
-        return RobotMap.WHEEL_DIAMETER*Math.PI*(getLeftEncoderValue()/RobotMap.ENCODER_TICK_PER_REV);
+        return -(RobotMap.WHEEL_DIAMETER*Math.PI*(getLeftEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
     }
 
     public double getRightEncoderInches(){
-        return -(RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
+        return (RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
     }
 
     public double getSpeed(Mode mode, Controller driver) {

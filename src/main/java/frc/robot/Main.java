@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import org.opencv.videoio.VideoCapture;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**

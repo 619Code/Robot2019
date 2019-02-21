@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -10,10 +11,11 @@ import com.revrobotics.CANSparkMax;
 import frc.robot.maps.RobotMap;
 
 public class HelperFunctions {
-    public static void configureTalon(WPI_TalonSRX talon, RobotMap.Manipulators type) {
+    public static void configureTalon(TalonSRX talon, RobotMap.Manipulators type) {
         talon.configFactoryDefault();
         switch (type) {
         case LIFT:
+            talon.setNeutralMode(NeutralMode.Brake);
             talon.configFactoryDefault();
             talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, RobotMap.kPIDLOOPIDX,
                     RobotMap.kTIMEOUT_MS);
@@ -44,6 +46,8 @@ public class HelperFunctions {
             talon.configFactoryDefault();
             talon.setNeutralMode(NeutralMode.Brake);
             break;
+        case GRABBER:
+            talon.setNeutralMode(NeutralMode.Brake);
         }
     }
 

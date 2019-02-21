@@ -1,19 +1,22 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 
 public class Hatch extends Subsystem{
     private Solenoid grabber;
-    private Solenoid extendo;
+    private DoubleSolenoid extendo;
 
     public Hatch(){
-        extendo = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_EXTEND_CHANNEL);
+        extendo = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_EXTEND_CHANNEL[0], RobotMap.HATCH_EXTEND_CHANNEL[1]);
         grabber = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.HATCH_GRABBER_CHANNEL);
     }
 
-    public void extend(boolean dir)
+    public void extend(Value dir)
     {
         extendo.set(dir);
     }
@@ -23,18 +26,22 @@ public class Hatch extends Subsystem{
         grabber.set(dir);
     }
     
-    public void grabState(double speed){
+    public void grab(){
+        double speed = ControllerMap.Hatch.grab();
         if(speed > 0.5)
             grab(true);
         else if(speed < -0.5)
             grab(false);
     }
 
-    public void extendState(double speed){
-        if(speed > 0.5)
-            extend(true);
+    public void extend(){
+        double speed = ControllerMap.Hatch.extend();
+        if(speed == 0)
+            extend(Value.kOff);
+        else if(speed > 0.5)
+            extend(Value.kForward);
         else if(speed < -0.5)
-            extend(false);
+            extend(Value.kReverse);
     }
 
     @Override

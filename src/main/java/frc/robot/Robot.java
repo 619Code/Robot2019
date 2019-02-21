@@ -13,14 +13,20 @@ import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoCapture;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
@@ -36,17 +42,19 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
 import frc.robot.threading.ThreadManager;
-import frc.robot.vision.GRIPVision;
+import frc.robot.vision.VisionProcess;
 
 public class Robot extends TimedRobot {
-  public WestCoastDrive sunKist;
+  public static WestCoastDrive sunKist;
 
-  public static Arm arm;
-  public static Hatch hatch;
-  public static Intake intake;
-  public static Lift lift;
-  public static Grabber grabber;
-  public static Climb climb;
+  public static Arm Arm;
+  public static Hatch Hatch;
+  public static Intake Intake;
+  public static Lift Lift;
+  public static Grabber Grabber;
+  public static Climb Climb;
+
+  VisionProcess visionProcess;
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
@@ -64,33 +72,24 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     initAuto();
+    //initVision();
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
-
-  public void initVision(){
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(RobotMap.IMG_WIDTH, RobotMap.IMG_HEIGHT);
-    Object imgLock = new Object();
-    visionThread = new VisionThread(camera, new GRIPVision(), pipeline -> {
-        if (!pipeline.cvCannyOutput().empty()) {
-            Rect r = Imgproc.boundingRect(pipeline.cvCannyOutput());
-            synchronized (imgLock) {
-                double centerX = r.x + (r.width / 2);
-            }
-        }
-    });
-    visionThread.start();
+  
+  @Override
+  public void robotPeriodic() {
+    Scheduler.getInstance().run();
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
     
-    lift = new Lift();
-    // intake = new Intake();
-    hatch = new Hatch();
-    arm = new Arm();
-    grabber = new Grabber();
+    Lift = new Lift();
+    Intake = new Intake();
+    Hatch = new Hatch();
+    Arm = new Arm();
+    Grabber = new Grabber();
     //climb = new Climb(sunKist);
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true);
@@ -116,9 +115,24 @@ public class Robot extends TimedRobot {
     EasyPath.configure(config);
   }
 
-  @Override
-  public void robotPeriodic() {
-    Scheduler.getInstance().run();
+  public void initVision(){
+    visionProcess = new VisionProcess();
+    new Thread(() -> {
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution(160, 120);
+      CvSink cvSink = CameraServer.getInstance().getVideo();
+      CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
+
+      Mat source = new Mat();
+      Mat output = new Mat();
+      
+      while(!Thread.interrupted()){
+        cvSink.grabFrame(source);
+        output = visionProcess.process(source);
+        outputStream.putFrame(output);
+      }
+
+    }).start();
   }
 
   @Override
@@ -136,14 +150,16 @@ public class Robot extends TimedRobot {
   public void teleopInit(){
     threadManager.killAllThreads();
     sunKist.initTeleopDrive();
-    teleopThread = new TeleopThread(threadManager, arm, hatch, intake, lift, grabber, climb);
+    teleopThread = new TeleopThread(threadManager);
   }
 
   @Override
   public void teleopPeriodic() {
-    sunKist.drive(teleopThread.getDriveMode(), ControllerMap._primary);
+    sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
     //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
   }
+
+  // --------------------------------------
 
   Controller driver;
   Controller secondary;
@@ -154,15 +170,23 @@ public class Robot extends TimedRobot {
     driver = new Controller(0);
     secondary = new Controller(1);
     threadManager.killAllThreads();
+    //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
   }
 
   @Override
   public void testPeriodic() {
+    //System.out.println(lift.getLeftLift().getSelectedSensorPosition());
+    //Lift.move(HelperFunctions.deadzone(driver.getY(Hand.kLeft)));
+    //sunKist.setLeftMotors(driver.getY(Hand.kLeft));
+    //sunKist.setRightMotors(driver.getY(Hand.kLeft));
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
-    //lift.moveLift(driver.getY(RobotMap.LEFT_HAND));
-    //arm.moveArm(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+    //Lift.move(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    //intake.moveIntake(HelperFunctions.deadzone(0.75*driver.getY(RobotMap.LEFT_HAND)));
+    //grabber.grab(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
+    //arm.moveArm(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
   }
 
   @Override
