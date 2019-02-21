@@ -73,9 +73,9 @@ public class RobotMap {
     // motor outputs
     public static final double DRIVE_OUTPUT_MAX = 1.0;
     public static final double DRIVE_ROT_MAX = 0.3;
-    public static final double DRIVE_SPEED_MAX = 0.2;
+    public static final double DRIVE_SPEED_MAX = 0.4;
 
-    public static final double INTAKE_SPEED = 0.50;
+    public static final double INTAKE_SPEED = 0.65;
     public static final double GRABBER_SPEED = 0.90;
     public static final double LIFT_SPEED = 1.00;
 
@@ -102,7 +102,7 @@ public class RobotMap {
     public static final double DRIVE_MINOUTPUT = 0;
 
     // Auto Encoder P Value
-    public static final double AUTO_kP = 0.04;
+    public static final double AUTO_kP = 0.045;
 
     //Lift PID
     public static final double LIFT_kP = 0.03;

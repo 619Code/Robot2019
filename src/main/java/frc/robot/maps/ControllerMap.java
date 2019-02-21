@@ -7,6 +7,16 @@ import frc.robot.maps.RobotMap.LIFT_TARGETS;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
+    /**
+     * Controls
+     * A = gathering mode
+     * Y = hold down hatch extend and hatch grab closed, when not pressed hatch is not extended and hatch grab is open
+     * left joystick = lift up/down
+     * right joystick = arm up/down
+     * B = intake raise or lower toggle
+     * right/left bumpers = intake/outake cargo intake
+     * right/left triggers = intake/outake grabber
+     */
     public static Controller Primary = new Controller(0);
     public static Controller Secondary = new Controller(1);
 

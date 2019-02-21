@@ -16,7 +16,7 @@ public class Auto extends CommandGroup{
     FollowPath m_autoCommand;
 
     public Auto(){
-        Robot.sunKist.resetNavX();
+        Robot.sunKist.resetNavX(); 
         addSequential(new FollowPath(Paths.getStraightLinePath(99),Speeds.setSpeed(0.2)));
         addSequential(new TurnToAngle(0, 0.005), 2);
         addSequential(new Wait(1));
