@@ -26,19 +26,19 @@ public class ControllerMap{
     public static Controller Secondary = new Controller(1);
 
     private static final Process GATHERHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
                                                                 });
 
     private static final Process GRABHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
                                                                 });  
 
     private static final Process ALIGNHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
                                                                 });
 
     private static final Process DEPLOYHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
                                                                 });
 
                                                                 
@@ -136,6 +136,20 @@ public class ControllerMap{
 
         public static double move(){
             return HelperFunctions.deadzone(Secondary.getY(Hand.kLeft));
+        }
+    }
+
+    public static class DriveControl{
+        public static void speedUpdate(){
+            if(HelperFunctions.deadzone(Primary.getTriggerAxis(Hand.kRight)) > 0){
+                RobotMap.DRIVE_SPEED_MAX = 1.0;
+            }
+            else if(HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft)) > 0){
+                RobotMap.DRIVE_SPEED_MAX = 0.2;
+            }
+            else{
+                RobotMap.DRIVE_SPEED_MAX = 0.5;
+            }
         }
     }
 }

@@ -10,8 +10,10 @@ public class Process{
     }
 
     public void startProcess(){
-        for(Action action : _actions){
-            action.start();
+        if(_actions != null){
+            for(Action action : _actions){
+                action.start();
+            }
         }
     }
 }

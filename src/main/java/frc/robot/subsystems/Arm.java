@@ -31,7 +31,7 @@ public class Arm extends Subsystem{
     }
 
     public void moveToTarget() {
-        RobotMap.ARM_TARGETS target = ControllerMap.Arm.goToPosition();
+        RobotMap.ARM_TARGETS target = ControllerMap.ArmControl.goToPosition();
         if (target.equals(RobotMap.ARM_TARGETS.NULL_POSITION))
             return;
         double targetPos = (RobotMap.TICKSPERROT_NEO_ENC * RobotMap.RATIO_ARM) * target.getValue();
@@ -39,7 +39,7 @@ public class Arm extends Subsystem{
     }
 
     public void move() {
-        flexin.set(ControllerMap.Arm.move());
+        flexin.set(ControllerMap.ArmControl.move());
     }
 
     public void move(double speed) {

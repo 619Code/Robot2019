@@ -9,6 +9,8 @@ import frc.robot.hardware.Controller;
 import frc.robot.subsystems.*;
 import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
+import frc.robot.maps.ControllerMap.DriveControl;
+import frc.robot.maps.ControllerMap.HatchControl;
 
 public class TeleopThread extends RobotThread {
 
@@ -25,15 +27,15 @@ public class TeleopThread extends RobotThread {
 
     @Override
     protected void cycle() {
-        Robot.Arm.moveToTarget();
-        Robot.Lift.moveToTarget();
-        Robot.Arm.move();
-        Robot.Lift.move();
-        Robot.Intake.spin();
-        Robot.Intake.raiseOrLower();
-        Robot.Hatch.grab();
-        Robot.Hatch.extend();
-        Robot.Grabber.grab();
+        //Robot.Arm.moveToTarget();
+        //Robot.Lift.moveToTarget();
+        //Robot.Arm.move();
+        //Robot.Lift.move();
+        //Robot.Intake.spin();
+        //Robot.Intake.raiseOrLower();
+        HatchControl.getProcess().startProcess();
+        DriveControl.speedUpdate();
+        //Robot.Grabber.grab();
 
         // _climb.startClimb(ControllerMap.isClimbReady());
     }

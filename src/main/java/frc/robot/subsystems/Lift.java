@@ -23,13 +23,13 @@ public class Lift extends Subsystem{
 
     //target is in rotations (e.g. target=1 is one rotation)
     public void moveToTarget(){
-        RobotMap.LIFT_TARGETS target = ControllerMap.Lift.goToPosition();
+        RobotMap.LIFT_TARGETS target = ControllerMap.LiftControl.goToPosition();
 		double targetPos =  (RobotMap.TICKSPERROT_VERSAPLANETARY_ENC*RobotMap.RATIO_LIFT) * target.getValue();
         upboiRight.set(ControlMode.MotionMagic, targetPos);
     }
     
     public void move(){
-        upboiRight.set(ControlMode.PercentOutput, ControllerMap.Lift.move());
+        upboiRight.set(ControlMode.PercentOutput, ControllerMap.LiftControl.move());
     }
 
     public void move(double speed){

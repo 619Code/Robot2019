@@ -24,6 +24,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -54,13 +55,14 @@ public class Robot extends TimedRobot {
   public static Grabber Grabber;
   public static Climb Climb;
 
+  DigitalInput compressorStop = new DigitalInput(6); //ONLY FOR V1 BOT
+
   VisionProcess visionProcess;
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
   CommandGroup auto;
   Compressor c;
-
   AHRS navX;
 
   EasyPathConfig config;
@@ -79,17 +81,24 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotPeriodic() {
+    System.out.println(RobotMap.DRIVE_SPEED_MAX);
     Scheduler.getInstance().run();
+
+    //ONLY FOR V1
+    if(compressorStop.get() == false) 
+      c.setClosedLoopControl(true);
+    else
+      c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
     
-    Lift = new Lift();
-    Intake = new Intake();
+    //Lift = new Lift();
+    //Intake = new Intake();
     Hatch = new Hatch();
-    Arm = new Arm();
-    Grabber = new Grabber();
+    //Arm = new Arm();
+    //Grabber = new Grabber();
     //climb = new Climb(sunKist);
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true);

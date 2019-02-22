@@ -74,12 +74,18 @@ public class WestCoastDrive extends Subsystem{
     }
 
     public void initTeleopDrive(){
-        leftMaster.setIdleMode(IdleMode.kCoast);
-        rightMaster.setIdleMode(IdleMode.kCoast);
-        leftRear.setIdleMode(IdleMode.kCoast);
-        leftFront.setIdleMode(IdleMode.kCoast);
-        rightRear.setIdleMode(IdleMode.kCoast);
-        rightFront.setIdleMode(IdleMode.kCoast);
+        leftMaster.setIdleMode(IdleMode.kBrake);
+        rightMaster.setIdleMode(IdleMode.kBrake);
+        leftRear.setIdleMode(IdleMode.kBrake);
+        leftFront.setIdleMode(IdleMode.kBrake);
+        rightRear.setIdleMode(IdleMode.kBrake);
+        rightFront.setIdleMode(IdleMode.kBrake);
+        // leftMaster.setIdleMode(IdleMode.kCoast);
+        // rightMaster.setIdleMode(IdleMode.kCoast);
+        // leftRear.setIdleMode(IdleMode.kCoast);
+        // leftFront.setIdleMode(IdleMode.kCoast);
+        // rightRear.setIdleMode(IdleMode.kCoast);
+        // rightFront.setIdleMode(IdleMode.kCoast);
         leftMaster.setRampRate(RobotMap.RAMP_RATE);
         rightMaster.setRampRate(RobotMap.RAMP_RATE);
     }
@@ -145,7 +151,7 @@ public class WestCoastDrive extends Subsystem{
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND));
+            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)) * Math.abs(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)));
         case GTA:
             return HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND));
         default:
@@ -157,7 +163,7 @@ public class WestCoastDrive extends Subsystem{
     public double getRotation(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
-        return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
+        return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)) * Math.abs(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)));
         case ARCADE:
         case TANK:
             return HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND));

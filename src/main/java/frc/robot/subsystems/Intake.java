@@ -22,7 +22,7 @@ public class Intake {
 
     public void spin()
     {
-        spinny.set(ControlMode.PercentOutput, ControllerMap.Intake.spin());
+        spinny.set(ControlMode.PercentOutput, ControllerMap.IntakeControl.spin());
     }
 
     public void spin(double speed)
@@ -31,7 +31,7 @@ public class Intake {
     }
 
     public void raiseOrLower(){
-        double dir = ControllerMap.Intake.raiseOrLower(); 
+        double dir = ControllerMap.IntakeControl.raiseOrLower(); 
         if(dir > 0.5)
             raise();
         else if(dir < -0.5)

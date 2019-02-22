@@ -25,7 +25,7 @@ public class Grabber extends Subsystem{
     }
 
     public void grab(){
-        _right.set(ControlMode.PercentOutput, ControllerMap.Grabber.grab());
+        _right.set(ControlMode.PercentOutput, ControllerMap.GrabberControl.grab());
     }
 
     public void grab(double speed){
