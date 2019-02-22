@@ -25,24 +25,6 @@ public class Hatch extends Subsystem{
     {
         grabber.set(dir);
     }
-    
-    public void grab(){
-        double speed = ControllerMap.Hatch.grab();
-        if(speed > 0.5)
-            grab(true);
-        else if(speed < -0.5)
-            grab(false);
-    }
-
-    public void extend(){
-        double speed = ControllerMap.Hatch.extend();
-        if(speed == 0)
-            extend(Value.kOff);
-        else if(speed > 0.5)
-            extend(Value.kForward);
-        else if(speed < -0.5)
-            extend(Value.kReverse);
-    }
 
     @Override
     protected void initDefaultCommand() {}

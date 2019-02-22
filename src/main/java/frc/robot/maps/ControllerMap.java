@@ -1,9 +1,14 @@
 package frc.robot.maps;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.Robot;
 import frc.robot.hardware.Controller;
+import frc.robot.helper.Action;
+import frc.robot.helper.Process;
 import frc.robot.maps.RobotMap.ARM_TARGETS;
 import frc.robot.maps.RobotMap.LIFT_TARGETS;
+import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
@@ -20,7 +25,25 @@ public class ControllerMap{
     public static Controller Primary = new Controller(0);
     public static Controller Secondary = new Controller(1);
 
-    public static class Arm{
+    private static final Process GATHERHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                });
+
+    private static final Process GRABHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                });  
+
+    private static final Process ALIGNHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                });
+
+    private static final Process DEPLOYHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                });
+
+                                                                
+
+    public static class ArmControl{
         //returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
         // is only called when left bumper is down)
         public static ARM_TARGETS goToPosition(){
@@ -40,14 +63,11 @@ public class ControllerMap{
         }
     
         public static double move(){
-            if(Secondary.getBumper(RobotMap.LEFT_HAND)){
-                return HelperFunctions.deadzone(Secondary.getY(RobotMap.RIGHT_HAND));
-            }
-            return 0;
+            return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
         }
     }
 
-    public static class Climb{
+    public static class ClimbControl{
         //when right bumper is grabbed start climb proccess by returning true
         // public static boolean climb(){
         //     return Secondary.getBumper(RobotMap.RIGHT_HAND);
@@ -62,39 +82,29 @@ public class ControllerMap{
         // }
     }
 
-    public static class Grabber{
+    public static class GrabberControl{
         public static double grab(){
-            double intakeSpeed = HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.LEFT_HAND));
-            double outakeSpeed = HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
-            if(intakeSpeed > 0) return RobotMap.GRABBER_SPEED*HelperFunctions.deadzone(-Secondary.getTriggerAxis(RobotMap.LEFT_HAND));
-            else if(outakeSpeed > 0) return RobotMap.GRABBER_SPEED*HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
-            return 0;
+            double intakeSpeed = RobotMap.GRABBER_SPEED*HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.LEFT_HAND));
+            double outakeSpeed = RobotMap.GRABBER_SPEED*HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
+            return intakeSpeed > 0 ? intakeSpeed : outakeSpeed;
         }
     }
 
-    public static class Hatch{
-        public static double grab(){
-            if(!Secondary.getBumper(Hand.kLeft)){
-                return HelperFunctions.deadzone(-Secondary.getY(RobotMap.RIGHT_HAND));
-            }
-            return 0;
-        }
-    
-        public static double extend(){
-            if(!Secondary.getBumper(Hand.kLeft)){
-                return HelperFunctions.deadzone(-Secondary.getY(RobotMap.LEFT_HAND));
-            }
-            return 0;
+    public static class HatchControl{
+        public static Process getProcess(){
+            if(Secondary.getAButton()) return GATHERHATCH;
+            if(Secondary.getBButton()) return GRABHATCH;
+            if(Secondary.getYButton()) return ALIGNHATCH;
+            if(Secondary.getXButton()) return DEPLOYHATCH;
+            return new Process();
         }
     }
 
-    public static class Intake{
+    public static class IntakeControl{
         public static double spin(){
             //System.out.println(_secondary.getPOV());
-            if(!Secondary.getBumper(RobotMap.LEFT_HAND)){
-                if(Secondary.getPOV() == 0) return RobotMap.INTAKE_SPEED;
-                if(Secondary.getPOV() == 180) return -RobotMap.INTAKE_SPEED;
-            }
+            if(Secondary.getBumper(Hand.kLeft)) return RobotMap.INTAKE_SPEED;
+            if(Secondary.getBumper(Hand.kRight)) return -RobotMap.INTAKE_SPEED;
             return 0;
         }
     
@@ -107,7 +117,7 @@ public class ControllerMap{
         }
     }
 
-    public static class Lift{
+    public static class LiftControl{
          //returns 0 for lowest position, 1 for second-lowest and so on (3 positions
         // only called when left bumper is NOT down)
         public static LIFT_TARGETS goToPosition(){
@@ -125,11 +135,7 @@ public class ControllerMap{
         }
 
         public static double move(){
-            if(Secondary.getBumper(RobotMap.LEFT_HAND)){
-                if(Secondary.getPOV() == 0) return -RobotMap.LIFT_SPEED;
-                if(Secondary.getPOV() == 180) return RobotMap.LIFT_SPEED;
-            }
-            return 0;
+            return HelperFunctions.deadzone(Secondary.getY(Hand.kLeft));
         }
     }
 }
