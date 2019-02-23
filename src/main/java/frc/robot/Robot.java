@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotPeriodic() {
-    System.out.println(RobotMap.DRIVE_SPEED_MAX);
+    //System.out.println(RobotMap.DRIVE_SPEED_MAX);
     Scheduler.getInstance().run();
 
     //ONLY FOR V1
