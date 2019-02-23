@@ -19,13 +19,10 @@ public class Arm extends Subsystem{
 
     private CANPIDController flexController;
 
-    private CANEncoder flexEncoder;
-
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
         flexin.setIdleMode(IdleMode.kBrake);
         flexController = flexin.getPIDController();
-        flexEncoder = flexin.getEncoder();
 
         HelperFunctions.configurePIDController(flexController, RobotMap.Manipulators.ARM);
     }

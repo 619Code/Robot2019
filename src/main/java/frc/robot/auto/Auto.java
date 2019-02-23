@@ -1,7 +1,6 @@
 package frc.robot.auto;
 
 import easypath.FollowPath;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
@@ -10,7 +9,6 @@ import frc.robot.auto.commands.drive.*;
 import frc.robot.auto.commands.misc.*;
 import frc.robot.auto.variables.Paths;
 import frc.robot.auto.variables.Speeds;
-import frc.robot.auto.commands.drive.DriveForward;
 
 public class Auto extends CommandGroup{
     FollowPath m_autoCommand;

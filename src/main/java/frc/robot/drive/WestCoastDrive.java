@@ -13,7 +13,7 @@ import frc.robot.hardware.Controller;
 import frc.robot.maps.RobotMap;
 import frc.robot.subsystems.HelperFunctions;
 
-public class WestCoastDrive extends Subsystem {
+public class WestCoastDrive extends Subsystem{
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
     CANPIDController leftPID, rightPID;
@@ -27,6 +27,7 @@ public class WestCoastDrive extends Subsystem {
 
     public WestCoastDrive(AHRS navX) {
         _navX = navX;
+        _navX.getQuaternionZ();
         initDrive();
     }
 
@@ -59,14 +60,14 @@ public class WestCoastDrive extends Subsystem {
         rightPID.setIZone(RobotMap.DRIVE_kIZONE);
         rightPID.setFF(RobotMap.DRIVE_KFF);
         rightPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
-
+        
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
-
+    
         resetNavX();
     }
 
-    public void initAutoDrive() {
+    public void setToBrake(){
         leftMaster.setIdleMode(IdleMode.kBrake);
         rightMaster.setIdleMode(IdleMode.kBrake);
         leftRear.setIdleMode(IdleMode.kBrake);
@@ -75,28 +76,22 @@ public class WestCoastDrive extends Subsystem {
         rightFront.setIdleMode(IdleMode.kBrake);
     }
 
-    public void initTeleopDrive() {
-        leftMaster.setIdleMode(IdleMode.kBrake);
-        rightMaster.setIdleMode(IdleMode.kBrake);
-        leftRear.setIdleMode(IdleMode.kBrake);
-        leftFront.setIdleMode(IdleMode.kBrake);
-        rightRear.setIdleMode(IdleMode.kBrake);
-        rightFront.setIdleMode(IdleMode.kBrake);
-        // leftMaster.setIdleMode(IdleMode.kCoast);
-        // rightMaster.setIdleMode(IdleMode.kCoast);
-        // leftRear.setIdleMode(IdleMode.kCoast);
-        // leftFront.setIdleMode(IdleMode.kCoast);
-        // rightRear.setIdleMode(IdleMode.kCoast);
-        // rightFront.setIdleMode(IdleMode.kCoast);
+    public void setToCoast(){
+        leftMaster.setIdleMode(IdleMode.kCoast);
+        rightMaster.setIdleMode(IdleMode.kCoast);
+        leftRear.setIdleMode(IdleMode.kCoast);
+        leftFront.setIdleMode(IdleMode.kCoast);
+        rightRear.setIdleMode(IdleMode.kCoast);
+        rightFront.setIdleMode(IdleMode.kCoast);
         leftMaster.setRampRate(RobotMap.RAMP_RATE);
         rightMaster.setRampRate(RobotMap.RAMP_RATE);
     }
 
-    public void resetNavX() {
+    public void resetNavX(){
         _navX.reset();
     }
 
-    public double getNavXAngle() {
+    public double getNavXAngle(){
         return _navX.getAngle();
     }
 
@@ -104,12 +99,15 @@ public class WestCoastDrive extends Subsystem {
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
         double correction = 0;
-        // if (rotation == 0) {
-        // double error = targetAngle - getNavXAngle();
-        // correction = 0.005 * error;
-        // } else {
-        // targetAngle = getNavXAngle();
+
+        //TODO: IMPLEMENT STRAIGHT DRIVING CORRECTION
+        // if(rotation == 0){
+        //     double error = targetAngle - getNavXAngle();
+        //     correction = 0.005 * error;
+        // }else{
+        //     targetAngle = getNavXAngle();
         // }
+        
         switch (mode) {
         case CURVATURE:
             curveDrive(speed, rotation + correction);
@@ -134,7 +132,7 @@ public class WestCoastDrive extends Subsystem {
         rightMaster.set(speed);
     }
 
-    public void setLeftandRight(double left, double right) {
+    public void setLeftandRight(double left, double right){
         leftMaster.set(-left);
         rightMaster.set(right);
     }
@@ -146,13 +144,13 @@ public class WestCoastDrive extends Subsystem {
     public double getRightEncoderValue() {
         return rightMaster.getEncoder().getPosition();
     }
-
-    public double getLeftEncoderInches() {
-        return -(RobotMap.WHEEL_DIAMETER * Math.PI * (getLeftEncoderValue() / RobotMap.ENCODER_TICK_PER_REV));
+    
+    public double getLeftEncoderInches(){
+        return -(RobotMap.WHEEL_DIAMETER*Math.PI*(getLeftEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
     }
 
-    public double getRightEncoderInches() {
-        return (RobotMap.WHEEL_DIAMETER * Math.PI * (getRightEncoderValue() / RobotMap.ENCODER_TICK_PER_REV));
+    public double getRightEncoderInches(){
+        return (RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
     }
 
     public double getSpeed(Mode mode, Controller driver) {
@@ -162,26 +160,25 @@ public class WestCoastDrive extends Subsystem {
         case TANK:
             return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
         case GTA:
-            return purell(HelperFunctions.deadzone(
-                    driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND)), 2);
+            return purell(HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND)), 2);
         default:
             // curvature drive default
-            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 3);
+            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
         }
     }
 
     public double getRotation(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
-            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 1);
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         case ARCADE:
         case TANK:
-            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND)), 2.5);
+            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND)), 2);
         case GTA:
-            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2.5);
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         default:
             // curvature drive default
-            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 1);
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         }
     }
 
@@ -196,18 +193,16 @@ public class WestCoastDrive extends Subsystem {
     public void tankDrive(double leftSpeed, double rightSpeed) {
         drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
     }
-
-    public void moveDriveToTarget(double rotaitons) {
-        double targetPos = (RobotMap.TICKSPERROT_NEO_ENC * RobotMap.RATIO_DRIVE * rotaitons);
+    public void moveDriveToTarget(double rotaitons){
+        double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_DRIVE*rotaitons);
         leftPID.setReference(targetPos, ControlType.kPosition);
-        rightPID.setReference(targetPos, ControlType.kPosition);
+        rightPID.setReference(targetPos, ControlType.kPosition);    
     }
 
-    public double purell(double speed, double level) {
-        return Math.pow(Math.abs(speed), level - 1) * speed;
+    public double purell(double speed, int level){
+        return Math.pow(Math.abs(speed), level-1) * speed; 
     }
 
     @Override
-    protected void initDefaultCommand() {
-    }
+    protected void initDefaultCommand() {}
 }

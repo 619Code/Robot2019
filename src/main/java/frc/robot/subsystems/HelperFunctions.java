@@ -4,9 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 
 import frc.robot.maps.RobotMap;
 
@@ -48,6 +46,9 @@ public class HelperFunctions {
             break;
         case GRABBER:
             talon.setNeutralMode(NeutralMode.Brake);
+            break;
+        default:
+            break;
         }
     }
 
@@ -62,20 +63,20 @@ public class HelperFunctions {
         }
     }
 
-    public static void configurePIDController(CANPIDController controller, RobotMap.Manipulators type) {
-        switch (type) {
-        case LIFT:
-            break;
-        case ARM:
-            controller.setP(RobotMap.ARM_kP);
-            controller.setI(RobotMap.ARM_kI);
-            controller.setD(RobotMap.ARM_kD);
-            controller.setIZone(RobotMap.ARM_kIZONE);
-            controller.setFF(RobotMap.ARM_KFF);
-            controller.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
-            break;
-        case INTAKE:
-            break;
+    public static void configurePIDController(CANPIDController controller, RobotMap.Manipulators type){
+        switch(type){
+            case LIFT:
+                break;
+            case ARM:
+                controller.setP(RobotMap.ARM_kP);
+                controller.setI(RobotMap.ARM_kI);
+                controller.setD(RobotMap.ARM_kD);
+                controller.setIZone(RobotMap.ARM_kIZONE);
+                controller.setFF(RobotMap.ARM_KFF);
+                controller.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
+                break;
+            case INTAKE:
+                break;
         }
     }
 

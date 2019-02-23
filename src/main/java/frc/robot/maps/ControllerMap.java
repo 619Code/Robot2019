@@ -8,7 +8,6 @@ import frc.robot.helper.Action;
 import frc.robot.helper.Process;
 import frc.robot.maps.RobotMap.ARM_TARGETS;
 import frc.robot.maps.RobotMap.LIFT_TARGETS;
-import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap {
@@ -16,45 +15,17 @@ public class ControllerMap {
     public static Controller Primary = new Controller(0);
     public static Controller Secondary = new Controller(1);
 
-    private static final Process GATHERHATCH = new Process(new Action[] { new Action() {
-        public void start() {
-            Robot.Hatch.extend(Value.kForward);
-        }
-    }, new Action() {
-        public void start() {
-            Robot.Hatch.grab(false);
-        }
-    } });
+    private static final Process GATHERHATCH = new Process(new Action[] { new Action() { public void start() { Robot.Hatch.extend(Value.kForward); } }, 
+                                                                          new Action() { public void start() { Robot.Hatch.grab(true); } } });
 
-    private static final Process GRABHATCH = new Process(new Action[] { new Action() {
-        public void start() {
-            Robot.Hatch.extend(Value.kReverse);
-        }
-    }, new Action() {
-        public void start() {
-            Robot.Hatch.grab(true);
-        }
-    } });
+    private static final Process GRABHATCH = new Process(new Action[] { new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
+                                                                        new Action() { public void start() { Robot.Hatch.grab(false); } } });
 
-    private static final Process ALIGNHATCH = new Process(new Action[] { new Action() {
-        public void start() {
-            Robot.Hatch.extend(Value.kForward);
-        }
-    }, new Action() {
-        public void start() {
-            Robot.Hatch.grab(true);
-        }
-    } });
+    private static final Process ALIGNHATCH = new Process(new Action[] { new Action() { public void start() { Robot.Hatch.extend(Value.kForward); } }, 
+                                                                         new Action() { public void start() { Robot.Hatch.grab(false); } } });
 
-    private static final Process DEPLOYHATCH = new Process(new Action[] { new Action() {
-        public void start() {
-            Robot.Hatch.extend(Value.kReverse);
-        }
-    }, new Action() {
-        public void start() {
-            Robot.Hatch.grab(false);
-        }
-    } });
+    private static final Process DEPLOYHATCH = new Process(new Action[] { new Action() { public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
+                                                                          new Action() { public void start() { Robot.Hatch.grab(true); } } });
 
     public static class ArmControl {
         // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
@@ -121,7 +92,6 @@ public class ControllerMap {
 
     public static class IntakeControl {
         public static double spin() {
-            // System.out.println(_secondary.getPOV());
             if (Secondary.getBumper(Hand.kLeft))
                 return RobotMap.INTAKE_SPEED;
             if (Secondary.getBumper(Hand.kRight))

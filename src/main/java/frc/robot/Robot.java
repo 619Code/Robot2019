@@ -2,9 +2,6 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 
 import easypath.EasyPath;
 import easypath.EasyPathConfig;
@@ -14,9 +11,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -26,8 +20,6 @@ import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
@@ -74,7 +66,7 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     initAuto();
-    //initVision();
+    initVision(false);
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
@@ -124,30 +116,33 @@ public class Robot extends TimedRobot {
     EasyPath.configure(config);
   }
 
-  public void initVision(){
-    visionProcess = new VisionProcess();
-    new Thread(() -> {
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution(160, 120);
-      CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
+  public void initVision(boolean useCV){
 
-      Mat source = new Mat();
-      Mat output = new Mat();
-      
-      while(!Thread.interrupted()){
-        cvSink.grabFrame(source);
-        output = visionProcess.process(source);
-        outputStream.putFrame(output);
-      }
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(160, 120);
 
-    }).start();
+    if(useCV){
+      visionProcess = new VisionProcess();
+      new Thread(() -> {
+        CvSink cvSink = CameraServer.getInstance().getVideo();
+        CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
+  
+        Mat source = new Mat();
+        Mat output = new Mat();
+        
+        while(!Thread.interrupted()){
+          cvSink.grabFrame(source);
+          output = visionProcess.process(source);
+          outputStream.putFrame(output);
+        }
+      }).start();
+    }
   }
 
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    sunKist.initAutoDrive();
+    sunKist.setToBrake();
     auto = new Auto();
     auto.start();
   }
@@ -158,7 +153,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
-    sunKist.initTeleopDrive();
+    sunKist.setToBrake();
     teleopThread = new TeleopThread(threadManager);
   }
 
