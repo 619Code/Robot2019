@@ -19,6 +19,8 @@ public class WestCoastDrive extends Subsystem{
     CANPIDController leftPID, rightPID;
     AHRS _navX;
 
+    double targetAngle;
+
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
     }
@@ -101,18 +103,25 @@ public class WestCoastDrive extends Subsystem{
     public void drive(Mode mode, Controller driver) {
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
+        double correction = 0;
+        if(rotation == 0){
+            double error = targetAngle - getNavXAngle();
+            correction = 0.005 * error;
+        }else{
+            targetAngle = getNavXAngle();
+        }
         switch (mode) {
         case CURVATURE:
-            curveDrive(speed, rotation);
+            curveDrive(speed, rotation + correction);
             break;
         case ARCADE:
-            arcadeDrive(speed, rotation);
+            arcadeDrive(speed, rotation + correction);
             break;
         case TANK:
-            tankDrive(speed, rotation);
+            tankDrive(speed, rotation + correction);
             break;
         case GTA:
-            curveDrive(speed, rotation);
+            curveDrive(speed, rotation + correction);
             break;
         }
     }
@@ -151,27 +160,27 @@ public class WestCoastDrive extends Subsystem{
         case CURVATURE:
         case ARCADE:
         case TANK:
-            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)) * Math.abs(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)));
+            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
         case GTA:
-            return HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND));
+            return purell(HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND)), 2);
         default:
             // curvature drive default
-            return HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND));
+            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
         }
     }
 
     public double getRotation(Mode mode, Controller driver) {
         switch (mode) {
         case CURVATURE:
-        return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)) * Math.abs(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)));
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         case ARCADE:
         case TANK:
-            return HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND));
+            return purell(HelperFunctions.deadzone(driver.getY(RobotMap.ROT_HAND)), 2);
         case GTA:
-            return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         default:
             // curvature drive default
-            return HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND));
+            return purell(HelperFunctions.deadzone(driver.getX(RobotMap.ROT_HAND)), 2);
         }
     }
 
@@ -190,6 +199,10 @@ public class WestCoastDrive extends Subsystem{
         double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_DRIVE*rotaitons);
         leftPID.setReference(targetPos, ControlType.kPosition);
         rightPID.setReference(targetPos, ControlType.kPosition);    
+    }
+
+    public double purell(double speed, int level){
+        return Math.pow(Math.abs(speed), level-1) * speed; 
     }
 
     @Override

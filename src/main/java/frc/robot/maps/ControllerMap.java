@@ -12,33 +12,24 @@ import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.HelperFunctions;
 
 public class ControllerMap{
-    /**
-     * Controls
-     * A = gathering mode
-     * Y = hold down hatch extend and hatch grab closed, when not pressed hatch is not extended and hatch grab is open
-     * left joystick = lift up/down
-     * right joystick = arm up/down
-     * B = intake raise or lower toggle
-     * right/left bumpers = intake/outake cargo intake
-     * right/left triggers = intake/outake grabber
-     */
+
     public static Controller Primary = new Controller(0);
     public static Controller Secondary = new Controller(1);
 
     private static final Process GATHERHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
                                                                 });
 
     private static final Process GRABHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
                                                                 });  
 
     private static final Process ALIGNHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kForward); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
                                                                 });
 
     private static final Process DEPLOYHATCH = new Process(new Action[]{new Action() {public void start() { Robot.Hatch.extend(Value.kReverse); } }, 
-                                                                new Action() {public void start() { Robot.Hatch.grab(true); } } 
+                                                                new Action() {public void start() { Robot.Hatch.grab(false); } } 
                                                                 });
 
                                                                 
@@ -68,18 +59,17 @@ public class ControllerMap{
     }
 
     public static class ClimbControl{
-        //when right bumper is grabbed start climb proccess by returning true
-        // public static boolean climb(){
-        //     return Secondary.getBumper(RobotMap.RIGHT_HAND);
-        // }
-
-    
-        // public static boolean isClimbReady(){
-        //     if (Primary.getStickButton(RobotMap.RIGHT_HAND) && Secondary.getStickButton(RobotMap.RIGHT_HAND))
-        //         return true; 
-        //     else 
-        //         return false;
-        // }
+        static boolean pressed = false;
+        static boolean state = false;
+        public static boolean climb(){
+            if(Secondary.getStartButton() && !pressed){
+                pressed = true;
+                state = !state;
+            } else if(!Secondary.getStartButton() && pressed){
+                pressed = false;
+            }
+            return state;
+       }
     }
 
     public static class GrabberControl{
@@ -136,20 +126,6 @@ public class ControllerMap{
 
         public static double move(){
             return HelperFunctions.deadzone(Secondary.getY(Hand.kLeft));
-        }
-    }
-
-    public static class DriveControl{
-        public static void speedUpdate(){
-            if(HelperFunctions.deadzone(Primary.getTriggerAxis(Hand.kRight)) > 0){
-                RobotMap.DRIVE_SPEED_MAX = 1.0;
-            }
-            else if(HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft)) > 0){
-                RobotMap.DRIVE_SPEED_MAX = 0.2;
-            }
-            else{
-                RobotMap.DRIVE_SPEED_MAX = 0.5;
-            }
         }
     }
 }
