@@ -100,7 +100,7 @@ public class ControllerMap {
                     * HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.LEFT_HAND));
             double outakeSpeed = RobotMap.GRABBER_SPEED
                     * HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
-            return intakeSpeed > 0 ? intakeSpeed : outakeSpeed;
+            return intakeSpeed > 0 ? intakeSpeed : -outakeSpeed;
         }
     }
 
