@@ -32,12 +32,12 @@ public class Intake extends Subsystem{
     }
 
     public void raiseOrLower(){
-        double dir = ControllerMap.IntakeControl.raiseOrLower(); 
-        if(dir > 0.5)
+        int dir = ControllerMap.IntakeControl.raiseOrLower(); 
+        if(dir==0)
             raise();
-        else if(dir < -0.5)
+        else if(dir == 180)
             lower();
-        else if(dir == 0)
+        else if(dir == -1)
             stop();
     }
 

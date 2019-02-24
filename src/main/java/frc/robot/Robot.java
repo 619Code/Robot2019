@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     initAuto();
-    initVision(false);
+    //initVision(false);
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
@@ -76,20 +76,20 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     //ONLY FOR V1
-    if(compressorStop.get() == false) 
-      c.setClosedLoopControl(true);
-    else
-      c.setClosedLoopControl(false);
+    // if(compressorStop.get() == false) 
+    //   c.setClosedLoopControl(true);
+    // else
+    //   c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
     
-    //Lift = new Lift();
-    //Intake = new Intake();
+    Lift = new Lift();
+    Intake = new Intake();
     Hatch = new Hatch();
-    //Arm = new Arm();
-    //Grabber = new Grabber();
+    Arm = new Arm();
+    Grabber = new Grabber();
     //climb = new Climb(sunKist);
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true);
@@ -166,6 +166,12 @@ public class Robot extends TimedRobot {
   Controller driver;
   Controller secondary;
   LimitSwitch limitSwitch;
+
+  // DigitalInput left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
+  // DigitalInput right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
+  // DigitalInput ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
+  // DigitalInput rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
+
   @Override
   public void testInit() {
    // limitSwitch = new LimitSwitch(6);
@@ -178,6 +184,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    // System.out.println("Left: " + left.get());
+    // System.out.println("Right: " + right.get());
+    // System.out.println("Ship: " + ship.get());
+    // System.out.println("Rocket: " + rocket.get());
+    // System.out.println();
     //System.out.println(lift.getLeftLift().getSelectedSensorPosition());
     //Lift.move(HelperFunctions.deadzone(driver.getY(Hand.kLeft)));
     //sunKist.setLeftMotors(driver.getY(Hand.kLeft));
@@ -185,7 +196,7 @@ public class Robot extends TimedRobot {
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
     //Lift.move(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
-    System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    //System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
     //intake.moveIntake(HelperFunctions.deadzone(0.75*driver.getY(RobotMap.LEFT_HAND)));
     //grabber.grab(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
     //arm.moveArm(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));

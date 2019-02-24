@@ -60,6 +60,12 @@ public class RobotMap {
     public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
     public static final int BOOST_CHANNEL = 21;
 
+    //auto switches
+    public static final int LEFTAUTOSWITCH = 0;
+    public static final int RIGHTAUTOSWITCH = 3;
+    public static final int SHIPAUTOSWITCH = 1;
+    public static final int ROCKETAUTOSWITCH = 2;
+
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.3;
     public static final double DEADZONE = 0.05;

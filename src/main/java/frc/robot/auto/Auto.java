@@ -2,6 +2,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.auto.type.TypeManager;
+import frc.robot.maps.RobotMap;
 
 public class Auto{
     
@@ -15,10 +16,10 @@ public class Auto{
     public Auto(){
         typeManager = new TypeManager();
 
-        left = new DigitalInput(0);
-        right = new DigitalInput(1);
-        ship = new DigitalInput(2);
-        rocket = new DigitalInput(3);
+        left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
+        right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
+        ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
+        rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
     }
 
     public void start(){

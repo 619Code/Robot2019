@@ -1,6 +1,5 @@
 package frc.robot.auto.type;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +11,7 @@ public class TypeManager {
     public TypeManager(){
         addAutoType(SwitchState.LEFTSHIP, new LeftShip());
         addAutoType(SwitchState.RIGHTSHIP, new RightShip());
-        addAutoType(SwitchState.LEFTROCKET, new LeftRocket());
+        addAutoType(SwitchState.LEFTROCKET, new LeftRocket()); 
         addAutoType(SwitchState.RIGHTROCKET, new RightRocket());
     }
 

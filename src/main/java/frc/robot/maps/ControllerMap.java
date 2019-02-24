@@ -128,11 +128,8 @@ public class ControllerMap {
         }
 
         // grab right axis from secondary joystick
-        public static double raiseOrLower() {
-            if (Secondary.getBumper(Hand.kLeft)) {
-                return HelperFunctions.deadzone(Secondary.getY(Hand.kLeft));
-            }
-            return 0;
+        public static int raiseOrLower() {
+            return Secondary.getPOV();
         }
     }
 

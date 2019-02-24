@@ -9,7 +9,7 @@ import frc.robot.auto.commands.misc.*;
 import frc.robot.auto.variables.Paths;
 import frc.robot.auto.variables.Speeds;
 
-public class LeftHatchAutoLvl2 extends AutoType{
+public class RightShip extends AutoType{
 
     public void start(){
         Robot.sunKist.resetNavX(); 
