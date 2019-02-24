@@ -7,7 +7,6 @@ import easypath.EasyPath;
 import easypath.EasyPathConfig;
 import easypath.PathUtil;
 import edu.wpi.first.wpilibj.SPI.Port;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.opencv.core.Mat;
@@ -53,7 +52,7 @@ public class Robot extends TimedRobot {
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
-  CommandGroup auto;
+  Auto auto;
   Compressor c;
   AHRS navX;
 
@@ -117,7 +116,6 @@ public class Robot extends TimedRobot {
   }
 
   public void initVision(boolean useCV){
-
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(160, 120);
 
