@@ -62,8 +62,9 @@ public class WestCoastDrive extends Subsystem{
         rightPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
         
         drive = new DifferentialDrive(leftMaster, rightMaster);
+        drive.setSafetyEnabled(false);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
-    
+
         resetNavX();
     }
 

@@ -19,6 +19,7 @@ import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.auto.Auto;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot {
   public static Grabber Grabber;
   public static Climb Climb;
 
-  DigitalInput compressorStop = new DigitalInput(6); //ONLY FOR V1 BOT
+  DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
 
   VisionProcess visionProcess;
 
@@ -76,15 +77,15 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     //ONLY FOR V1
-    // if(compressorStop.get() == false) 
-    //   c.setClosedLoopControl(true);
-    // else
-    //   c.setClosedLoopControl(false);
+    if(compressorStop.get() == false) 
+      c.setClosedLoopControl(true);
+    else
+      c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
-    
+
     Lift = new Lift();
     Intake = new Intake();
     Hatch = new Hatch();
@@ -140,19 +141,22 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
+    //teleopThread = new TeleopThread(threadManager);
     sunKist.setToBrake();
     auto = new Auto();
     auto.start();
+    //sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
-    sunKist.setToBrake();
     teleopThread = new TeleopThread(threadManager);
+    sunKist.setToBrake();
   }
 
   @Override
@@ -175,11 +179,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
    // limitSwitch = new LimitSwitch(6);
-    driver = new Controller(0);
-    secondary = new Controller(1);
+    // driver = new Controller(0);
+    // secondary = new Controller(1);
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
+    sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override

@@ -160,9 +160,9 @@ public class ControllerMap {
             if (Primary.getTriggerAxis(Hand.kLeft) > 0) {
                 RobotMap.DRIVE_SPEED_MAX = 0.2;
                 RobotMap.DRIVE_ROT_MAX = 0.2;
-                // } else if (Primary.getTriggerAxis(Hand.kRight) > 0) {
-                // RobotMap.DRIVE_SPEED_MAX = 1.0;
-                // RobotMap.DRIVE_ROT_MAX = 0.5;
+            } else if (Primary.getTriggerAxis(Hand.kRight) > 0) {
+                RobotMap.DRIVE_SPEED_MAX = 1.0;
+                RobotMap.DRIVE_ROT_MAX = 0.5;
             } else {
                 RobotMap.DRIVE_SPEED_MAX = 0.2;
                 RobotMap.DRIVE_ROT_MAX = 0.2;

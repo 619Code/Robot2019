@@ -3,10 +3,11 @@ package frc.robot.auto.type;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.auto.Auto.SwitchState;
 
 public class TypeManager {
-    Map<SwitchState, AutoType> autoTypes = new HashMap<>();
+    Map<SwitchState, CommandGroup> autoTypes = new HashMap<>();
 
     public TypeManager(){
         addAutoType(SwitchState.LEFTSHIP, new LeftShip());
@@ -15,7 +16,7 @@ public class TypeManager {
         addAutoType(SwitchState.RIGHTROCKET, new RightRocket());
     }
 
-    public void addAutoType(SwitchState state, AutoType autoType){
+    public void addAutoType(SwitchState state, CommandGroup autoType){
         autoTypes.put(state, autoType);
     }
 
