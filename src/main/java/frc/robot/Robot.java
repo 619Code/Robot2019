@@ -77,10 +77,10 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     //ONLY FOR V1
-    if(compressorStop.get() == false) 
-      c.setClosedLoopControl(true);
-    else
-      c.setClosedLoopControl(false);
+    // if(compressorStop.get() == false) 
+    //   c.setClosedLoopControl(true);
+    // else
+    //   c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {

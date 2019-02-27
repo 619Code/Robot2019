@@ -5,6 +5,7 @@ import frc.robot.Robot;
 import frc.robot.drive.WestCoastDrive.Mode;
 import frc.robot.maps.ControllerMap.DriveControl;
 import frc.robot.maps.ControllerMap.HatchControl;
+import frc.robot.subsystems.Arm;
 
 public class TeleopThread extends RobotThread {
 
@@ -21,7 +22,8 @@ public class TeleopThread extends RobotThread {
 
     @Override
     protected void cycle() {
-        // Robot.Arm.moveToTarget();
+        //Robot.Arm.moveToTarget();
+        //System.out.println(Arm.flexEncoder.getPosition());
         // Robot.Lift.moveToTarget();
         Robot.Arm.move();
         Robot.Lift.move();

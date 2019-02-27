@@ -56,22 +56,28 @@ public class ControllerMap {
     } });
 
     public static class ArmControl {
+        private static ARM_TARGETS armTarget;
         // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
         // is only called when left bumper is down)
         public static ARM_TARGETS goToPosition() {
-            switch(Secondary.getPOV()){
-                case 0:
-                    return ARM_TARGETS.HIGH;
-                case 90:
-                    return ARM_TARGETS.MIDDLE;
-                case 180:
-                    return ARM_TARGETS.LOWER;
-                case 270:
-                    return ARM_TARGETS.MIDDLE;
-                case -1:
-                    return ARM_TARGETS.NULL_POSITION;
+            if(Secondary.getBackButton()){
+                armTarget = ARM_TARGETS.CARGO;
+            } else {
+                armTarget = ARM_TARGETS.NULL_POSITION;
             }
-            return ARM_TARGETS.NULL_POSITION;
+            // switch(Secondary.getPOV()){
+            //     case 0:
+            //         return ARM_TARGETS.HIGH;
+            //     case 90:
+            //         return ARM_TARGETS.MIDDLE;
+            //     case 180:
+            //         return ARM_TARGETS.LOWER;
+            //     case 270:
+            //         return ARM_TARGETS.MIDDLE;
+            //     case -1:
+            //         return ARM_TARGETS.NULL_POSITION;
+            // }
+            return armTarget;
         }
 
         public static double move() {
@@ -164,8 +170,8 @@ public class ControllerMap {
                 RobotMap.DRIVE_SPEED_MAX = 1.0;
                 RobotMap.DRIVE_ROT_MAX = 0.5;
             } else {
-                RobotMap.DRIVE_SPEED_MAX = 0.2;
-                RobotMap.DRIVE_ROT_MAX = 0.2;
+                RobotMap.DRIVE_SPEED_MAX = 0.5;
+                RobotMap.DRIVE_ROT_MAX = 0.3;
             }
         }
     }

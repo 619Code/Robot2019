@@ -68,11 +68,12 @@ public class HelperFunctions {
             case LIFT:
                 break;
             case ARM:
+                System.out.println("CONFIGED ARM");
                 controller.setP(RobotMap.ARM_kP);
                 controller.setI(RobotMap.ARM_kI);
                 controller.setD(RobotMap.ARM_kD);
+                controller.setFF(RobotMap.ARM_kF);
                 controller.setIZone(RobotMap.ARM_kIZONE);
-                controller.setFF(RobotMap.ARM_KFF);
                 controller.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
                 break;
             case INTAKE:

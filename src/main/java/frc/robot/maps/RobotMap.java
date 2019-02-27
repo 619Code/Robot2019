@@ -12,17 +12,17 @@ public class RobotMap {
         LINE;
     }
     public enum LIFT_TARGETS{
-        LOWER(0),MIDDLE(1),HIGH(2),NULL_POSITION(-1);
-        private final int rotations;
-        LIFT_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
+        LOWER(-8.5),MIDDLE(-14.7),HIGH(-57),NULL_POSITION(-116),CARGO(-40);
+        private final double rotations;
+        LIFT_TARGETS(double rotations){this.rotations = rotations;}
+        public double getValue() {return rotations;}
 
     }
     public enum ARM_TARGETS{
-        BACK(0),LOWER(1),MIDDLE(2),HIGH(3),NULL_POSITION(-1);
-        private final int rotations;
-        ARM_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
+        INTAKE(-8.5),LOWER(-14.7),MIDDLE(-57.0),HIGH(-116),CARGO(-40), NULL_POSITION(-1);
+        private final double rotations;
+        ARM_TARGETS(double rotations){this.rotations = rotations;}
+        public double getValue() {return rotations;}
     }
 
     // Robot Dimesnions
@@ -113,13 +113,13 @@ public class RobotMap {
     public static final double LIFE_PEAK_OUTPUT = 0;
     
     //Arm PID
-    public static final double ARM_kP = 0;
+    public static final double ARM_kP = 0.7;
 	public static final double ARM_kI = 0;
-	public static final double ARM_kD = 0;
+    public static final double ARM_kD = 20;
+    public static final double ARM_kF = 0;
     public static final int ARM_kIZONE = 0;
-    public static final double ARM_KFF = 0;
-    public static final double ARM_MAXOUTPUT = 0;
-    public static final double ARM_MINOUTPUT = 0;
+    public static final double ARM_MAXOUTPUT = 0.5;
+    public static final double ARM_MINOUTPUT = -0.5;
 
     //Motion Magic Constants
     public static final int kSLOTIDX = 0;
