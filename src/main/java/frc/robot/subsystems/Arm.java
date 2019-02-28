@@ -17,7 +17,7 @@ public class Arm extends Subsystem{
 
     private CANSparkMax flexin;
     private CANPIDController flexController;
-    public static CANEncoder flexEncoder;
+    private CANEncoder flexEncoder;
 
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
@@ -42,15 +42,12 @@ public class Arm extends Subsystem{
      * CARGO SHIP ENC = -40
      */
     public void moveToTarget() {
-        RobotMap.ARM_TARGETS target = ControllerMap.ArmControl.goToPosition();
-        if (target.equals(RobotMap.ARM_TARGETS.NULL_POSITION)){
+        int targetIdx = ControllerMap.ArmControl.goToPosition();
+        if (targetIdx == -1){
             flexController.setReference(flexEncoder.getPosition(), ControlType.kPosition);
             return;
         }
-        //System.out.println("TARGET POS: " + target.getValue() + "CURRENT POS: " + flexEncoder.getPosition());
-        //double targetPos = (RobotMap.TICKSPERROT_NEO_ENC * RobotMap.RATIO_ARM) * target.getValue();
-        flexController.setReference(target.getValue(), ControlType.kPosition);
-        //flexController.setReference(target.getValue(), ControlType.kPosition);
+        flexController.setReference(RobotMap.ARM_TARGETS.get(targetIdx), ControlType.kPosition);
     }
 
     public void move() {
@@ -60,6 +57,21 @@ public class Arm extends Subsystem{
 
     public void move(double speed) {
         flexin.set(speed);
+    }
+
+
+    public int getClosestIdx(){
+        double minDist = 10000;
+	double minIdx = -1;
+	//minus the size by 1 to not automatically go to high position for safety reasons
+	for(int i = 0; i < RobotMap.ARM_TARGETS.size()-1; i++){
+	    double target = RobotMap.ARM_TARGETS.get(i);
+	    double dist = Math.abs(target-flexEncoder.getPosition());
+	    if(dist < minDist)
+	        minDist = dist;
+	        minIdx = i;
+	}
+	return minIdx;
     }
 
     @Override

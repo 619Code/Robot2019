@@ -56,33 +56,28 @@ public class ControllerMap {
     } });
 
     public static class ArmControl {
-        private static ARM_TARGETS armTarget;
+        private static int armIdx = 0;
+	private boolean changedPos = false;
         // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
         // is only called when left bumper is down)
-        public static ARM_TARGETS goToPosition() {
-            if(Secondary.getBackButton()){
-                armTarget = ARM_TARGETS.CARGO;
-            } else {
-                armTarget = ARM_TARGETS.NULL_POSITION;
-            }
-            // switch(Secondary.getPOV()){
-            //     case 0:
-            //         return ARM_TARGETS.HIGH;
-            //     case 90:
-            //         return ARM_TARGETS.MIDDLE;
-            //     case 180:
-            //         return ARM_TARGETS.LOWER;
-            //     case 270:
-            //         return ARM_TARGETS.MIDDLE;
-            //     case -1:
-            //         return ARM_TARGETS.NULL_POSITION;
-            // }
-            return armTarget;
+        public static int goToPosition() {				
+		if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
+			if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
+			armIdx++;
+			changedPos = true;
+		} else if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) < 0.5 && arm > 0 && !changedPos) {
+			if(armIdx == -1) armIdx = Robot.ARm.getClosestIdx();
+			armIdx--;
+			changedPos = true;
+		} else {
+			changedPos = false;
+		}
+		return armIdx;
         }
 
         public static double move() {
-            return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
-        }
+		armIdx = -1;
+		return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
     }
 
     public static class ClimbControl {

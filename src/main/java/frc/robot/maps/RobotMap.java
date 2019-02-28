@@ -1,6 +1,7 @@
 package frc.robot.maps;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import java.util.ArrayList;
 
 public class RobotMap {
 
@@ -18,12 +19,23 @@ public class RobotMap {
         public double getValue() {return rotations;}
 
     }
-    public enum ARM_TARGETS{
-        INTAKE(-8.5),LOWER(-14.7),MIDDLE(-57.0),HIGH(-116),CARGO(-40), NULL_POSITION(-1);
-        private final double rotations;
-        ARM_TARGETS(double rotations){this.rotations = rotations;}
-        public double getValue() {return rotations;}
-    }
+    
+    /**
+     *Idx 0 = intake
+     *Idx 1 = lower
+     *Idx 2 = cargo
+     *Idx 3 = middle
+     *Idx 4 = high
+     */
+    public static final ArrayList<Double> ARM_TARGETS = new ArrayList<>(){
+	{
+		add(-8.5);
+		add(-14.7);
+		add(-40)
+		add(-57.0);
+		add(-116.0);
+	}
+    } 
 
     // Robot Dimesnions
     public static final double ROBOT_LENGTH = 35.125;

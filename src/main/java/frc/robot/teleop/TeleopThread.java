@@ -23,7 +23,6 @@ public class TeleopThread extends RobotThread {
     @Override
     protected void cycle() {
         //Robot.Arm.moveToTarget();
-        //System.out.println(Arm.flexEncoder.getPosition());
         // Robot.Lift.moveToTarget();
         Robot.Arm.move();
         Robot.Lift.move();
