@@ -21,7 +21,9 @@ public class Intake extends Subsystem{
 
     public void spin()
     {
-        spinny.set(ControlMode.PercentOutput, ControllerMap.IntakeControl.spin());
+	double speed = ControllerMap.IntakeControl.spin();
+        spinny.set(ControlMode.PercentOutput, speed);
+	if(speed > 0) Robot.Grabber.grab(RobotMap.GRABBER_SPEED);
     }
 
     public void spin(double speed)

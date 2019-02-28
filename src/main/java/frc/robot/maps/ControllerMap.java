@@ -61,12 +61,11 @@ public class ControllerMap {
         // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
         // is only called when left bumper is down)
         public static int goToPosition() {				
-		if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
-			if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
+		if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
+		if (HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
 			armIdx++;
 			changedPos = true;
 		} else if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) < 0.5 && arm > 0 && !changedPos) {
-			if(armIdx == -1) armIdx = Robot.ARm.getClosestIdx();
 			armIdx--;
 			changedPos = true;
 		} else {
@@ -97,11 +96,11 @@ public class ControllerMap {
 
     public static class GrabberControl {
         public static double grab() {
-            double intakeSpeed = RobotMap.GRABBER_SPEED
-                    * HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.LEFT_HAND));
-            double outakeSpeed = RobotMap.GRABBER_SPEED
-                    * HelperFunctions.deadzone(Secondary.getTriggerAxis(RobotMap.RIGHT_HAND));
-            return intakeSpeed > 0 ? intakeSpeed : -outakeSpeed;
+	    if (Secondary.getBumper(Hand.kLeft))
+		return RobotMap.GRABBER_SPEED;
+	    if (Secondary.getBumper(Hand.kRight))
+		return -RobotMap.GRABBER_SPEED;
+	    return 0;
         }
     }
 
@@ -120,12 +119,10 @@ public class ControllerMap {
     }
 
     public static class IntakeControl {
-        public static double spin() {
-            if (Secondary.getBumper(Hand.kLeft))
-                return RobotMap.INTAKE_SPEED;
-            if (Secondary.getBumper(Hand.kRight))
-                return -RobotMap.INTAKE_SPEED;
-            return 0;
+        public static double spin(){
+	    double intakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft));
+	    double outakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kRight));
+	    return intakeSpeed > 0 ? intakeSpeed : -outakeSpeed;
         }
 
         // grab right axis from secondary joystick
