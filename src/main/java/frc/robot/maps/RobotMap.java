@@ -28,14 +28,14 @@ public class RobotMap {
      *Idx 4 = high
      */
     public static final ArrayList<Double> ARM_TARGETS = new ArrayList<>(){
-	{
-		add(-8.5);
-		add(-14.7);
-		add(-40)
-		add(-57.0);
-		add(-116.0);
-	}
-    } 
+	    {
+		    add(-8.5);
+		    add(-14.7);
+		    add(-40.0);
+		    add(-57.0);
+		    add(-116.0);
+	    }
+    }; 
 
     // Robot Dimesnions
     public static final double ROBOT_LENGTH = 35.125;

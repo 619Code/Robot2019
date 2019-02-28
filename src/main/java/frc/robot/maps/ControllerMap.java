@@ -6,7 +6,6 @@ import frc.robot.Robot;
 import frc.robot.hardware.Controller;
 import frc.robot.helper.Action;
 import frc.robot.helper.Process;
-import frc.robot.maps.RobotMap.ARM_TARGETS;
 import frc.robot.maps.RobotMap.LIFT_TARGETS;
 import frc.robot.subsystems.HelperFunctions;
 
@@ -57,26 +56,27 @@ public class ControllerMap {
 
     public static class ArmControl {
         private static int armIdx = 0;
-	private boolean changedPos = false;
+	private static boolean changedPos = false;
         // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
         // is only called when left bumper is down)
         public static int goToPosition() {				
-		if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
-		if (HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
-			armIdx++;
-			changedPos = true;
-		} else if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) < 0.5 && arm > 0 && !changedPos) {
-			armIdx--;
-			changedPos = true;
-		} else {
-			changedPos = false;
-		}
-		return armIdx;
+		    if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
+		    if (HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
+			    armIdx++;
+			    changedPos = true;
+		    } else if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) < 0.5 && armIdx > 0 && !changedPos) {
+			    armIdx--;
+			    changedPos = true;
+		    } else {
+			    changedPos = false;
+		    }
+		    return armIdx;
         }
 
         public static double move() {
-		armIdx = -1;
-		return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
+		    armIdx = -1;
+            return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
+        }
     }
 
     public static class ClimbControl {

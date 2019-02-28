@@ -151,7 +151,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    boolean driving = sunKist.drive(teleOpThread.getDriveMode(), ControllerMap.Primary);
+    boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
     if(driving && !autoStopped){
       auto.stop();
       autoStopped = true;

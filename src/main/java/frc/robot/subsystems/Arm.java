@@ -62,16 +62,16 @@ public class Arm extends Subsystem{
 
     public int getClosestIdx(){
         double minDist = 10000;
-	double minIdx = -1;
-	//minus the size by 1 to not automatically go to high position for safety reasons
-	for(int i = 0; i < RobotMap.ARM_TARGETS.size()-1; i++){
-	    double target = RobotMap.ARM_TARGETS.get(i);
-	    double dist = Math.abs(target-flexEncoder.getPosition());
-	    if(dist < minDist)
-	        minDist = dist;
-	        minIdx = i;
-	}
-	return minIdx;
+	    int minIdx = -1;
+	    //minus the size by 1 to not automatically go to high position for safety reasons
+	    for(int i = 0; i < RobotMap.ARM_TARGETS.size()-1; i++){
+	        double target = RobotMap.ARM_TARGETS.get(i);
+	        double dist = Math.abs(target-flexEncoder.getPosition());
+	        if(dist < minDist)
+	            minDist = dist;
+	            minIdx = i;
+	    }
+	    return minIdx;
     }
 
     @Override

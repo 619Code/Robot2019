@@ -2,7 +2,11 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.maps.RobotMap;
-import edu.wpi.first.wpilibj.CommandGroup;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import java.util.Map;
+import java.util.HashMap;
+
+import frc.robot.auto.type.*;
 
 public class Auto{
     
