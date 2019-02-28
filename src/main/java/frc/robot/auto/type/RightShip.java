@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class RightShip extends CommandGroup{
 
-    public void start(){
+    public RightShip(){
         Robot.sunKist.resetNavX(); 
         addSequential(new FollowPath(Paths.getStraightLinePath(99),Speeds.setSpeed(0.2)));
         addSequential(new TurnToAngle(0, 0.005), 2);

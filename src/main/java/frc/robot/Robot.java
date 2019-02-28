@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
   EasyPathConfig config;
 
   VisionThread visionThread;
+  boolean autoStopped;
 
   @Override
   public void robotInit() {
@@ -102,6 +103,7 @@ public class Robot extends TimedRobot {
   }
 
   public void initAuto(){
+    autoStopped = false;
     config = new EasyPathConfig(
       sunKist, 
       sunKist::setLeftandRight, 
@@ -141,15 +143,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    //teleopThread = new TeleopThread(threadManager);
+    teleopThread = new TeleopThread(threadManager);
     sunKist.setToBrake();
     auto = new Auto();
     auto.start();
-    //sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override
   public void autonomousPeriodic() {
+    boolean driving = sunKist.drive(teleOpThread.getDriveMode(), ControllerMap.Primary);
+    if(driving && !autoStopped){
+      auto.stop();
+      autoStopped = true;
+    }
   }
 
   @Override

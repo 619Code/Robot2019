@@ -96,7 +96,7 @@ public class WestCoastDrive extends Subsystem{
         return _navX.getAngle();
     }
 
-    public void drive(Mode mode, Controller driver) {
+    public boolean drive(Mode mode, Controller driver) {
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
         double correction = 0;
@@ -123,6 +123,7 @@ public class WestCoastDrive extends Subsystem{
             curveDrive(speed, rotation + correction);
             break;
         }
+	return Math.abs(speed) > 0 || Math.abs(rotation) > 0 ? true : false;
     }
 
     public void setLeftMotors(double speed) {

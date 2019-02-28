@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class LeftRocket extends CommandGroup{
 
-    public void start(){
+    public LeftRocket(){
         //TODO: IMPLEMENT
     }
 }

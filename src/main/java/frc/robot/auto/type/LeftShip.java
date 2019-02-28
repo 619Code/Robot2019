@@ -12,7 +12,7 @@ import frc.robot.auto.variables.Speeds;
 
 public class LeftShip extends CommandGroup{
 
-    public void start(){
+    public LeftShip(){
         //TODO: 
         addSequential(new FollowPath(Paths.getStraightLinePath(99),Speeds.setSpeed(0.2)));
     }
