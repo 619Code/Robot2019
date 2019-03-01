@@ -19,7 +19,7 @@ public class Auto{
     }
 
     public Auto(){
-	addAutoTypes();
+	    addAutoTypes();
         // left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
         // right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
         // ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
@@ -28,18 +28,18 @@ public class Auto{
 
     public void addAutoTypes(){
     	autoTypes.put(SwitchState.LEFTSHIP, new LeftShip());
-	autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
-	autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
-	autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
+	    autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
+	    autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
+	    autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
     }
 
     public void start(){
         SwitchState state = getSwitchState();
-	if(!state.equals(SwitchState.NOAUTO))
-	    chosenAuto = autoTypes.get(state);
-	else
+	    if(!state.equals(SwitchState.NOAUTO))
+	        chosenAuto = autoTypes.get(state);
+	    else
     	    chosenAuto = new CommandGroup();
-	chosenAuto.start();
+	    chosenAuto.start();
     }	
 
     public void stop(){

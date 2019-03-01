@@ -20,15 +20,13 @@ public class Intake extends Subsystem{
         wrist = new DoubleSolenoid(RobotMap.PCM_CAN_ID, RobotMap.INTAKE_WRIST_CHANNEL[0], RobotMap.INTAKE_WRIST_CHANNEL[1]);
     }
 
-    public void spin()
-    {
-	double speed = ControllerMap.IntakeControl.spin();
+    public void spin(){
+	    double speed = ControllerMap.IntakeControl.spin();
         spinny.set(ControlMode.PercentOutput, speed);
-	if(speed > 0) Robot.Grabber.grab(RobotMap.GRABBER_SPEED);
+	    if(speed > 0) Robot.Grabber.grab(RobotMap.GRABBER_SPEED);
     }
 
-    public void spin(double speed)
-    {
+    public void spin(double speed){
         spinny.set(ControlMode.PercentOutput, speed);
     }
 

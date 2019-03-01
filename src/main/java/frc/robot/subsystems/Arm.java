@@ -60,7 +60,7 @@ public class Arm extends Subsystem{
     }
 
 
-    public int getClosestIdx(){
+    public int getClosestIdx() {
         double minDist = 10000;
 	    int minIdx = -1;
 	    //minus the size by 1 to not automatically go to high position for safety reasons

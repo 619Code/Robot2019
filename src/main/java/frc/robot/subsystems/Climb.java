@@ -13,7 +13,7 @@ public class Climb extends Subsystem {
         boost = new Solenoid(RobotMap.BOOST_CHANNEL);
     }
 
-    public void climb(){
+    public void climb() {
         state = ClimbControl.climb();
         boost.set(state);
     }

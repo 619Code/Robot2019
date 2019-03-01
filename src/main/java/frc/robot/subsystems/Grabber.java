@@ -13,7 +13,7 @@ public class Grabber extends Subsystem{
     //ratio is 1:20
     TalonSRX _left, _right;
 
-    public Grabber(){
+    public Grabber() {
         _left = new TalonSRX(RobotMap.LEFT_GRABBER);
         _right = new TalonSRX(RobotMap.RIGHT_GRABBER);
         HelperFunctions.configureTalon(_left, Manipulators.GRABBER);
@@ -24,12 +24,12 @@ public class Grabber extends Subsystem{
     }
 
     public void grab(){
-	double speed = ControllerMap.GrabberControl.grab();
+	    double speed = ControllerMap.GrabberControl.grab();
         _right.set(ControlMode.PercentOutput, speed);
-	if(speed > 0) Robot.Intake.spin(RobotMap.INTAKE_SPEED);
+	    if(speed > 0) Robot.Intake.spin(RobotMap.INTAKE_SPEED);
     }
 
-    public void grab(double speed){
+    public void grab(double speed) {
         _right.set(ControlMode.PercentOutput, speed);
     }
 
