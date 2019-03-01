@@ -7,6 +7,7 @@ import easypath.EasyPath;
 import easypath.EasyPathConfig;
 import easypath.PathUtil;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.opencv.core.Mat;
@@ -114,7 +115,7 @@ public class Robot extends TimedRobot {
       RobotMap.AUTO_kP);
 
     config.setSwapDrivingDirection(true);
-    config.setSwapTurningDirection(true);
+    config.setSwapTurningDirection(false);
 
     EasyPath.configure(config);
   }
@@ -144,21 +145,21 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    teleopThread = new TeleopThread(threadManager);
+    //teleopThread = new TeleopThread(threadManager);
     sunKist.setToBrake();
     auto = new Auto();
-    //auto.start();
-    LeftShip leftShip = new LeftShip();
-    leftShip.start();
+    auto.start();
+    // CommandGroup leftShip = new LeftShip();
+    // leftShip.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
-    if(driving && !autoStopped){
-      auto.stop();
-      autoStopped = true;
-    }
+    //boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
+    // if(driving && !autoStopped){
+    //   auto.stop();
+    //   autoStopped = true;
+    // }
   }
 
   @Override
