@@ -14,6 +14,7 @@ public class LeftShip extends CommandGroup{
 
     public LeftShip(){
         //TODO: 
-        addSequential(new FollowPath(Paths.getStraightLinePath(99),Speeds.setSpeed(0.2)));
+        Robot.sunKist.resetNavX(); 
+        addSequential(new FollowPath(Paths.getStraightLinePath(24),Speeds.setSpeed(0.2)));
     }
 }

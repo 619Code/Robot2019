@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.auto.Auto;
+import frc.robot.auto.type.LeftShip;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
 import frc.robot.hardware.LimitSwitch;
@@ -146,7 +147,9 @@ public class Robot extends TimedRobot {
     teleopThread = new TeleopThread(threadManager);
     sunKist.setToBrake();
     auto = new Auto();
-    auto.start();
+    //auto.start();
+    LeftShip leftShip = new LeftShip();
+    leftShip.start();
   }
 
   @Override
