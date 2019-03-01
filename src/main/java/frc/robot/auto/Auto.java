@@ -20,10 +20,10 @@ public class Auto{
 
     public Auto(){
 	    addAutoTypes();
-        // left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
-        // right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
-        // ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
-        // rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
+        left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
+        right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
+        ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
+        rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
     }
 
     public void addAutoTypes(){
@@ -47,15 +47,15 @@ public class Auto{
     }
 
     public SwitchState getSwitchState(){
-        return SwitchState.LEFTSHIP;
-        // if(left.get() && ship.get())
-        //     return SwitchState.LEFTSHIP;
-        // else if(right.get() && ship.get())
-        //     return SwitchState.RIGHTSHIP;
-        // else if(left.get() && rocket.get())
-        //     return SwitchState.LEFTROCKET;
-        // else if(right.get() && rocket.get())
-        //     return SwitchState.RIGHTROCKET;
-        // return SwitchState.NOAUTO;
+        //return SwitchState.LEFTSHIP;
+        if(left.get() && ship.get())
+            return SwitchState.LEFTSHIP;
+        else if(right.get() && ship.get())
+            return SwitchState.RIGHTSHIP;
+        else if(left.get() && rocket.get())
+            return SwitchState.LEFTROCKET;
+        else if(right.get() && rocket.get())
+            return SwitchState.RIGHTROCKET;
+        return SwitchState.NOAUTO;
     }
 }

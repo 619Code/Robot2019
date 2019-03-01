@@ -22,7 +22,7 @@ public class TeleopThread extends RobotThread {
 
     @Override
     protected void cycle() {
-        //Robot.Arm.moveToTarget();
+        Robot.Arm.moveToTarget();
         // Robot.Lift.moveToTarget();
         Robot.Arm.move();
         Robot.Lift.move();

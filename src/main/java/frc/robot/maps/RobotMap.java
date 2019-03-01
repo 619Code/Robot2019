@@ -127,7 +127,7 @@ public class RobotMap {
     //Arm PID
     public static final double ARM_kP = 0.7;
 	public static final double ARM_kI = 0;
-    public static final double ARM_kD = 20;
+    public static final double ARM_kD = 0;
     public static final double ARM_kF = 0;
     public static final int ARM_kIZONE = 0;
     public static final double ARM_MAXOUTPUT = 0.5;

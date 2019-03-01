@@ -19,6 +19,8 @@ public class Arm extends Subsystem{
     private CANPIDController flexController;
     private CANEncoder flexEncoder;
 
+    private int lastTargetIdx;
+
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
         flexin.setIdleMode(IdleMode.kBrake);
@@ -43,11 +45,15 @@ public class Arm extends Subsystem{
      */
     public void moveToTarget() {
         int targetIdx = ControllerMap.ArmControl.goToPosition();
-        if (targetIdx == -1){
-            flexController.setReference(flexEncoder.getPosition(), ControlType.kPosition);
-            return;
+        if(!ControllerMap.armInManual){
+            if (targetIdx == -1){
+                //System.out.println("do nothing");
+                flexController.setReference(RobotMap.ARM_TARGETS.get(lastTargetIdx), ControlType.kPosition);
+                return;
+            }
+            lastTargetIdx = targetIdx;
+            flexController.setReference(RobotMap.ARM_TARGETS.get(targetIdx), ControlType.kPosition);
         }
-        flexController.setReference(RobotMap.ARM_TARGETS.get(targetIdx), ControlType.kPosition);
     }
 
     public void move() {

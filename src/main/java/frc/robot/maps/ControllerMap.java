@@ -1,5 +1,7 @@
 package frc.robot.maps;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
@@ -13,6 +15,9 @@ public class ControllerMap {
 
     public static Controller Primary = new Controller(0);
     public static Controller Secondary = new Controller(1);
+
+    private static boolean changedArmPos = false;
+    public static boolean armInManual = true;
 
     private static final Process GATHERHATCH = new Process(new Action[] { new Action() {
         public void start() {
@@ -56,25 +61,28 @@ public class ControllerMap {
 
     public static class ArmControl {
         private static int armIdx = 0;
-	private static boolean changedPos = false;
-        // returns 0 for lowest position, 1 for second-lowest and so on (4 positions and
-        // is only called when left bumper is down)
-        public static int goToPosition() {				
-		    if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
-		    if (HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) > 0.5 && armIdx < 4 && !changedPos){
-			    armIdx++;
-			    changedPos = true;
-		    } else if(HelperFunctions.deadzone(Secondary.getX(Hand.kRight)) < 0.5 && armIdx > 0 && !changedPos) {
-			    armIdx--;
-			    changedPos = true;
-		    } else {
-			    changedPos = false;
-		    }
-		    return armIdx;
+        public static int goToPosition() {
+            double speed = HelperFunctions.deadzone(Secondary.getX(Hand.kRight));
+            //System.out.println(changedArmPos);
+            if(Math.abs(speed) > 0.5 && !changedArmPos){
+                armInManual = false;
+                //if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
+		        if (speed > 0.5 && armIdx < 4 && !changedArmPos){
+			        armIdx++;
+		        } else if(speed < -0.5 && armIdx > 0 && !changedArmPos) {
+			        armIdx--;                    
+                }
+                changedArmPos = true;
+                return armIdx;
+            } else if(speed == 0){
+                changedArmPos = false;
+            }	
+		    return -1;
         }
 
         public static double move() {
-		    armIdx = -1;
+            double speed = HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
+            if(Math.abs(speed) > 0.1) armInManual = true;
             return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
         }
     }
@@ -96,11 +104,13 @@ public class ControllerMap {
 
     public static class GrabberControl {
         public static double grab() {
-	    if (Secondary.getBumper(Hand.kLeft))
-		return RobotMap.GRABBER_SPEED;
-	    if (Secondary.getBumper(Hand.kRight))
-		return -RobotMap.GRABBER_SPEED;
-	    return 0;
+            if (HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft)) > 0)
+                return -RobotMap.GRABBER_SPEED;
+	        if (Secondary.getBumper(Hand.kLeft))
+		        return -RobotMap.GRABBER_SPEED;
+	        if (Secondary.getBumper(Hand.kRight))
+		        return RobotMap.GRABBER_SPEED;
+	        return 0;
         }
     }
 
@@ -120,9 +130,12 @@ public class ControllerMap {
 
     public static class IntakeControl {
         public static double spin(){
-	    double intakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft));
-	    double outakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kRight));
-	    return intakeSpeed > 0 ? intakeSpeed : -outakeSpeed;
+            if(Secondary.getBumper(Hand.kLeft)){
+                return -RobotMap.INTAKE_SPEED;
+            }
+	        double intakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft));
+	        double outakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kRight));
+	        return intakeSpeed > 0 ? -intakeSpeed : outakeSpeed;
         }
 
         // grab right axis from secondary joystick
@@ -162,8 +175,8 @@ public class ControllerMap {
                 RobotMap.DRIVE_SPEED_MAX = 1.0;
                 RobotMap.DRIVE_ROT_MAX = 0.5;
             } else {
-                RobotMap.DRIVE_SPEED_MAX = 0.5;
-                RobotMap.DRIVE_ROT_MAX = 0.3;
+                RobotMap.DRIVE_SPEED_MAX = 0.3;
+                RobotMap.DRIVE_ROT_MAX = 0.2;
             }
         }
     }

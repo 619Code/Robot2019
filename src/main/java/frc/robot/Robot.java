@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     initNavX();
     initManipulators();
     initAuto();
-    //initVision(false);
+    initVision(false);
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
@@ -194,7 +194,7 @@ public class Robot extends TimedRobot {
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
-    sunKist.setLeftandRight(0.2, 0.2);
+    //sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override
