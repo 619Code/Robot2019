@@ -13,10 +13,15 @@ public class Paths{
     // (219 * Math.pow(t, 2) + -222 * t + 3) / (843 * Math.pow(t, 2) + -810 * t + 222),
     // 110.682);
 
-    public static Path TESTCURVEPATH = new Path(t -> 
+    public static Path RIGHTHATCHSHIP = new Path(t -> 
     /* {"start":{"x":114,"y":209},"mid1":{"x":188,"y":210},"mid2":{"x":129,"y":176},"end":{"x":212,"y":176}} */
     (207 * Math.pow(t, 2) + -210 * t + 3) / (825 * Math.pow(t, 2) + -798 * t + 222),
     109.307);
+
+    public static Path LEFTHATCHSHIP = new Path(t -> 
+    /* {"start":{"x":112,"y":119},"mid1":{"x":188,"y":118},"mid2":{"x":129,"y":152},"end":{"x":212,"y":152}} */
+    (-207 * Math.pow(t, 2) + 210 * t + -3) / (831 * Math.pow(t, 2) + -810 * t + 228),
+    111.029);
 
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 

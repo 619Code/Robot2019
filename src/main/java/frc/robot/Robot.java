@@ -145,27 +145,25 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    //teleopThread = new TeleopThread(threadManager);
+    teleopThread = new TeleopThread(threadManager);
+    sunKist.setInAuto(true);
     sunKist.setToBrake();
     auto = new Auto();
     auto.start();
-    // CommandGroup leftShip = new LeftShip();
-    // leftShip.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    //boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
-    // if(driving && !autoStopped){
-    //   auto.stop();
-    //   autoStopped = true;
-    // }
+    boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
+    System.out.println(auto.getSwitchState());
+    if(driving) auto.stop();
   }
 
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
     teleopThread = new TeleopThread(threadManager);
+    sunKist.setInAuto(false);
     sunKist.setToBrake();
   }
 

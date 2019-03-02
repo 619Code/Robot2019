@@ -20,6 +20,7 @@ public class WestCoastDrive extends Subsystem{
     AHRS _navX;
 
     double targetAngle;
+    boolean _inAuto;
 
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
@@ -28,7 +29,12 @@ public class WestCoastDrive extends Subsystem{
     public WestCoastDrive(AHRS navX) {
         _navX = navX;
         _navX.getQuaternionZ();
+        _inAuto = false;
         initDrive();
+    }
+
+    public void setInAuto(boolean inAuto){
+        _inAuto = inAuto;
     }
 
     public void initDrive() {
@@ -101,6 +107,11 @@ public class WestCoastDrive extends Subsystem{
         double rotation = getRotation(mode, driver);
         double correction = 0;
 
+        if((Math.abs(speed) == 0 && Math.abs(rotation) == 0) && _inAuto)
+            return false;
+
+        _inAuto = false;
+
         //TODO: IMPLEMENT STRAIGHT DRIVING CORRECTION
         // if(rotation == 0){
         //     double error = targetAngle - getNavXAngle();
@@ -123,7 +134,7 @@ public class WestCoastDrive extends Subsystem{
             curveDrive(speed, rotation + correction);
             break;
         }
-	return Math.abs(speed) > 0 || Math.abs(rotation) > 0 ? true : false;
+        return true;
     }
 
     public void setLeftMotors(double speed) {

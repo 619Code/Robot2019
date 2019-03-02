@@ -13,8 +13,14 @@ import frc.robot.auto.variables.Speeds;
 public class LeftShip extends CommandGroup{
 
     public LeftShip(){
-        //TODO: 
         Robot.sunKist.resetNavX(); 
-        addSequential(new FollowPath(Paths.getStraightLinePath(24),Speeds.setSpeed(0.2)));
+        addSequential(new FollowPath(Paths.getStraightLinePath(99),Speeds.setSpeed(0.2)));
+        addSequential(new TurnToAngle(0, 0.005), 2);
+        addSequential(new Wait(1));
+        addSequential(new HatchGrab(false));
+        addSequential(new HatchExtend(Value.kForward));
+        addSequential(new FollowPath(Paths.LEFTHATCHSHIP, Speeds.setSpeed(0.3)));
+        addSequential(new HatchGrab(true));
+        addSequential(new FollowPath(Paths.getStraightLinePath(12), Speeds.setSpeed(-0.3)));
     }
 }

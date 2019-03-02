@@ -19,7 +19,7 @@ public class RightShip extends CommandGroup{
         addSequential(new Wait(1));
         addSequential(new HatchGrab(false));
         addSequential(new HatchExtend(Value.kForward));
-        addSequential(new FollowPath(Paths.TESTCURVEPATH, Speeds.setSpeed(0.3)));
+        addSequential(new FollowPath(Paths.RIGHTHATCHSHIP, Speeds.setSpeed(0.3)));
         addSequential(new HatchGrab(true));
         addSequential(new FollowPath(Paths.getStraightLinePath(12), Speeds.setSpeed(-0.3)));
          // // addSequential(new TurnToAngle(90, 0.005), 2);
