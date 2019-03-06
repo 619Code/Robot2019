@@ -89,6 +89,7 @@ public class RobotMap {
 
     public static final double INTAKE_SPEED = 0.65;
     public static final double GRABBER_SPEED = 0.90;
+    public static final double GRABBER_COUNTER = -0.1;
     public static final double LIFT_SPEED = 1.00;
 
     // controller public static finals

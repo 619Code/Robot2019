@@ -23,6 +23,16 @@ public class Paths{
     (-207 * Math.pow(t, 2) + 210 * t + -3) / (831 * Math.pow(t, 2) + -810 * t + 228),
     111.029);
 
+    public static Path RIGHTHATCHROCKET = new Path(t -> 
+    /* {"start":{"x":114,"y":209},"mid1":{"x":171,"y":236},"mid2":{"x":133,"y":263},"end":{"x":193,"y":296}} */
+    (18 * Math.pow(t, 2) + 0 * t + 81) / (579 * Math.pow(t, 2) + -570 * t + 171),
+    121.325);
+
+    public static Path LEFTHATCHROCKET = new Path(t -> 
+    /* {"start":{"x":114,"y":119},"mid1":{"x":171,"y":92},"mid2":{"x":133,"y":65},"end":{"x":193,"y":32}} */
+    (-18 * Math.pow(t, 2) + 0 * t + -81) / (579 * Math.pow(t, 2) + -570 * t + 171),
+    121.325);
+
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 
     // /* {"start":{"x":188,"y":174},"mid1":{"x":116,"y":174},"mid2":{"x":221,"y":295},"end":{"x":20,"y":295}} */

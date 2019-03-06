@@ -106,8 +106,8 @@ public class WestCoastDrive extends Subsystem{
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
         double correction = 0;
-
-        if((Math.abs(speed) == 0 && Math.abs(rotation) == 0) && _inAuto)
+        //System.out.println(speed + " " + rotation);
+        if((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
             return false;
 
         _inAuto = false;
