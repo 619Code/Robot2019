@@ -2,9 +2,6 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 
 import easypath.EasyPath;
 import easypath.EasyPathConfig;
@@ -14,9 +11,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -24,10 +18,11 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.auto.Auto;
+import frc.robot.auto.type.LeftShip;
 import frc.robot.drive.WestCoastDrive;
 import frc.robot.hardware.Controller;
 import frc.robot.hardware.LimitSwitch;
@@ -54,37 +49,46 @@ public class Robot extends TimedRobot {
   public static Grabber Grabber;
   public static Climb Climb;
 
+  DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
+
   VisionProcess visionProcess;
 
   ThreadManager threadManager;
   TeleopThread teleopThread;
-  CommandGroup auto;
+  Auto auto;
   Compressor c;
-
   AHRS navX;
 
   EasyPathConfig config;
 
   VisionThread visionThread;
+  boolean autoStopped;
 
   @Override
   public void robotInit() {
     initNavX();
     initManipulators();
     initAuto();
-    //initVision();
+    initVision(false);
     threadManager = new ThreadManager();
     threadManager.killAllThreads();
   }
   
   @Override
   public void robotPeriodic() {
+    //System.out.println(RobotMap.DRIVE_SPEED_MAX);
     Scheduler.getInstance().run();
+
+    //ONLY FOR V1
+    // if(compressorStop.get() == false) 
+    //   c.setClosedLoopControl(true);
+    // else
+    //   c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
-    
+
     Lift = new Lift();
     Intake = new Intake();
     Hatch = new Hatch();
@@ -101,6 +105,7 @@ public class Robot extends TimedRobot {
   }
 
   public void initAuto(){
+    autoStopped = false;
     config = new EasyPathConfig(
       sunKist, 
       sunKist::setLeftandRight, 
@@ -110,47 +115,56 @@ public class Robot extends TimedRobot {
       RobotMap.AUTO_kP);
 
     config.setSwapDrivingDirection(true);
-    config.setSwapTurningDirection(true);
+    config.setSwapTurningDirection(false);
 
     EasyPath.configure(config);
   }
 
-  public void initVision(){
-    visionProcess = new VisionProcess();
-    new Thread(() -> {
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution(160, 120);
-      CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
+  public void initVision(boolean useCV){
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(160, 120);
 
-      Mat source = new Mat();
-      Mat output = new Mat();
-      
-      while(!Thread.interrupted()){
-        cvSink.grabFrame(source);
-        output = visionProcess.process(source);
-        outputStream.putFrame(output);
-      }
-
-    }).start();
+    if(useCV){
+      visionProcess = new VisionProcess();
+      new Thread(() -> {
+        CvSink cvSink = CameraServer.getInstance().getVideo();
+        CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
+  
+        Mat source = new Mat();
+        Mat output = new Mat();
+        
+        while(!Thread.interrupted()){
+          cvSink.grabFrame(source);
+          output = visionProcess.process(source);
+          outputStream.putFrame(output);
+        }
+      }).start();
+    }
   }
 
   @Override
   public void autonomousInit() {
     threadManager.killAllThreads();
-    sunKist.initAutoDrive();
+    teleopThread = new TeleopThread(threadManager);
+    sunKist.setInAuto(true);
+    sunKist.setToBrake();
     auto = new Auto();
     auto.start();
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
+    //System.out.println(auto.getSwitchState() +" " + driving);
+    if(driving) auto.stop();
+  }
 
   @Override
   public void teleopInit(){
     threadManager.killAllThreads();
-    sunKist.initTeleopDrive();
     teleopThread = new TeleopThread(threadManager);
+    sunKist.setInAuto(false);
+    sunKist.setToBrake();
   }
 
   @Override
@@ -164,18 +178,30 @@ public class Robot extends TimedRobot {
   Controller driver;
   Controller secondary;
   LimitSwitch limitSwitch;
+
+  // DigitalInput left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
+  // DigitalInput right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
+  // DigitalInput ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
+  // DigitalInput rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
+
   @Override
   public void testInit() {
    // limitSwitch = new LimitSwitch(6);
-    driver = new Controller(0);
-    secondary = new Controller(1);
+    // driver = new Controller(0);
+    // secondary = new Controller(1);
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
+    //sunKist.setLeftandRight(0.2, 0.2);
   }
 
   @Override
   public void testPeriodic() {
+    // System.out.println("Left: " + left.get());
+    // System.out.println("Right: " + right.get());
+    // System.out.println("Ship: " + ship.get());
+    // System.out.println("Rocket: " + rocket.get());
+    // System.out.println();
     //System.out.println(lift.getLeftLift().getSelectedSensorPosition());
     //Lift.move(HelperFunctions.deadzone(driver.getY(Hand.kLeft)));
     //sunKist.setLeftMotors(driver.getY(Hand.kLeft));
@@ -183,7 +209,7 @@ public class Robot extends TimedRobot {
     //sunKist.drive(WestCoastDrive.Mode.CURVATURE, driver); 
     //System.out.println(limitSwitch.get());
     //Lift.move(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
-    System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
+    //System.out.println(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));
     //intake.moveIntake(HelperFunctions.deadzone(0.75*driver.getY(RobotMap.LEFT_HAND)));
     //grabber.grab(HelperFunctions.deadzone(0.3*driver.getY(RobotMap.LEFT_HAND)));
     //arm.moveArm(HelperFunctions.deadzone(driver.getY(RobotMap.LEFT_HAND)));

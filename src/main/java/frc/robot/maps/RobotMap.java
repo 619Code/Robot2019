@@ -1,6 +1,7 @@
 package frc.robot.maps;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import java.util.ArrayList;
 
 public class RobotMap {
 
@@ -12,18 +13,29 @@ public class RobotMap {
         LINE;
     }
     public enum LIFT_TARGETS{
-        LOWER(0),MIDDLE(1),HIGH(2),NULL_POSITION(-1);
-        private final int rotations;
-        LIFT_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
+        LOWER(-8.5),MIDDLE(-14.7),HIGH(-57),NULL_POSITION(-116),CARGO(-40);
+        private final double rotations;
+        LIFT_TARGETS(double rotations){this.rotations = rotations;}
+        public double getValue() {return rotations;}
 
     }
-    public enum ARM_TARGETS{
-        BACK(0),LOWER(1),MIDDLE(2),HIGH(3),NULL_POSITION(-1);
-        private final int rotations;
-        ARM_TARGETS(int rotations){this.rotations = rotations;}
-        public int getValue() {return rotations;}
-    }
+    
+    /**
+     *Idx 0 = intake
+     *Idx 1 = lower
+     *Idx 2 = cargo
+     *Idx 3 = middle
+     *Idx 4 = high
+     */
+    public static final ArrayList<Double> ARM_TARGETS = new ArrayList<>(){
+	    {
+		    add(-8.5);
+		    add(-14.7);
+		    add(-40.0);
+		    add(-57.0);
+		    add(-116.0);
+	    }
+    }; 
 
     // Robot Dimesnions
     public static final double ROBOT_LENGTH = 35.125;
@@ -53,30 +65,31 @@ public class RobotMap {
     public static final int LEFT_GRABBER = 60;
     public static final int RIGHT_GRABBER = 61;
 
-    public static final int FRONT_MIDDLE_CLIMB_SWITCH = 0;
-    public static final int FRONT_END_CLIMB_SWITCH = 1;
-    public static final int BACK_MIDDLE_CLIMB_SWITCH = 2;
-    public static final int BACK_END_CLIMB_SWITCH = 3;
-
-    // pneumatics TODO: FIGURE THESE OUT WHEN THE BOARD IS READY
+    // pneumatics
     public static final int PCM_CAN_ID = 1; 
     public static final int[] INTAKE_WRIST_CHANNEL = {4, 5};
     public static final int HATCH_GRABBER_CHANNEL = 1;
     public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
-    public static final int ZOOP_CHANNEL = 20;
     public static final int BOOST_CHANNEL = 21;
+
+    //auto switches
+    public static final int LEFTAUTOSWITCH = 0;
+    public static final int RIGHTAUTOSWITCH = 3;
+    public static final int SHIPAUTOSWITCH = 1;
+    public static final int ROCKETAUTOSWITCH = 2;
 
     // ramp constant (only works if in coast)
     public static final double RAMP_RATE = 0.3;
-    public static final double DEADZONE = 0.07;
+    public static final double DEADZONE = 0.05;
 
     // motor outputs
     public static final double DRIVE_OUTPUT_MAX = 1.0;
-    public static final double DRIVE_ROT_MAX = 0.3;
-    public static final double DRIVE_SPEED_MAX = 0.4;
+    public static double DRIVE_ROT_MAX = 0.3;
+    public static double DRIVE_SPEED_MAX = 0.5;
 
     public static final double INTAKE_SPEED = 0.65;
     public static final double GRABBER_SPEED = 0.90;
+    public static final double GRABBER_COUNTER = -0.1;
     public static final double LIFT_SPEED = 1.00;
 
     // controller public static finals
@@ -113,13 +126,13 @@ public class RobotMap {
     public static final double LIFE_PEAK_OUTPUT = 0;
     
     //Arm PID
-    public static final double ARM_kP = 0;
+    public static final double ARM_kP = 0.7;
 	public static final double ARM_kI = 0;
-	public static final double ARM_kD = 0;
+    public static final double ARM_kD = 0;
+    public static final double ARM_kF = 0;
     public static final int ARM_kIZONE = 0;
-    public static final double ARM_KFF = 0;
-    public static final double ARM_MAXOUTPUT = 0;
-    public static final double ARM_MINOUTPUT = 0;
+    public static final double ARM_MAXOUTPUT = 0.5;
+    public static final double ARM_MINOUTPUT = -0.5;
 
     //Motion Magic Constants
     public static final int kSLOTIDX = 0;

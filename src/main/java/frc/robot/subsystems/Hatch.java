@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 
 public class Hatch extends Subsystem{
@@ -24,24 +23,6 @@ public class Hatch extends Subsystem{
     public void grab(boolean dir)
     {
         grabber.set(dir);
-    }
-    
-    public void grab(){
-        double speed = ControllerMap.Hatch.grab();
-        if(speed > 0.5)
-            grab(true);
-        else if(speed < -0.5)
-            grab(false);
-    }
-
-    public void extend(){
-        double speed = ControllerMap.Hatch.extend();
-        if(speed == 0)
-            extend(Value.kOff);
-        else if(speed > 0.5)
-            extend(Value.kForward);
-        else if(speed < -0.5)
-            extend(Value.kReverse);
     }
 
     @Override

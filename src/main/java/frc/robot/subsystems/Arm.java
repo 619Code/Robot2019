@@ -16,10 +16,10 @@ import frc.robot.maps.RobotMap;
 public class Arm extends Subsystem{
 
     private CANSparkMax flexin;
-
     private CANPIDController flexController;
-
     private CANEncoder flexEncoder;
+
+    private int lastTargetIdx;
 
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
@@ -28,22 +28,56 @@ public class Arm extends Subsystem{
         flexEncoder = flexin.getEncoder();
 
         HelperFunctions.configurePIDController(flexController, RobotMap.Manipulators.ARM);
+        flexController.setP(RobotMap.ARM_kP);
+        flexController.setI(RobotMap.ARM_kI);
+        flexController.setD(RobotMap.ARM_kD);
+        flexController.setFF(RobotMap.ARM_kF);
+        flexController.setIZone(RobotMap.ARM_kIZONE);
+        flexController.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
     }
 
+    /**
+     * INTAKE BALL ENC = -8.5
+     * LOWER GOAL ENC = -14.7
+     * MIDDLE GOAL ENC = -57
+     * HIGH GOAL ENC = -116
+     * CARGO SHIP ENC = -40
+     */
     public void moveToTarget() {
-        RobotMap.ARM_TARGETS target = ControllerMap.Arm.goToPosition();
-        if (target.equals(RobotMap.ARM_TARGETS.NULL_POSITION))
-            return;
-        double targetPos = (RobotMap.TICKSPERROT_NEO_ENC * RobotMap.RATIO_ARM) * target.getValue();
-        flexController.setReference(targetPos, ControlType.kPosition);
+        int targetIdx = ControllerMap.ArmControl.goToPosition();
+        if(!ControllerMap.armInManual){
+            if (targetIdx == -1){
+                //System.out.println("do nothing");
+                flexController.setReference(RobotMap.ARM_TARGETS.get(lastTargetIdx), ControlType.kPosition);
+                return;
+            }
+            lastTargetIdx = targetIdx;
+            flexController.setReference(RobotMap.ARM_TARGETS.get(targetIdx), ControlType.kPosition);
+        }
     }
 
     public void move() {
-        flexin.set(ControllerMap.Arm.move());
+        flexin.set(ControllerMap.ArmControl.move());
+        //System.out.println("ENCODER POS: " + flexEncoder.getPosition());
     }
 
     public void move(double speed) {
         flexin.set(speed);
+    }
+
+
+    public int getClosestIdx() {
+        double minDist = 10000;
+	    int minIdx = -1;
+	    //minus the size by 1 to not automatically go to high position for safety reasons
+	    for(int i = 0; i < RobotMap.ARM_TARGETS.size()-1; i++){
+	        double target = RobotMap.ARM_TARGETS.get(i);
+	        double dist = Math.abs(target-flexEncoder.getPosition());
+	        if(dist < minDist)
+	            minDist = dist;
+	            minIdx = i;
+	    }
+	    return minIdx;
     }
 
     @Override

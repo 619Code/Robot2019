@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - LeftHatchAutoLvl2",
+      "request": "launch",
+      "mainClass": "frc.robot.auto.type.LeftHatchAutoLvl2",
+      "projectName": "Robot2019"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Test",
       "request": "launch",
       "mainClass": "frc.robot.vision.Test",

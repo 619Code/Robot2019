@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class Controller {
 
 	protected edu.wpi.first.wpilibj.XboxController controller;
-	
+
 	public static enum ButtonID
 	{
 		RIGHTBUMPER, 
@@ -23,6 +23,8 @@ public class Controller {
 		NOBUTTON
 	};
 	
+	private boolean lastState; 
+
 	/**
 	 * Currently just a wrapper class. Adds nothing new to XboxController from wpilib
 	 * This class exists in case we want to add something extra
@@ -47,7 +49,7 @@ public class Controller {
 		if(getPOV() == 180) return ButtonID.POVDOWN;
 		return ButtonID.NOBUTTON;
 	}
-	
+
 	/**
 	* Get the X axis value of the controller.
 	*

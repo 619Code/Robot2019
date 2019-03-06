@@ -13,10 +13,25 @@ public class Paths{
     // (219 * Math.pow(t, 2) + -222 * t + 3) / (843 * Math.pow(t, 2) + -810 * t + 222),
     // 110.682);
 
-    public static Path TESTCURVEPATH = new Path(t -> 
+    public static Path RIGHTHATCHSHIP = new Path(t -> 
     /* {"start":{"x":114,"y":209},"mid1":{"x":188,"y":210},"mid2":{"x":129,"y":176},"end":{"x":212,"y":176}} */
     (207 * Math.pow(t, 2) + -210 * t + 3) / (825 * Math.pow(t, 2) + -798 * t + 222),
     109.307);
+
+    public static Path LEFTHATCHSHIP = new Path(t -> 
+    /* {"start":{"x":112,"y":119},"mid1":{"x":188,"y":118},"mid2":{"x":129,"y":152},"end":{"x":212,"y":152}} */
+    (-207 * Math.pow(t, 2) + 210 * t + -3) / (831 * Math.pow(t, 2) + -810 * t + 228),
+    111.029);
+
+    public static Path RIGHTHATCHROCKET = new Path(t -> 
+    /* {"start":{"x":114,"y":209},"mid1":{"x":171,"y":236},"mid2":{"x":133,"y":263},"end":{"x":193,"y":296}} */
+    (18 * Math.pow(t, 2) + 0 * t + 81) / (579 * Math.pow(t, 2) + -570 * t + 171),
+    121.325);
+
+    public static Path LEFTHATCHROCKET = new Path(t -> 
+    /* {"start":{"x":114,"y":119},"mid1":{"x":171,"y":92},"mid2":{"x":133,"y":65},"end":{"x":193,"y":32}} */
+    (-18 * Math.pow(t, 2) + 0 * t + -81) / (579 * Math.pow(t, 2) + -570 * t + 171),
+    121.325);
 
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 
