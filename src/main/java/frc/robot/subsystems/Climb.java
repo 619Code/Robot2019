@@ -10,7 +10,7 @@ public class Climb extends Subsystem {
     private boolean state;
 
     public Climb(){
-        boost = new Solenoid(RobotMap.BOOST_CHANNEL);
+        boost = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.BOOST_CHANNEL);
     }
 
     public void climb() {

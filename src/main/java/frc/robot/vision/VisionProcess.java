@@ -26,8 +26,8 @@ public class VisionProcess{
 	private Random rng = new Random(12345);
 
     public VisionProcess(){
-    
-    }
+	}
+	
     public Mat process(Mat source0) {
 		brightImage = new Mat(source0.rows(), source0.cols(), source0.type());
 		source0.convertTo(brightImage, -1, 1, -100);
