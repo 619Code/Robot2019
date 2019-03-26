@@ -134,6 +134,9 @@ public class RobotMap {
     public static final double ARM_MAXOUTPUT = 0.5;
     public static final double ARM_MINOUTPUT = -0.5;
 
+    //Climb Constants
+    public static final int CLIMB_SWITCH = -1; //INITALIZE WHEN ON THE ROBOT
+
     //Motion Magic Constants
     public static final int kSLOTIDX = 0;
     public static final int kPIDLOOPIDX = 0;

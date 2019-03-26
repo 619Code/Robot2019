@@ -32,7 +32,7 @@ public class TeleopThread extends RobotThread {
         Robot.Grabber.grab();
         DriveControl.speedUpdate();
 
-        // _climb.startClimb(ControllerMap.isClimbReady());
+        Robot.Climb.climb();
     }
 
     public Mode getDriveMode(){
