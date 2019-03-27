@@ -34,6 +34,8 @@ public class Arm extends Subsystem{
         flexController.setFF(RobotMap.ARM_kF);
         flexController.setIZone(RobotMap.ARM_kIZONE);
         flexController.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
+
+        lastTargetIdx = 0;
     }
 
     /**
@@ -57,7 +59,7 @@ public class Arm extends Subsystem{
     }
 
     public void move() {
-        flexin.set(ControllerMap.ArmControl.move());
+        if(ControllerMap.armInManual) flexin.set(ControllerMap.ArmControl.move());
         //System.out.println("ENCODER POS: " + flexEncoder.getPosition());
     }
 

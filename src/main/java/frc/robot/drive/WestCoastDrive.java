@@ -49,24 +49,6 @@ public class WestCoastDrive extends Subsystem{
         rightFront.follow(rightMaster);
         rightRear.follow(rightMaster);
 
-        leftPID = leftMaster.getPIDController();
-
-        leftPID.setP(RobotMap.DRIVE_kP);
-        leftPID.setI(RobotMap.DRIVE_kI);
-        leftPID.setD(RobotMap.DRIVE_kD);
-        leftPID.setIZone(RobotMap.DRIVE_kIZONE);
-        leftPID.setFF(RobotMap.DRIVE_KFF);
-        leftPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
-
-        rightPID = leftMaster.getPIDController();
-
-        rightPID.setP(RobotMap.DRIVE_kP);
-        rightPID.setI(RobotMap.DRIVE_kI);
-        rightPID.setD(RobotMap.DRIVE_kD);
-        rightPID.setIZone(RobotMap.DRIVE_kIZONE);
-        rightPID.setFF(RobotMap.DRIVE_KFF);
-        rightPID.setOutputRange(RobotMap.DRIVE_MINOUTPUT, RobotMap.DRIVE_MAXOUTPUT);
-        
         drive = new DifferentialDrive(leftMaster, rightMaster);
         drive.setSafetyEnabled(false);
         drive.setMaxOutput(RobotMap.DRIVE_OUTPUT_MAX);
@@ -105,33 +87,24 @@ public class WestCoastDrive extends Subsystem{
     public boolean drive(Mode mode, Controller driver) {
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
-        double correction = 0;
-        //System.out.println(speed + " " + rotation);
+  
         if((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
             return false;
 
         _inAuto = false;
-
-        //TODO: IMPLEMENT STRAIGHT DRIVING CORRECTION
-        // if(rotation == 0){
-        //     double error = targetAngle - getNavXAngle();
-        //     correction = 0.005 * error;
-        // }else{
-        //     targetAngle = getNavXAngle();
-        // }
-        
+ 
         switch (mode) {
         case CURVATURE:
-            curveDrive(speed, rotation + correction);
+            curveDrive(speed, rotation);
             break;
         case ARCADE:
-            arcadeDrive(speed, rotation + correction);
+            arcadeDrive(speed, rotation);
             break;
         case TANK:
-            tankDrive(speed, rotation + correction);
+            tankDrive(speed, rotation);
             break;
         case GTA:
-            curveDrive(speed, rotation + correction);
+            curveDrive(speed, rotation);
             break;
         }
         return true;
@@ -205,11 +178,6 @@ public class WestCoastDrive extends Subsystem{
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
         drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
-    }
-    public void moveDriveToTarget(double rotaitons){
-        double targetPos =  (RobotMap.TICKSPERROT_NEO_ENC*RobotMap.RATIO_DRIVE*rotaitons);
-        leftPID.setReference(targetPos, ControlType.kPosition);
-        rightPID.setReference(targetPos, ControlType.kPosition);    
     }
 
     public double purell(double speed, int level){

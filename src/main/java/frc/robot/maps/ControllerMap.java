@@ -67,9 +67,9 @@ public class ControllerMap {
             if(Math.abs(speed) > 0.5 && !changedArmPos){
                 armInManual = false;
                 //if(armIdx == -1) armIdx = Robot.Arm.getClosestIdx();
-		        if (speed > 0.5 && armIdx < 4 && !changedArmPos){
+		        if (speed > 0.5 && armIdx < RobotMap.ARM_TARGETS.size()-1){
 			        armIdx++;
-		        } else if(speed < -0.5 && armIdx > 0 && !changedArmPos) {
+		        } else if(speed < -0.5 && armIdx > 0) {
 			        armIdx--;                    
                 }
                 changedArmPos = true;
@@ -81,6 +81,7 @@ public class ControllerMap {
         }
 
         public static double move() {
+            armIdx = 0;
             double speed = HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
             if(Math.abs(speed) > 0.1) armInManual = true;
             return HelperFunctions.deadzone(Secondary.getY(Hand.kRight));

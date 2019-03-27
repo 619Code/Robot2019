@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static Grabber Grabber;
   public static Climb Climb;
 
-  DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
+  //DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
 
   VisionProcess visionProcess;
 
@@ -94,9 +94,9 @@ public class Robot extends TimedRobot {
     Hatch = new Hatch();
     Arm = new Arm();
     Grabber = new Grabber();
-    //climb = new Climb(sunKist);
+    Climb = new Climb();
     c = new Compressor(RobotMap.PCM_CAN_ID);
-    c.setClosedLoopControl(true);
+    c.setClosedLoopControl(true); 
   }
 
   public void initNavX() {
@@ -121,8 +121,9 @@ public class Robot extends TimedRobot {
   }
 
   public void initVision(boolean useCV){
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Hatch Camera", 0);
     camera.setResolution(160, 120);
+    camera.setFPS(30);
 
     if(useCV){
       visionProcess = new VisionProcess();
@@ -155,7 +156,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     boolean driving = sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
-    //System.out.println(auto.getSwitchState() +" " + driving);
     if(driving) auto.stop();
   }
 
@@ -170,7 +170,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
-    //System.out.println("left inches: " + sunKist.getLeftEncoderInches() + " right inches: " + sunKist.getRightEncoderInches());
   }
 
   // --------------------------------------

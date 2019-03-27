@@ -70,7 +70,7 @@ public class RobotMap {
     public static final int[] INTAKE_WRIST_CHANNEL = {4, 5};
     public static final int HATCH_GRABBER_CHANNEL = 1;
     public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
-    public static final int BOOST_CHANNEL = 21;
+    public static final int BOOST_CHANNEL = 0;
 
     //auto switches
     public static final int LEFTAUTOSWITCH = 0;
@@ -133,6 +133,9 @@ public class RobotMap {
     public static final int ARM_kIZONE = 0;
     public static final double ARM_MAXOUTPUT = 0.5;
     public static final double ARM_MINOUTPUT = -0.5;
+
+    //Climb Constants
+    public static final int CLIMB_SWITCH = -1; //INITALIZE WHEN ON THE ROBOT
 
     //Motion Magic Constants
     public static final int kSLOTIDX = 0;
