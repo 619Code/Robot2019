@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
     Hatch = new Hatch();
     Arm = new Arm();
     Grabber = new Grabber();
-    //climb = new Climb(sunKist);
+    Climb = new Climb();
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true); 
   }

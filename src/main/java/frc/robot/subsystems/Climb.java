@@ -12,7 +12,7 @@ import frc.robot.maps.ControllerMap.ClimbControl;
 public class Climb extends Subsystem {
     private Solenoid boost;
     private boolean state;
-    private LimitSwitch boostDoneSwitch = new LimitSwitch(RobotMap.CLIMB_SWITCH);
+    //private LimitSwitch boostDoneSwitch = new LimitSwitch(RobotMap.CLIMB_SWITCH);
     private boolean startClimb = false;
 
     public Climb(){
@@ -21,13 +21,14 @@ public class Climb extends Subsystem {
 
     public void climb() {
         state = ClimbControl.climb();
+        //System.out.println(state);
         boost.set(state);
-        if(state) startClimb = true;
-        if(startClimb && boostDoneSwitch.get()){
-            Robot.sunKist.setLeftandRight(0.7, 0.7);
-            Timer.delay(3);
-            Robot.sunKist.setLeftandRight(0, 0);
-        } 
+        // if(state) startClimb = true;
+        // if(startClimb && boostDoneSwitch.get()){
+        //     Robot.sunKist.setLeftandRight(0.7, 0.7);
+        //     Timer.delay(3);
+        //     Robot.sunKist.setLeftandRight(0, 0);
+        // } 
     }
 
     @Override

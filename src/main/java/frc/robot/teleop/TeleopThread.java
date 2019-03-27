@@ -30,7 +30,7 @@ public class TeleopThread extends RobotThread {
         HatchControl.getProcess().startProcess();
         Robot.Grabber.grab();
         DriveControl.speedUpdate();
-        //Robot.Climb.climb();
+        Robot.Climb.climb();
     }
 
     public Mode getDriveMode(){
