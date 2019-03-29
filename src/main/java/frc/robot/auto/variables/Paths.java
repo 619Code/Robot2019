@@ -33,6 +33,16 @@ public class Paths{
     (-18 * Math.pow(t, 2) + 0 * t + -81) / (579 * Math.pow(t, 2) + -570 * t + 171),
     121.325);
 
+    public static Path RIGHTSIDEHATCH = new Path(t -> 
+    /* {"start":{"x":114,"y":209},"mid1":{"x":209,"y":209},"mid2":{"x":258,"y":288},"end":{"x":258,"y":195}} */
+    (-753 * Math.pow(t, 2) + 474 * t + 0) / (-9 * Math.pow(t, 2) + -276 * t + 285),
+    183.948);
+
+    public static Path LEFTSIDEHATCH = new Path(t -> 
+    /* {"start":{"x":114,"y":119},"mid1":{"x":209,"y":119},"mid2":{"x":258,"y":40},"end":{"x":258,"y":133}} */
+    (753 * Math.pow(t, 2) + -474 * t + 0) / (-9 * Math.pow(t, 2) + -276 * t + 285),
+    183.948);
+
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 
     // /* {"start":{"x":188,"y":174},"mid1":{"x":116,"y":174},"mid2":{"x":221,"y":295},"end":{"x":20,"y":295}} */

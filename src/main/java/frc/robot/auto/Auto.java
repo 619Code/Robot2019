@@ -15,7 +15,7 @@ public class Auto{
     private CommandGroup chosenAuto;
 
     public enum SwitchState{
-        LEFTSHIP, RIGHTSHIP, LEFTROCKET, RIGHTROCKET, NOAUTO;
+        LEFTSHIP, RIGHTSHIP, LEFTROCKET, RIGHTROCKET, LEFTSIDE, RIGHTSIDE, NOAUTO;
     }
 
     public Auto(){
@@ -30,7 +30,9 @@ public class Auto{
     	autoTypes.put(SwitchState.LEFTSHIP, new LeftShip());
 	    autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
 	    autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
-	    autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
+        autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
+        autoTypes.put(SwitchState.LEFTSIDE, new LeftSide());
+        autoTypes.put(SwitchState.RIGHTSIDE, new RightSide());
     }
 
     public void start(){
@@ -48,7 +50,11 @@ public class Auto{
 
     public SwitchState getSwitchState(){
         //return SwitchState.LEFTSHIP;
-        if(left.get() && ship.get())
+        if(left.get() && ship.get() && rocket.get())
+            return SwitchState.LEFTSIDE;
+        else if(right.get() && ship.get() && rocket.get())
+            return SwitchState.RIGHTSIDE;
+        else if(left.get() && ship.get())
             return SwitchState.LEFTSHIP;
         else if(right.get() && ship.get())
             return SwitchState.RIGHTSHIP;
