@@ -89,16 +89,27 @@ public class ControllerMap {
     }
 
     public static class ClimbControl {
-        static boolean pressed = false;
-        static boolean state = false;
+        static boolean pressedStart = false;
+        static boolean pressedBack = false;
+        static boolean state[] = {false, false};
 
-        public static boolean climb() {
-            if (Secondary.getStartButton() && !pressed) {
-                pressed = true;
-                state = !state;
-            } else if (!Secondary.getStartButton() && pressed) {
-                pressed = false;
+        public static boolean[] climb() {
+            //front pistons
+            if (Secondary.getStartButton() && !pressedStart) {
+                pressedStart = true;
+                state[0] = !state[0];
+            } else if (!Secondary.getStartButton() && pressedStart) {
+                pressedStart = false;
             }
+
+            //back pistons
+            if (Secondary.getBackButton() && !pressedBack) {
+                pressedBack = true;
+                state[1] = !state[1];
+            } else if (!Secondary.getBackButton() && pressedBack) {
+                pressedBack = false;
+            }
+            
             return state;
         }
     }

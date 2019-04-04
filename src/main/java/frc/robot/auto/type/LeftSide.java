@@ -10,17 +10,13 @@ import frc.robot.auto.commands.misc.*;
 import frc.robot.auto.variables.Paths;
 import frc.robot.auto.variables.Speeds;
 
-public class LeftShip extends CommandGroup{
+public class LeftSide extends CommandGroup{
 
-    public LeftShip(){
+    public LeftSide(){
         Robot.sunKist.resetNavX(); 
         addSequential(new FollowPath(Paths.getStraightLinePath(99+10),Speeds.setSpeed(0.2)));
         addSequential(new TurnToAngle(0, 0.005), 2);
-        //addSequential(new Wait(1));
         addSequential(new HatchGrab(false));
-        //addSequential(new HatchExtend(Value.kForward));
-        addSequential(new FollowPath(Paths.LEFTHATCHSHIP, Speeds.setSpeed(0.3)));
-        // addSequential(new HatchGrab(true));
-        // addSequential(new FollowPath(Paths.getStraightLinePath(12), Speeds.setSpeed(-0.3)));
+        addSequential(new FollowPath(Paths.LEFTSIDEHATCH, Speeds.setSpeed(0.3)));
     }
 }
