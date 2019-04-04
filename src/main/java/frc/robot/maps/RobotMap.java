@@ -70,7 +70,8 @@ public class RobotMap {
     public static final int[] INTAKE_WRIST_CHANNEL = {4, 5};
     public static final int HATCH_GRABBER_CHANNEL = 1;
     public static final int[] HATCH_EXTEND_CHANNEL = {6, 7};
-    public static final int BOOST_CHANNEL = 0;
+    public static final int FRONT_CHANNEL = 0;
+    public static final int BACK_CHANNEL = 2;
 
     //auto switches
     public static final int LEFTAUTOSWITCH = 0;

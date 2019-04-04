@@ -136,8 +136,10 @@ public class Robot extends TimedRobot {
         
         while(!Thread.interrupted()){
           cvSink.grabFrame(source);
-          output = visionProcess.process(source);
-          outputStream.putFrame(output);
+          if(source.rows() != 0){
+            output = visionProcess.process(source);
+            outputStream.putFrame(output);
+          }
         }
       }).start();
     }
