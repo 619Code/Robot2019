@@ -76,7 +76,6 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotPeriodic() {
-    //System.out.println(RobotMap.DRIVE_SPEED_MAX);
     Scheduler.getInstance().run();
 
     //ONLY FOR V1
@@ -94,7 +93,7 @@ public class Robot extends TimedRobot {
     Hatch = new Hatch();
     Arm = new Arm();
     Grabber = new Grabber();
-    Climb = new Climb();
+    //climb = new Climb();
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true); 
   }
@@ -136,10 +135,8 @@ public class Robot extends TimedRobot {
         
         while(!Thread.interrupted()){
           cvSink.grabFrame(source);
-          if(source.rows() != 0){
-            output = visionProcess.process(source);
-            outputStream.putFrame(output);
-          }
+          output = visionProcess.process(source);
+          outputStream.putFrame(output);
         }
       }).start();
     }

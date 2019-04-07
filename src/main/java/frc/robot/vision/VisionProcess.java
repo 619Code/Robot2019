@@ -25,8 +25,7 @@ public class VisionProcess{
 
 	private Random rng = new Random(12345);
 
-    public VisionProcess(){
-	}
+    public VisionProcess(){}
 	
     public Mat process(Mat source0) {
 		brightImage = new Mat(source0.rows(), source0.cols(), source0.type());
@@ -34,8 +33,6 @@ public class VisionProcess{
 
 		//Blur
 		Imgproc.blur(brightImage, blurImage, new Size(VisionMap.KERNEL_SIZE, VisionMap.KERNEL_SIZE));
-		//Imgproc.GaussianBlur(brightImage, blurImage, new Size(VisionMap.KERNEL_SIZE, VisionMap.KERNEL_SIZE), VisionMap.RADUS);
-
 
 		//HSV
         Imgproc.cvtColor(blurImage, hsvImage, Imgproc.COLOR_BGR2HSV);
@@ -52,7 +49,6 @@ public class VisionProcess{
 
 		contours = filterContours(contours);
 
-		//System.out.println(contours.size());
 		for(int i = 0; i < contours.size(); i++){
 			 Rect contourRect = Imgproc.boundingRect(contours.get(i));
 			 if(i == 1)  Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(0, 255, 0), 2);

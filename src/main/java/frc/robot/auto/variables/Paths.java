@@ -43,6 +43,21 @@ public class Paths{
     (753 * Math.pow(t, 2) + -474 * t + 0) / (-9 * Math.pow(t, 2) + -276 * t + 285),
     183.948);
 
+    public static Path RIGHTFIRSTHATCH = new Path(t -> 
+    /* {"start":{"x":67,"y":164},"mid1":{"x":124,"y":164},"mid2":{"x":98,"y":173},"end":{"x":220,"y":173}} */
+    (-54 * Math.pow(t, 2) + 54 * t + 0) / (693 * Math.pow(t, 2) + -498 * t + 171),
+    153.449);
+
+    public static Path RIGHTINTAKEHATCH = new Path(t -> 
+    /* {"start":{"x":207,"y":173},"mid1":{"x":63,"y":173},"mid2":{"x":233,"y":297},"end":{"x":3,"y":297}} */
+    (-744 * Math.pow(t, 2) + 744 * t + 0) / (-2142 * Math.pow(t, 2) + 1884 * t + -432),
+    273.115);
+
+    public static Path RIGHTSECONDHATCH = new Path(t -> 
+    /* {"start":{"x":13,"y":297},"mid1":{"x":258,"y":222},"mid2":{"x":16,"y":298},"end":{"x":258,"y":222}} */
+    (-909 * Math.pow(t, 2) + 906 * t + -225) / (2913 * Math.pow(t, 2) + -2922 * t + 735),
+    256.255);
+
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 
     // /* {"start":{"x":188,"y":174},"mid1":{"x":116,"y":174},"mid2":{"x":221,"y":295},"end":{"x":20,"y":295}} */
