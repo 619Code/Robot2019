@@ -9,21 +9,20 @@ import java.util.HashMap;
 import frc.robot.auto.type.*;
 
 public class Auto{
-    
     private DigitalInput left, right, ship, rocket;
     private Map<SwitchState, CommandGroup> autoTypes = new HashMap<>();
     private CommandGroup chosenAuto;
 
     public enum SwitchState{
-        LEFTSHIP, RIGHTSHIP, LEFTROCKET, RIGHTROCKET, LEFTSIDE, RIGHTSIDE, NOAUTO;
+        LEFTSHIP, RIGHTSHIP, LEFTROCKET, RIGHTROCKET, RIGHTTWOHATCH, LEFTTWOHATCH, NOAUTO;
     }
 
     public Auto(){
 	    addAutoTypes();
-        left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
-        right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
-        ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
-        rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
+        // left = new DigitalInput(RobotMap.LEFTAUTOSWITCH);
+        // right = new DigitalInput(RobotMap.RIGHTAUTOSWITCH);
+        // ship = new DigitalInput(RobotMap.SHIPAUTOSWITCH);
+        // rocket = new DigitalInput(RobotMap.ROCKETAUTOSWITCH);
     }
 
     public void addAutoTypes(){
@@ -31,8 +30,8 @@ public class Auto{
 	    autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
 	    autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
         autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
-        autoTypes.put(SwitchState.LEFTSIDE, new LeftSide());
-        autoTypes.put(SwitchState.RIGHTSIDE, new RightSide());
+        autoTypes.put(SwitchState.LEFTTWOHATCH, new LeftTwoHatch());
+        autoTypes.put(SwitchState.RIGHTTWOHATCH, new RightTwoHatch());
     }
 
     public void start(){
@@ -49,19 +48,15 @@ public class Auto{
     }
 
     public SwitchState getSwitchState(){
-        //return SwitchState.LEFTSHIP;
-        if(left.get() && ship.get() && rocket.get())
-            return SwitchState.LEFTSIDE;
-        else if(right.get() && ship.get() && rocket.get())
-            return SwitchState.RIGHTSIDE;
-        else if(left.get() && ship.get())
-            return SwitchState.LEFTSHIP;
-        else if(right.get() && ship.get())
-            return SwitchState.RIGHTSHIP;
-        else if(left.get() && rocket.get())
-            return SwitchState.LEFTROCKET;
-        else if(right.get() && rocket.get())
-            return SwitchState.RIGHTROCKET;
-        return SwitchState.NOAUTO;
+        return SwitchState.RIGHTTWOHATCH;
+        // if(left.get() && ship.get())
+        //     return SwitchState.LEFTSHIP;
+        // else if(right.get() && ship.get())
+        //     return SwitchState.RIGHTSHIP;
+        // else if(left.get() && rocket.get())
+        //     return SwitchState.LEFTROCKET;
+        // else if(right.get() && rocket.get())
+        //     return SwitchState.RIGHTROCKET;
+        // return SwitchState.NOAUTO;
     }
 }
