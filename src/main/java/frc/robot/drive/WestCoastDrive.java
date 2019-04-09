@@ -13,7 +13,7 @@ import frc.robot.hardware.Controller;
 import frc.robot.maps.RobotMap;
 import frc.robot.subsystems.HelperFunctions;
 
-public class WestCoastDrive extends Subsystem{
+public class WestCoastDrive extends Subsystem {
     CANSparkMax leftMaster, leftFront, leftRear, rightMaster, rightFront, rightRear;
     DifferentialDrive drive;
     CANPIDController leftPID, rightPID;
@@ -33,7 +33,7 @@ public class WestCoastDrive extends Subsystem{
         initDrive();
     }
 
-    public void setInAuto(boolean inAuto){
+    public void setInAuto(boolean inAuto) {
         _inAuto = inAuto;
     }
 
@@ -56,7 +56,7 @@ public class WestCoastDrive extends Subsystem{
         resetNavX();
     }
 
-    public void setToBrake(){
+    public void setToBrake() {
         leftMaster.setIdleMode(IdleMode.kBrake);
         rightMaster.setIdleMode(IdleMode.kBrake);
         leftRear.setIdleMode(IdleMode.kBrake);
@@ -65,7 +65,7 @@ public class WestCoastDrive extends Subsystem{
         rightFront.setIdleMode(IdleMode.kBrake);
     }
 
-    public void setToCoast(){
+    public void setToCoast() {
         leftMaster.setIdleMode(IdleMode.kCoast);
         rightMaster.setIdleMode(IdleMode.kCoast);
         leftRear.setIdleMode(IdleMode.kCoast);
@@ -76,23 +76,25 @@ public class WestCoastDrive extends Subsystem{
         rightMaster.setRampRate(RobotMap.RAMP_RATE);
     }
 
-    public void resetNavX(){
+    public void resetNavX() {
         _navX.reset();
     }
 
-    public double getNavXAngle(){
+    public double getNavXAngle() {
         return _navX.getAngle();
     }
 
     public boolean drive(Mode mode, Controller driver) {
-        double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
-  
-        if((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
+        double speed = getSpeed(mode, driver);
+        if (rotation > 0 && speed == 0)
+            speed = 0.15;
+
+        if ((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
             return false;
 
         _inAuto = false;
- 
+
         switch (mode) {
         case CURVATURE:
             curveDrive(speed, rotation);
@@ -118,7 +120,7 @@ public class WestCoastDrive extends Subsystem{
         rightMaster.set(speed);
     }
 
-    public void setLeftandRight(double left, double right){
+    public void setLeftandRight(double left, double right) {
         leftMaster.set(-left);
         rightMaster.set(right);
     }
@@ -130,13 +132,13 @@ public class WestCoastDrive extends Subsystem{
     public double getRightEncoderValue() {
         return rightMaster.getEncoder().getPosition();
     }
-    
-    public double getLeftEncoderInches(){
-        return -(RobotMap.WHEEL_DIAMETER*Math.PI*(getLeftEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
+
+    public double getLeftEncoderInches() {
+        return -(RobotMap.WHEEL_DIAMETER * Math.PI * (getLeftEncoderValue() / RobotMap.ENCODER_TICK_PER_REV));
     }
 
-    public double getRightEncoderInches(){
-        return (RobotMap.WHEEL_DIAMETER*Math.PI*(getRightEncoderValue()/RobotMap.ENCODER_TICK_PER_REV));
+    public double getRightEncoderInches() {
+        return (RobotMap.WHEEL_DIAMETER * Math.PI * (getRightEncoderValue() / RobotMap.ENCODER_TICK_PER_REV));
     }
 
     public double getSpeed(Mode mode, Controller driver) {
@@ -146,7 +148,8 @@ public class WestCoastDrive extends Subsystem{
         case TANK:
             return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
         case GTA:
-            return purell(HelperFunctions.deadzone(driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND)), 2);
+            return purell(HelperFunctions.deadzone(
+                    driver.getTriggerAxis(RobotMap.RIGHT_HAND) - driver.getTriggerAxis(RobotMap.LEFT_HAND)), 2);
         default:
             // curvature drive default
             return purell(HelperFunctions.deadzone(driver.getY(RobotMap.SPEED_HAND)), 2);
@@ -180,10 +183,11 @@ public class WestCoastDrive extends Subsystem{
         drive.tankDrive(leftSpeed * RobotMap.DRIVE_SPEED_MAX, -rightSpeed * RobotMap.DRIVE_ROT_MAX, true);
     }
 
-    public double purell(double speed, int level){
-        return Math.pow(Math.abs(speed), level-1) * speed; 
+    public double purell(double speed, int level) {
+        return Math.pow(Math.abs(speed), level - 1) * speed;
     }
 
     @Override
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand() {
+    }
 }

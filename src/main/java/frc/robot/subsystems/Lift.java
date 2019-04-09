@@ -18,13 +18,6 @@ public class Lift extends Subsystem{
         upboiRight.setInverted(true);
         upboiLeft.follow(upboiRight);
     }
-
-    //target is in rotations (e.g. target=1 is one rotation)
-    public void moveToTarget(){
-        RobotMap.LIFT_TARGETS target = ControllerMap.LiftControl.goToPosition();
-		double targetPos =  (RobotMap.TICKSPERROT_VERSAPLANETARY_ENC*RobotMap.RATIO_LIFT) * target.getValue();
-        upboiRight.set(ControlMode.MotionMagic, targetPos);
-    }
     
     public void move(){
         upboiRight.set(ControlMode.PercentOutput, ControllerMap.LiftControl.move());

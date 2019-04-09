@@ -49,7 +49,7 @@ public class Arm extends Subsystem{
     public void intakePosition() {
         intaking = ControllerMap.ArmControl.goToIntakePosition();
         if(intaking)
-	    flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
+	        flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
     }
 
     public void move() {
