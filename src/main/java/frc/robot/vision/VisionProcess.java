@@ -20,22 +20,27 @@ public class VisionProcess{
 	private Mat hsvImage = new Mat();
 	private Mat cannyImage = new Mat();
 	Mat hierarchy;
+	Mat image;
+	double midpoint;
 
 	List<MatOfPoint> contours;
 
 	private Random rng = new Random(12345);
 
-    public VisionProcess(){}
+    public VisionProcess(){
+	}
 	
-    public Mat process(Mat source0) {
-		brightImage = new Mat(source0.rows(), source0.cols(), source0.type());
-		source0.convertTo(brightImage, -1, 1, -100);
+    public void process(Mat source0) {
+		image = source0;
+
+		//brightImage = new Mat(source0.rows(), source0.cols(), source0.type());
+		//source0.convertTo(brightImage, -1, 1, -100);
 
 		//Blur
-		Imgproc.blur(brightImage, blurImage, new Size(VisionMap.KERNEL_SIZE, VisionMap.KERNEL_SIZE));
+		Imgproc.medianBlur(source0, blurImage, 3);
 
 		//HSV
-        Imgproc.cvtColor(blurImage, hsvImage, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(source0, hsvImage, Imgproc.COLOR_BGR2HSV);
 		Core.inRange(hsvImage, new Scalar(VisionMap.HSV_THRESHOLD_HUE[0], VisionMap.HSV_THRESHOLD_SATURATION[0], VisionMap.HSV_THRESHOLD_VALUE[0]),
 			new Scalar(VisionMap.HSV_THRESHOLD_HUE[1], VisionMap.HSV_THRESHOLD_SATURATION[1], VisionMap.HSV_THRESHOLD_VALUE[1]), 
 			hsvImage);
@@ -51,14 +56,21 @@ public class VisionProcess{
 
 		for(int i = 0; i < contours.size(); i++){
 			 Rect contourRect = Imgproc.boundingRect(contours.get(i));
-			 if(i == 1)  Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(0, 255, 0), 2);
-			 else if(i == 2)  Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(255, 0, 0), 2); 
-			 else Imgproc.rectangle(source0, contourRect.tl(), contourRect.br(), new Scalar(0, 0, 255), 2);
+			 if(i == 0)  Imgproc.rectangle(image, contourRect.tl(), contourRect.br(), new Scalar(0, 255, 0), 2);
+			 else if(i == 1)  Imgproc.rectangle(image, contourRect.tl(), contourRect.br(), new Scalar(255, 0, 0), 2); 
+			 else Imgproc.rectangle(image, contourRect.tl(), contourRect.br(), new Scalar(0, 0, 255), 2);
 		}
+		//System.out.println(contours.size());
+	}
 
-		return source0;
+	public Mat getImage(){
+		return image;
 	}
 	
+	public int getRectangles(){
+		return contours.size() > 2 ? 2 : contours.size();
+	}
+
 	//remove overlapping contours
 	//remove small contours with height less than 20
 	public List<MatOfPoint> filterContours(List<MatOfPoint> contours){
@@ -90,6 +102,18 @@ public class VisionProcess{
 		for(int i = 0; i < filteredContours.size(); i++){
 			Rect contourRect = Imgproc.boundingRect(filteredContours.get(i));
 			if(currentRect.tl().equals(contourRect.tl()) && currentRect.br().equals(contourRect.br())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//doesnt work
+	public boolean isClose(Rect currentRect, List<MatOfPoint> filteredContours){
+		for(int i = 0; i < filteredContours.size(); i++){
+			Rect contourRect = Imgproc.boundingRect(filteredContours.get(i));
+			if(Math.abs(currentRect.tl().x-contourRect.tl().x) < 15 || Math.abs(currentRect.tl().y-contourRect.tl().y) < 15 ||
+			Math.abs(currentRect.br().x-contourRect.br().x) < 15 || Math.abs(currentRect.br().y-contourRect.br().y) < 15){
 				return true;
 			}
 		}

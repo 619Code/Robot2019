@@ -23,14 +23,14 @@ public class TeleopThread extends RobotThread {
     @Override
     protected void cycle() {
         //Robot.Arm.moveToTarget();
-        Robot.Arm.move();
-        Robot.Lift.move();
-        Robot.Intake.spin();
-        Robot.Intake.raiseOrLower();
+        //Robot.Arm.move();
+        //Robot.Lift.move();
+        //Robot.Intake.spin();
+        //Robot.Intake.raiseOrLower();
         HatchControl.getProcess().startProcess();
-        Robot.Grabber.grab();
+        //Robot.Grabber.grab();
         DriveControl.speedUpdate();
-        Robot.Climb.climb();
+        //Robot.Climb.climb();
     }
 
     public Mode getDriveMode(){

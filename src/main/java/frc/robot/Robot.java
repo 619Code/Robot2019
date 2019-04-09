@@ -16,7 +16,6 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -38,6 +37,7 @@ import frc.robot.subsystems.Lift;
 import frc.robot.teleop.TeleopThread;
 import frc.robot.threading.ThreadManager;
 import frc.robot.vision.VisionProcess;
+import frc.robot.vision.VisionThread;
 
 public class Robot extends TimedRobot {
   public static WestCoastDrive sunKist;
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static Grabber Grabber;
   public static Climb Climb;
 
-  //DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
+  DigitalInput compressorStop = new DigitalInput(5); //ONLY FOR V1 BOT
 
   VisionProcess visionProcess;
 
@@ -61,38 +61,40 @@ public class Robot extends TimedRobot {
 
   EasyPathConfig config;
 
-  VisionThread visionThread;
+  public static VisionThread visionThread;
+  ThreadManager visionThreadManager;
   boolean autoStopped;
 
   @Override
   public void robotInit() {
+    threadManager = new ThreadManager();
+    visionThreadManager = new ThreadManager();
+    threadManager.killAllThreads();
     initNavX();
     initManipulators();
-    initAuto();
+    //initAuto();
     initVision(false);
-    threadManager = new ThreadManager();
-    threadManager.killAllThreads();
   }
   
   @Override
   public void robotPeriodic() {
     Scheduler.getInstance().run();
 
-    //ONLY FOR V1
-    // if(compressorStop.get() == false) 
-    //   c.setClosedLoopControl(true);
-    // else
-    //   c.setClosedLoopControl(false);
+//    ONLY FOR V1
+    if(compressorStop.get() == false) 
+      c.setClosedLoopControl(true);
+    else
+      c.setClosedLoopControl(false);
   }
 
   public void initManipulators() {
     sunKist = new WestCoastDrive(navX);
 
-    Lift = new Lift();
-    Intake = new Intake();
+    //Lift = new Lift();
+    //Intake = new Intake();
     Hatch = new Hatch();
-    Arm = new Arm();
-    Grabber = new Grabber();
+    //Arm = new Arm();
+    //Grabber = new Grabber();
     //climb = new Climb();
     c = new Compressor(RobotMap.PCM_CAN_ID);
     c.setClosedLoopControl(true); 
@@ -125,20 +127,7 @@ public class Robot extends TimedRobot {
     camera.setFPS(30);
 
     if(useCV){
-      visionProcess = new VisionProcess();
-      new Thread(() -> {
-        CvSink cvSink = CameraServer.getInstance().getVideo();
-        CvSource outputStream = CameraServer.getInstance().putVideo("Vision", 160, 120);
-  
-        Mat source = new Mat();
-        Mat output = new Mat();
-        
-        while(!Thread.interrupted()){
-          cvSink.grabFrame(source);
-          output = visionProcess.process(source);
-          outputStream.putFrame(output);
-        }
-      }).start();
+      visionThread = new VisionThread(visionThreadManager, true);
     }
   }
 
@@ -190,7 +179,7 @@ public class Robot extends TimedRobot {
     threadManager.killAllThreads();
     //lift.moveLiftToTarget(RobotMap.LIFT_TARGETS.MIDDLE);
     //lift.moveLiftToTarget(0.5);
-    //sunKist.setLeftandRight(0.2, 0.2);
+    sunKist.setLeftandRight(0.2, -0.2);
   }
 
   @Override
