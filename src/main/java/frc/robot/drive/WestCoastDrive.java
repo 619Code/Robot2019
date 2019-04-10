@@ -20,7 +20,7 @@ public class WestCoastDrive extends Subsystem {
     AHRS _navX;
 
     double targetAngle;
-    boolean _inAuto;
+    boolean _inAuto, _driveOverride;
 
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
@@ -30,7 +30,12 @@ public class WestCoastDrive extends Subsystem {
         _navX = navX;
         _navX.getQuaternionZ();
         _inAuto = false;
+        _driveOverride = false;
         initDrive();
+    }
+
+    public void setDriveOverride(boolean driveOverride){
+        _driveOverride = driveOverride;
     }
 
     public void setInAuto(boolean inAuto) {
@@ -87,13 +92,16 @@ public class WestCoastDrive extends Subsystem {
     public boolean drive(Mode mode, Controller driver) {
         double rotation = getRotation(mode, driver);
         double speed = getSpeed(mode, driver);
-        if (rotation > 0 && speed == 0)
-            speed = 0.15;
 
-        if ((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
+        if((!_driveOverride && isDriving(speed, rotation))){
+            _inAuto = false;
+        }
+     
+        if(_inAuto && !_driveOverride)
             return false;
 
-        _inAuto = false;
+        if (rotation > 0 && speed == 0)
+            speed = 0.15;
 
         switch (mode) {
         case CURVATURE:
@@ -109,7 +117,13 @@ public class WestCoastDrive extends Subsystem {
             curveDrive(speed, rotation);
             break;
         }
+        if(_driveOverride)
+            return false;
         return true;
+    }
+
+    public boolean isDriving(double speed, double rotation){
+        return !((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE));
     }
 
     public void setLeftMotors(double speed) {
