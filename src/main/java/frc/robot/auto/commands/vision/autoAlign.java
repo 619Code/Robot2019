@@ -10,10 +10,10 @@ package frc.robot.auto.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class autoAlign extends Command {
-  boolean foundFirstRectangle;
-  boolean foundSecondRectangle;
-  boolean rightDistance;
+public class AutoAlign extends Command {
+  boolean foundFirstRectangle = false;
+  boolean foundSecondRectangle = false;
+  boolean rightDistance = false;
   boolean isFinished = false;
   double turnDir;
   double currentAngle;
@@ -21,10 +21,10 @@ public class autoAlign extends Command {
 
   //TEST TURN DIRECTIONS
 
-  public autoAlign(char direction) {
+  public AutoAlign(char direction) {
       requires(Robot.sunKist);
-      if(direction == 'r') turnDir = 0.2;
-      if(direction == 'l') turnDir = -0.2;
+      if(direction == 'r') turnDir = 0.1;
+      if(direction == 'l') turnDir = -0.1;
   }
 
   // Called just before this Command runs the first time
@@ -35,25 +35,37 @@ public class autoAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    currentAngle = Robot.sunKist.getNavXAngle();
+    //currentAngle = Robot.sunKist.getNavXAngle();
+    currentAngle = Robot.sunKist.getGyroAngle();
     if(!foundFirstRectangle){
+      System.out.println("turnDir: " + turnDir + " -turnDir:" + -turnDir);
       Robot.sunKist.setLeftandRight(turnDir, -turnDir);
+      System.out.println(Robot.visionThread.getRectangles());
       if(Robot.visionThread.getRectangles() > 0){
         foundFirstRectangle = true;
       }
-      Robot.sunKist.setLeftandRight(0, 0);
+      System.out.println("no rectangle");
+      //Robot.sunKist.setLeftandRight(0, 0);
     }
     if(foundFirstRectangle && !foundSecondRectangle){
-      Robot.sunKist.setLeftandRight(0.3+turnDir, 0.3-turnDir);
+      System.out.println("found first rectangle");
+      Robot.sunKist.setLeftandRight(0.1+turnDir, 0.1-turnDir);
       if(Robot.visionThread.getRectangles() > 1){
         foundSecondRectangle = true;
       }
     }
     if(foundFirstRectangle && foundSecondRectangle && !rightDistance)
     {
-      speed = (currentAngle)*0.3;
-      Robot.sunKist.setLeftMotors(0.3+speed);
-      Robot.sunKist.setRightMotors(0.3+speed);
+      System.out.println("found second rectanlge");
+      speed = (currentAngle)*0.03;
+
+      speed += 0.1;
+      if(speed > 0.2){
+        speed = 0.2;
+      }
+
+      Robot.sunKist.setLeftMotors(-(speed));
+      Robot.sunKist.setRightMotors(speed);
       if(speed < 0.05){
         isFinished = true;
       }

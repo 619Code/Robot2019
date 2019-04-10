@@ -72,8 +72,8 @@ public class Robot extends TimedRobot {
     threadManager.killAllThreads();
     initNavX();
     initManipulators();
-    //initAuto();
-    initVision(false);
+    initAuto();
+    initVision(true);
   }
   
   @Override
@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
       sunKist, 
       sunKist::setLeftandRight, 
       () -> PathUtil.defaultLengthDrivenEstimator(sunKist::getLeftEncoderInches, sunKist::getRightEncoderInches),  
-      sunKist::getNavXAngle,
+      sunKist::getGyroAngle,
       sunKist::initDrive, 
       RobotMap.AUTO_kP);
 
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
     camera.setFPS(30);
 
     if(useCV){
-      visionThread = new VisionThread(visionThreadManager, true);
+      visionThread = new VisionThread(visionThreadManager, false);
     }
   }
 
@@ -205,5 +205,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit(){
     threadManager.killAllThreads();
+    sunKist.setToCoast();
   }
 }

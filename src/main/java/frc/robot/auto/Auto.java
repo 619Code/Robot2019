@@ -26,21 +26,22 @@ public class Auto{
     }
 
     public void addAutoTypes(){
-    	autoTypes.put(SwitchState.LEFTSHIP, new LeftShip());
-	    autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
-	    autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
-        autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
-        autoTypes.put(SwitchState.LEFTTWOHATCH, new LeftTwoHatch());
+    	// autoTypes.put(SwitchState.LEFTSHIP, new LeftShip());
+	    // autoTypes.put(SwitchState.RIGHTSHIP, new RightShip());
+	    // autoTypes.put(SwitchState.LEFTROCKET, new LeftRocket());
+        // autoTypes.put(SwitchState.RIGHTROCKET, new RightRocket());
+        // autoTypes.put(SwitchState.LEFTTWOHATCH, new LeftTwoHatch());
         autoTypes.put(SwitchState.RIGHTTWOHATCH, new RightTwoHatch());
     }
 
-    public void start(){
+    public SwitchState start(){
         SwitchState state = getSwitchState();
-	    if(!state.equals(SwitchState.NOAUTO))
+	    if(!(state.equals(SwitchState.NOAUTO)))
 	        chosenAuto = autoTypes.get(state);
 	    else
     	    chosenAuto = new CommandGroup();
-	    chosenAuto.start();
+        chosenAuto.start();
+        return state;
     }	
 
     public void stop(){

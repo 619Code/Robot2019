@@ -187,8 +187,8 @@ public class ControllerMap {
                 RobotMap.DRIVE_SPEED_MAX = 1.0;
                 RobotMap.DRIVE_ROT_MAX = 0.5;
             } else {
-                RobotMap.DRIVE_SPEED_MAX = 0.8;
-                RobotMap.DRIVE_ROT_MAX = 0.3;
+                RobotMap.DRIVE_SPEED_MAX = 0.3;
+                RobotMap.DRIVE_ROT_MAX = 0.2;
             }
         }
     }

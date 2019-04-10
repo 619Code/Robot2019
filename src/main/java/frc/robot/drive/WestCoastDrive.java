@@ -7,6 +7,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.hardware.Controller;
@@ -18,9 +19,11 @@ public class WestCoastDrive extends Subsystem{
     DifferentialDrive drive;
     CANPIDController leftPID, rightPID;
     AHRS _navX;
+    ADXRS450_Gyro gyro;
 
     double targetAngle;
     boolean _inAuto;
+    boolean _driveOverride;
 
     public enum Mode {
         CURVATURE, ARCADE, TANK, GTA;
@@ -28,6 +31,7 @@ public class WestCoastDrive extends Subsystem{
 
     public WestCoastDrive(AHRS navX) {
         _navX = navX;
+        gyro = new ADXRS450_Gyro();
         _navX.getQuaternionZ();
         _inAuto = false;
         initDrive();
@@ -35,6 +39,10 @@ public class WestCoastDrive extends Subsystem{
 
     public void setInAuto(boolean inAuto){
         _inAuto = inAuto;
+    }
+
+    public void setDriveOvveride(boolean driveOverride){
+        _driveOverride = driveOverride;
     }
 
     public void initDrive() {
@@ -84,15 +92,27 @@ public class WestCoastDrive extends Subsystem{
         return _navX.getAngle();
     }
 
+    public void resetGyro(){
+        gyro.reset();
+    }
+
+    public double getGyroAngle(){
+        return gyro.getAngle();
+    }
+
     public boolean drive(Mode mode, Controller driver) {
         double speed = getSpeed(mode, driver);
         double rotation = getRotation(mode, driver);
   
-        if((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE) && _inAuto)
+        //System.out.println(getGyroAngle());
+
+        if((!_driveOverride && isDriving(speed, rotation))){
+            _inAuto = false;
+        }
+ 
+        if(_inAuto && !_driveOverride)
             return false;
 
-        _inAuto = false;
- 
         switch (mode) {
         case CURVATURE:
             curveDrive(speed, rotation);
@@ -107,7 +127,12 @@ public class WestCoastDrive extends Subsystem{
             curveDrive(speed, rotation);
             break;
         }
+        if(_driveOverride) return false;   
         return true;
+    }
+
+    public boolean isDriving(double speed, double rotation){
+        return !((Math.abs(speed) < RobotMap.DEADZONE && Math.abs(rotation) < RobotMap.DEADZONE));
     }
 
     public void setLeftMotors(double speed) {

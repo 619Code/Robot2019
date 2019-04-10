@@ -44,14 +44,14 @@ public class Paths{
     183.948);
 
     public static Path RIGHTFIRSTHATCH = new Path(t -> 
-    /* {"start":{"x":67,"y":164},"mid1":{"x":124,"y":164},"mid2":{"x":98,"y":173},"end":{"x":220,"y":173}} */
-    (-54 * Math.pow(t, 2) + 54 * t + 0) / (693 * Math.pow(t, 2) + -498 * t + 171),
-    153.449);
+    /* {"start":{"x":106,"y":209},"mid1":{"x":200,"y":209},"mid2":{"x":263,"y":315},"end":{"x":261,"y":235}} */
+    (-876 * Math.pow(t, 2) + 636 * t + 0) / (-102 * Math.pow(t, 2) + -186 * t + 282),
+    191.264);
 
     public static Path RIGHTINTAKEHATCH = new Path(t -> 
-    /* {"start":{"x":207,"y":173},"mid1":{"x":63,"y":173},"mid2":{"x":233,"y":297},"end":{"x":3,"y":297}} */
-    (-744 * Math.pow(t, 2) + 744 * t + 0) / (-2142 * Math.pow(t, 2) + 1884 * t + -432),
-    273.115);
+    /* {"start":{"x":259,"y":213},"mid1":{"x":174,"y":213},"mid2":{"x":171,"y":311},"end":{"x":46,"y":312}} */
+    (-585 * Math.pow(t, 2) + 588 * t + 0) / (-612 * Math.pow(t, 2) + 492 * t + -255),
+    241.946);
 
     public static Path RIGHTSECONDHATCH = new Path(t -> 
     /* {"start":{"x":13,"y":297},"mid1":{"x":258,"y":222},"mid2":{"x":16,"y":298},"end":{"x":258,"y":222}} */

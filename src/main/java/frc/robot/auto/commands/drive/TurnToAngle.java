@@ -25,7 +25,8 @@ public class TurnToAngle extends Command {
 
   @Override
   protected void execute() {
-    _currentAngle = _sunKist.getNavXAngle();
+    //_currentAngle = _sunKist.getNavXAngle();
+    _currentAngle = _sunKist.getGyroAngle();
     speed = (_currentAngle-_targetAngle)*_kP;
     _sunKist.setLeftMotors(speed);
     _sunKist.setRightMotors(speed);

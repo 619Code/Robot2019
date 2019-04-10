@@ -115,8 +115,9 @@ public class RobotMap {
     public static final double DRIVE_MAXOUTPUT = 0;
     public static final double DRIVE_MINOUTPUT = 0;
 
+    //0.045
     // Auto Encoder P Value
-    public static final double AUTO_kP = 0.045;
+    public static final double AUTO_kP = 0.035;
 
     //Lift PID
     public static final double LIFT_kP = 0.03;
