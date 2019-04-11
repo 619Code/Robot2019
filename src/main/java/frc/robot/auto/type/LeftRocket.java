@@ -14,9 +14,9 @@ public class LeftRocket extends CommandGroup{
 
     public LeftRocket(){
         Robot.sunKist.resetNavX(); 
-        addSequential(new FollowPath(Paths.getStraightLinePath(99+10),Speeds.setSpeed(0.2)));
-        addSequential(new TurnToAngle(0, 0.005), 2);
+        addSequential(new FollowPath(Paths.getStraightLinePath(99+10),Speeds.setSpeed(0.3)));
+        addSequential(new TurnToAngle(0, 0.005), 0.5);
         addSequential(new HatchGrab(false));
-        addSequential(new FollowPath(Paths.LEFTHATCHROCKET, Speeds.setSpeed(0.3)));
+        addSequential(new FollowPath(Paths.LEFTHATCHROCKET, Speeds.setSpeed(0.6)));
     }
 }

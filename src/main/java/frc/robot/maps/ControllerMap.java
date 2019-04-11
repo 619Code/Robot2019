@@ -124,15 +124,14 @@ public class ControllerMap {
     public static class IntakeControl {
         public static double spin() {
             double intakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft));
-            double outakeSpeed = RobotMap.INTAKE_SPEED
-                    * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kRight));
+            double outakeSpeed = RobotMap.INTAKE_SPEED * HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kRight));
             return intakeSpeed > 0 ? -intakeSpeed : outakeSpeed;
         }
 
         // grab right axis from secondary joystick
         public static int raiseOrLower() {
             if (HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft)) > 0.4)
-                return 0;
+                return 180;
             return Secondary.getPOV();
         }
     }

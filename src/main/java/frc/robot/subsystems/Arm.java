@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -47,9 +49,13 @@ public class Arm extends Subsystem{
      * CARGO SHIP ENC = -40
      */
     public void intakePosition() {
+        //System.out.println("encoder " + flexEncoder.getPosition());
         intaking = ControllerMap.ArmControl.goToIntakePosition();
-        if(intaking)
-	        flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
+        if(intaking){
+            System.out.println("INTAKING");
+            //flexController.setOutputRange(-0.5, 0.5);
+            flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
+        }    
     }
 
     public void move() {

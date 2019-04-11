@@ -24,8 +24,11 @@ public class Grabber extends Subsystem{
     }
 
     public void grab(){
-	    double speed = ControllerMap.GrabberControl.grab();
-        _right.set(ControlMode.PercentOutput, speed + RobotMap.GRABBER_COUNTER);
+        double speed = ControllerMap.GrabberControl.grab();
+        if(speed == 0)
+            _right.set(ControlMode.PercentOutput, RobotMap.GRABBER_COUNTER);
+        else
+            _right.set(ControlMode.PercentOutput, speed);
     }
 
     public void grab(double speed) {

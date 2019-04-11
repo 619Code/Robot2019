@@ -92,7 +92,7 @@ public class WestCoastDrive extends Subsystem {
     public boolean drive(Mode mode, Controller driver) {
         double rotation = getRotation(mode, driver);
         double speed = getSpeed(mode, driver);
-
+        
         if((!_driveOverride && isDriving(speed, rotation))){
             _inAuto = false;
         }
@@ -100,8 +100,8 @@ public class WestCoastDrive extends Subsystem {
         if(_inAuto && !_driveOverride)
             return false;
 
-        if (rotation > 0 && speed == 0)
-            speed = 0.15;
+        // if (rotation > 0 && speed == 0)
+        //     speed = 0.15;
 
         switch (mode) {
         case CURVATURE:

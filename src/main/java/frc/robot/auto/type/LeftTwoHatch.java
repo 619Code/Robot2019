@@ -10,26 +10,27 @@ import frc.robot.auto.variables.Paths;
 import frc.robot.auto.variables.Speeds;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class RightTwoHatch extends CommandGroup{
+public class LeftTwoHatch extends CommandGroup{
 
-    public RightTwoHatch(){
+    public LeftTwoHatch(){
         Robot.sunKist.resetNavX();
         // GET FRONT  HATCH
         addSequential(new FollowPath(Paths.getStraightLinePath(99+10), Speeds.setSpeed(0.3)));
-        addSequential(new FollowPath(Paths.RIGHTFIRSTHATCH, Speeds.setSpeed(0.3)));
+        addSequential(new FollowPath(Paths.LEFTFIRSTHATCH, Speeds.setSpeed(0.6)));
+        Robot.sunKist.resetNavX();
         addSequential(new TeleAlign());
 
         // GET ANOTHER HATCH
-        addSequential(new FollowPath(Paths.getStraightLinePath(10), Speeds.setSpeed(-0.3)));
-        addSequential(new TurnToAngle(180, 2));
+        addSequential(new FollowPath(Paths.getStraightLinePath(5), Speeds.setSpeed(-0.6)));
+        addSequential(new TurnToAngle(90, 0.005), 0.5);
         Robot.sunKist.resetNavX();
-        addSequential(new FollowPath(Paths.RIGHTINTAKEHATCH, Speeds.setSpeed(0.3)));
+        addSequential(new FollowPath(Paths.LEFTINTAKEHATCH, Speeds.setSpeed(0.6)));
         addSequential(new TeleAlign());
 
         // GET IN POSITION FOR SECOND HATCH
-        addSequential(new FollowPath(Paths.getStraightLinePath(10), Speeds.setSpeed(-0.3)));
-        addSequential(new TurnToAngle(180, 2));
+        addSequential(new FollowPath(Paths.getStraightLinePath(5), Speeds.setSpeed(-0.6)));
+        addSequential(new TurnToAngle(180, 0.005), 0.5);
         Robot.sunKist.resetNavX();
-        addSequential(new FollowPath(Paths.RIGHTSECONDHATCH, Speeds.setSpeed(0.3)));
+        addSequential(new FollowPath(Paths.LEFTSECONDHATCH, Speeds.setSpeed(0.6)));
     }
 }
