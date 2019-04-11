@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -20,6 +22,7 @@ public class Arm extends Subsystem{
     private CANEncoder flexEncoder;
 
     private int lastTargetIdx;
+    boolean intaking;
 
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
@@ -45,21 +48,18 @@ public class Arm extends Subsystem{
      * HIGH GOAL ENC = -116
      * CARGO SHIP ENC = -40
      */
-    public void moveToTarget() {
-        int targetIdx = ControllerMap.ArmControl.goToPosition();
-        if(!ControllerMap.armInManual){
-            if (targetIdx == -1){
-                //System.out.println("do nothing");
-                flexController.setReference(RobotMap.ARM_TARGETS.get(lastTargetIdx), ControlType.kPosition);
-                return;
-            }
-            lastTargetIdx = targetIdx;
-            flexController.setReference(RobotMap.ARM_TARGETS.get(targetIdx), ControlType.kPosition);
-        }
+    public void intakePosition() {
+        //System.out.println("encoder " + flexEncoder.getPosition());
+        intaking = ControllerMap.ArmControl.goToIntakePosition();
+        if(intaking){
+            System.out.println("INTAKING");
+            //flexController.setOutputRange(-0.5, 0.5);
+            flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
+        }    
     }
 
     public void move() {
-        if(ControllerMap.armInManual) flexin.set(ControllerMap.ArmControl.move());
+        flexin.set(ControllerMap.ArmControl.move());
         //System.out.println("ENCODER POS: " + flexEncoder.getPosition());
     }
 

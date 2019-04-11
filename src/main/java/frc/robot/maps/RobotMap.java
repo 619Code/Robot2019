@@ -89,8 +89,8 @@ public class RobotMap {
     public static double DRIVE_SPEED_MAX = 0.5;
 
     public static final double INTAKE_SPEED = 0.65;
-    public static final double GRABBER_SPEED = 0.90;
-    public static final double GRABBER_COUNTER = -0.1;
+    public static final double GRABBER_SPEED = 0.60;
+    public static final double GRABBER_COUNTER = -0.3;
     public static final double LIFT_SPEED = 1.00;
 
     // controller public static finals
@@ -127,9 +127,9 @@ public class RobotMap {
     public static final double LIFE_PEAK_OUTPUT = 0;
     
     //Arm PID
-    public static final double ARM_kP = 0.7;
-	public static final double ARM_kI = 0;
-    public static final double ARM_kD = 0;
+    public static final double ARM_kP = 5;
+	public static final double ARM_kI = 0.0;
+    public static final double ARM_kD = 0.0;
     public static final double ARM_kF = 0;
     public static final int ARM_kIZONE = 0;
     public static final double ARM_MAXOUTPUT = 0.5;

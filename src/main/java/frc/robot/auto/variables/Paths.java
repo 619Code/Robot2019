@@ -34,14 +34,44 @@ public class Paths{
     121.325);
 
     public static Path RIGHTSIDEHATCH = new Path(t -> 
-    /* {"start":{"x":114,"y":209},"mid1":{"x":209,"y":209},"mid2":{"x":258,"y":288},"end":{"x":258,"y":195}} */
-    (-753 * Math.pow(t, 2) + 474 * t + 0) / (-9 * Math.pow(t, 2) + -276 * t + 285),
-    183.948);
+    /* {"start":{"x":106,"y":209},"mid1":{"x":200,"y":209},"mid2":{"x":263,"y":315},"end":{"x":261,"y":235}} */
+    (-876 * Math.pow(t, 2) + 636 * t + 0) / (-102 * Math.pow(t, 2) + -186 * t + 282),
+    191.264);
 
     public static Path LEFTSIDEHATCH = new Path(t -> 
-    /* {"start":{"x":114,"y":119},"mid1":{"x":209,"y":119},"mid2":{"x":258,"y":40},"end":{"x":258,"y":133}} */
-    (753 * Math.pow(t, 2) + -474 * t + 0) / (-9 * Math.pow(t, 2) + -276 * t + 285),
-    183.948);
+    /* {"start":{"x":106,"y":119},"mid1":{"x":200,"y":119},"mid2":{"x":263,"y":13},"end":{"x":261,"y":93}} */
+    (876 * Math.pow(t, 2) + -636 * t + 0) / (-102 * Math.pow(t, 2) + -186 * t + 282),
+    191.264);
+
+    public static Path RIGHTFIRSTHATCH = new Path(t -> 
+    /* {"start":{"x":106,"y":209},"mid1":{"x":200,"y":209},"mid2":{"x":263,"y":315},"end":{"x":261,"y":235}} */
+    (-876 * Math.pow(t, 2) + 636 * t + 0) / (-102 * Math.pow(t, 2) + -186 * t + 282),
+    191.264);
+
+    public static Path RIGHTINTAKEHATCH = new Path(t -> 
+    /* {"start":{"x":259,"y":213},"mid1":{"x":174,"y":213},"mid2":{"x":171,"y":311},"end":{"x":46,"y":312}} */
+    (-585 * Math.pow(t, 2) + 588 * t + 0) / (-612 * Math.pow(t, 2) + 492 * t + -255),
+    241.946);
+
+    public static Path RIGHTSECONDHATCH = new Path(t -> 
+    /* {"start":{"x":13,"y":297},"mid1":{"x":180,"y":297},"mid2":{"x":86,"y":173},"end":{"x":191,"y":173}} */
+    (744 * Math.pow(t, 2) + -744 * t + 0) / (1380 * Math.pow(t, 2) + -1566 * t + 501),
+    240.011);
+
+    public static Path LEFTFIRSTHATCH = new Path(t -> 
+    /* {"start":{"x":106,"y":119},"mid1":{"x":200,"y":119},"mid2":{"x":263,"y":13},"end":{"x":261,"y":93}} */
+    (876 * Math.pow(t, 2) + -636 * t + 0) / (-102 * Math.pow(t, 2) + -186 * t + 282),
+    191.264);
+
+    public static Path LEFTINTAKEHATCH = new Path(t -> 
+    /* {"start":{"x":259,"y":123},"mid1":{"x":174,"y":123},"mid2":{"x":171,"y":25},"end":{"x":46,"y":24}} */
+    (585 * Math.pow(t, 2) + -588 * t + 0) / (-612 * Math.pow(t, 2) + 492 * t + -255),
+    241.946);
+
+    public static Path LEFTSECONDHATCH = new Path(t -> 
+    /* {"start":{"x":13,"y":27},"mid1":{"x":180,"y":27},"mid2":{"x":86,"y":151},"end":{"x":191,"y":151}} */
+    (-744 * Math.pow(t, 2) + 744 * t + 0) / (1380 * Math.pow(t, 2) + -1566 * t + 501),
+    240.011);
 
     //works for v2 0.04 kP
     // public static Path GRABHATCHAFTERBACKUP = new Path(t -> 

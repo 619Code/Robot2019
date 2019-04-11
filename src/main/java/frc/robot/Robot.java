@@ -118,6 +118,8 @@ public class Robot extends TimedRobot {
     config.setSwapTurningDirection(false);
 
     EasyPath.configure(config);
+
+    sunKist.setDriveOverride(false);
   }
 
   public void initVision(boolean useCV){
@@ -166,12 +168,14 @@ public class Robot extends TimedRobot {
     threadManager.killAllThreads();
     teleopThread = new TeleopThread(threadManager);
     sunKist.setInAuto(false);
+    sunKist.setDriveOverride(false);
     sunKist.setToBrake();
   }
 
   @Override
   public void teleopPeriodic() {
     sunKist.drive(teleopThread.getDriveMode(), ControllerMap.Primary);
+    //System.out.println("NavX angle: " + sunKist.getNavXAngle());
   }
 
   // --------------------------------------
