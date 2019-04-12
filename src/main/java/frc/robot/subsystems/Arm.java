@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import frc.robot.helper.PID;
 import frc.robot.maps.ControllerMap;
 import frc.robot.maps.RobotMap;
 
@@ -24,21 +25,23 @@ public class Arm extends Subsystem{
     private int lastTargetIdx;
     boolean intaking;
 
+    private PID pid;
+    double cte, dt;
+
+    double time, prevTime;
+
+    double speedValue;
+
+    double encoderPosition;
+
     public Arm() {
         flexin = new CANSparkMax(RobotMap.ARM, MotorType.kBrushless);
         flexin.setIdleMode(IdleMode.kBrake);
-        flexController = flexin.getPIDController();
         flexEncoder = flexin.getEncoder();
-
-        HelperFunctions.configurePIDController(flexController, RobotMap.Manipulators.ARM);
-        flexController.setP(RobotMap.ARM_kP);
-        flexController.setI(RobotMap.ARM_kI);
-        flexController.setD(RobotMap.ARM_kD);
-        flexController.setFF(RobotMap.ARM_kF);
-        flexController.setIZone(RobotMap.ARM_kIZONE);
-        flexController.setOutputRange(RobotMap.ARM_MINOUTPUT, RobotMap.ARM_MAXOUTPUT);
-
+        pid = new PID(RobotMap.ARM_kP, RobotMap.ARM_kI, RobotMap.ARM_kD);
         lastTargetIdx = 0;
+        time = 0;
+        prevTime = 0;
     }
 
     /**
@@ -52,14 +55,28 @@ public class Arm extends Subsystem{
         //System.out.println("encoder " + flexEncoder.getPosition());
         intaking = ControllerMap.ArmControl.goToIntakePosition();
         if(intaking){
-            System.out.println("INTAKING");
-            //flexController.setOutputRange(-0.5, 0.5);
-            flexController.setReference(RobotMap.ARM_TARGETS.get(0), ControlType.kPosition);
-        }    
+            encoderPosition = flexEncoder.getPosition()-ControllerMap.ArmControl.lastEncoderPosition;
+            time = System.currentTimeMillis();
+            cte = encoderPosition - RobotMap.ARM_TARGETS.get(0);
+            dt = time - prevTime;
+            //System.out.println("INTAKING");
+            pid.updateError(cte, dt);
+            speedValue = -pid.totalError();
+            // System.out.println("ERROR: " + speedValue + "ENCODER POS TO DESIRED: " + flexEncoder.getPosition() + " to " + RobotMap.ARM_TARGETS.get(0));
+            // System.out.println("CTE: " + cte);
+            if(speedValue < RobotMap.ARM_MINOUTPUT){
+                speedValue = RobotMap.ARM_MINOUTPUT;
+            }
+            else if(speedValue > RobotMap.ARM_MAXOUTPUT){
+                speedValue = RobotMap.ARM_MAXOUTPUT;
+            }
+            flexin.set(speedValue);
+            prevTime = time;
+        }  
     }
 
     public void move() {
-        flexin.set(ControllerMap.ArmControl.move());
+        if(!intaking) flexin.set(ControllerMap.ArmControl.move());
         //System.out.println("ENCODER POS: " + flexEncoder.getPosition());
     }
 
@@ -67,20 +84,10 @@ public class Arm extends Subsystem{
         flexin.set(speed);
     }
 
-
-    public int getClosestIdx() {
-        double minDist = 10000;
-	    int minIdx = -1;
-	    //minus the size by 1 to not automatically go to high position for safety reasons
-	    for(int i = 0; i < RobotMap.ARM_TARGETS.size()-1; i++){
-	        double target = RobotMap.ARM_TARGETS.get(i);
-	        double dist = Math.abs(target-flexEncoder.getPosition());
-	        if(dist < minDist)
-	            minDist = dist;
-	            minIdx = i;
-	    }
-	    return minIdx;
+    public double getEncoderPosition(){
+        return flexEncoder.getPosition();
     }
+    
 
     @Override
     protected void initDefaultCommand() {}

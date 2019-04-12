@@ -55,6 +55,9 @@ public class ControllerMap {
 
     public static class ArmControl {
         private static int armIdx = 0;
+        private static boolean pidOverride = false;
+        private static boolean pressedOverride = false;
+        public static double lastEncoderPosition = 0;
 
         public static boolean goToIntakePosition() {
             double speed = HelperFunctions.deadzone(Secondary.getTriggerAxis(Hand.kLeft));
@@ -66,6 +69,22 @@ public class ControllerMap {
         public static double move() {
             double speed = HelperFunctions.deadzone(Secondary.getY(Hand.kRight));
             return speed;
+        }
+
+        public static boolean isPIDOverride(){
+            if (Secondary.getStickButton(Hand.kRight) && !pressedOverride) {
+                pressedOverride = true;
+                pidOverride = !pidOverride;
+            } else if (!Secondary.getStickButton(Hand.kRight) && pressedOverride) {
+                pressedOverride = false;
+            }
+            return pidOverride;
+        }    
+
+        public static void resetEncoderPosition(){
+            if (Secondary.getPOV()==270){
+                lastEncoderPosition = Robot.Arm.getEncoderPosition();
+            }
         }
     }
 
