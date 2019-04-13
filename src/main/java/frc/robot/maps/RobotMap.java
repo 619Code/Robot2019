@@ -29,7 +29,7 @@ public class RobotMap {
      */
     public static final ArrayList<Double> ARM_TARGETS = new ArrayList<>(){
 	    {
-		    add(-10.3);
+		    add(-10.7);
 		    add(-14.7);
 		    add(-40.0);
 		    add(-57.0);
@@ -129,7 +129,7 @@ public class RobotMap {
     //Arm PID
     public static final double ARM_kP = 0.1;
 	public static final double ARM_kI = 0.0;
-    public static final double ARM_kD = 10.0;
+    public static final double ARM_kD = 7.0;
     public static final double ARM_kF = 0;
     public static final int ARM_kIZONE = 0;
     public static final double ARM_MAXOUTPUT = 0.7;

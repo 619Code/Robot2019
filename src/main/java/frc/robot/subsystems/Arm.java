@@ -59,7 +59,6 @@ public class Arm extends Subsystem{
             time = System.currentTimeMillis();
             cte = encoderPosition - RobotMap.ARM_TARGETS.get(0);
             dt = time - prevTime;
-            //System.out.println("INTAKING");
             pid.updateError(cte, dt);
             speedValue = -pid.totalError();
             // System.out.println("ERROR: " + speedValue + "ENCODER POS TO DESIRED: " + flexEncoder.getPosition() + " to " + RobotMap.ARM_TARGETS.get(0));
