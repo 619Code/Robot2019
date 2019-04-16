@@ -17,6 +17,6 @@ public class RightRocket extends CommandGroup{
         addSequential(new FollowPath(Paths.getStraightLinePath(99+10),Speeds.setSpeed(0.3)));
         addSequential(new TurnToAngle(0, 0.005), 0.5);
         addSequential(new HatchGrab(false));
-        addSequential(new FollowPath(Paths.RIGHTHATCHROCKET, Speeds.setSpeed(0.6)));
+        addSequential(new FollowPath(Paths.RIGHTHATCHROCKET, Speeds.setSpeed(0.5)));
     }
 }
