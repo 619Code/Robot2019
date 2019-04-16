@@ -127,9 +127,9 @@ public class Robot extends TimedRobot {
     camera0.setResolution(160, 120);
     camera0.setFPS(30);
 
-    UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Hatch Camera", 1);
-    camera1.setResolution(160, 120);
-    camera1.setFPS(30);
+    // UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Hatch Camera", 1);
+    // camera1.setResolution(160, 120);
+    // camera1.setFPS(30);
 
     if(useCV){
       visionProcess = new VisionProcess();

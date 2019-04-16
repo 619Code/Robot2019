@@ -29,7 +29,7 @@ public class RobotMap {
      */
     public static final ArrayList<Double> ARM_TARGETS = new ArrayList<>(){
 	    {
-		    add(-10.7);
+		    add(-10.3);
 		    add(-14.7);
 		    add(-40.0);
 		    add(-57.0);
