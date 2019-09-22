@@ -4,8 +4,11 @@ This is Team 619's 2019 FRC robot code for Armstrong. The code is written in Jav
 
 The code is divided into several pacakges that correlate to a specific function of Armstrong.
 
-## Code Highlights
+## Setup
+ 
 
+
+## Code Highlights
 ### Path Planning and Following
 Used [Tervay's EasyPath library](https://github.com/tervay/EasyPath) to score hatches during sandstorm period.  
 ### Multiple Autonomous Modes
