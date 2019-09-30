@@ -10,7 +10,7 @@ Used [Tervay's EasyPath library](https://github.com/tervay/EasyPath) to score ha
 ### Multiple Autonomous Modes
 8 Autonomous modes to place a hatch on the side and front of the ship, place a hatch on the side of the ship, or place a hatch on the rocket and go to the loading station on both the right and left sides of the ship and rocket.
 ### Custom PID
-[Custom PID algorithm to position](https://github.com/619Code/Robot2019/blob/master/src/main/java/frc/robot/helper/PID.java) the arm in the optimal position for collection and scoring of cargo.
+[Custom PID algorithm](https://github.com/619Code/Robot2019/blob/master/src/main/java/frc/robot/helper/PID.java) to position the arm in the optimal position for collection and scoring of cargo.
 ### Vision Allignment
 Used [OpenCV](https://github.com/opencv/opencv) library to align to retroreflective tape placed on the ship, rocket, and loading station.
 ## Packages
