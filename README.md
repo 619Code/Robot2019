@@ -12,7 +12,7 @@ Used [Tervay's EasyPath library](https://github.com/tervay/EasyPath) to score ha
 ### Custom PID
 [Custom PID algorithm](https://github.com/619Code/Robot2019/blob/master/src/main/java/frc/robot/helper/PID.java) to position the arm in the optimal position for collection and scoring of cargo.
 ### Vision Allignment
-Used [OpenCV](https://github.com/opencv/opencv) library to align to retroreflective tape placed on the ship, rocket, and loading station.
+Used [OpenCV](https://opencv.org) library to align to retroreflective tape placed on the ship, rocket, and loading station.
 ## Packages
 * [```frc.robot.auto```](https://github.com/619Code/Robot2019/tree/master/src/main/java/frc/robot/auto)<br/>
 Handles the execution of autonomous routines
