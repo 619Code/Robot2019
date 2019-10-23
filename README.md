@@ -8,7 +8,7 @@ The code is divided into several pacakges that correlate to a specific function 
 ### Path Planning and Following
 Used [Tervay's EasyPath library](https://github.com/tervay/EasyPath) to score hatches during sandstorm period.  
 ### Multiple Autonomous Modes
-8 Autonomous modes to place a hatch on both sides of the cargoship, the front of the cargoship, the side and front of the cargoship, and the front of the rocket.
+8 Autonomous modes to place a hatch on either side of the cargoship, a hatch on either front bay of the cargoship, a hatch on the front bay of either rocket, and two hatches on each corresponding side and front bay of the cargoship.
 ### Custom PID
 [Custom PID algorithm](https://github.com/619Code/Robot2019/blob/master/src/main/java/frc/robot/helper/PID.java) to position the arm in the optimal position for collection and scoring of cargo.
 ### Vision Allignment
